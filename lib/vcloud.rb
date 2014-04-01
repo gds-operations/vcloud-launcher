@@ -11,9 +11,9 @@ require 'vcloud/version'
 require 'vcloud/fog'
 require 'vcloud/core'
 
-require 'vcloud/launch'
-require 'vcloud/vm_orchestrator'
-require 'vcloud/vapp_orchestrator'
+require 'vcloud/launcher/launch'
+require 'vcloud/launcher/vm_orchestrator'
+require 'vcloud/launcher/vapp_orchestrator'
 
 module Vcloud
 
