@@ -1,7 +1,23 @@
-Vcloud Launcher
+vCloud Launcher
 ===============
 A tool that takes a YAML or JSON configuration file describing a vDC, and provisions
 the vApps and VMs contained within.
+
+### Supports
+
+    Configuration of multiple vApps/VMs with:
+        multiple NICs
+        custom CPU and memory size
+        multiple additional disks
+        custom VM metadata
+    Basic idempotent operation - vApps that already exist are skipped.
+
+### Limitations
+
+    Source vApp Template must contain a single VM. This is VMware's recommended 'simple' method of vApp creation. Complex multi-VM vApps are not supported.
+    Org vDC Networks must be precreated.
+    IP addresses are assigned manually (recommended) or via DHCP. VM IP pools are not supported.
+    vCloud has some interesting ideas about the size of potential 'guest customisation scripts' (aka preambles). You may need to use an external minify tool to reduce the size, or speak to your provider to up the limit. 2048 bytes seems to be a practical default maximum.
 
 ## Installation
 
