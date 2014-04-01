@@ -39,7 +39,7 @@ class App
     #{examples_dir}
   "
 
-  version Vcloud::VERSION
+  version Vcloud::Launcher::VERSION
 
   #use_log_level_option
 

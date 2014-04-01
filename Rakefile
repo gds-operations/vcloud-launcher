@@ -6,7 +6,7 @@ require 'cucumber'
 require 'cucumber/rake/task'
 require 'rspec/core/rake_task'
 require 'jeweler'
-require 'vcloud/version'
+require 'vcloud/launcher/version'
 
 include Rake::DSL
 
@@ -45,6 +45,6 @@ task :default => [:spec,:features]
 
 Jeweler::Tasks.new do |gem|
   gem.name = 'vcloud-tools'
-  gem.version = Vcloud::VERSION
+  gem.version = Vcloud::Launcher::VERSION
 end
 Jeweler::RubygemsDotOrgTasks.new

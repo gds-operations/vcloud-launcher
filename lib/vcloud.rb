@@ -6,7 +6,7 @@ require 'csv'
 require 'open3'
 require 'pp'
 
-require 'vcloud/version'
+require 'vcloud/launcher/version'
 
 require 'vcloud/fog'
 require 'vcloud/core'
