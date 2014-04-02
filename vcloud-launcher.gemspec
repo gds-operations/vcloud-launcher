@@ -24,6 +24,7 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency 'vcloud-core', '>= 0.0.9'
   s.add_development_dependency 'aruba', '~> 0.5.3'
   s.add_development_dependency 'cucumber', '~> 1.3.10'
+  s.add_development_dependency 'gem_publisher', '1.2.0'
   s.add_development_dependency 'rake'
   s.add_development_dependency 'rspec', '~> 2.14.1'
 end

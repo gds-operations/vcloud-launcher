@@ -7,3 +7,5 @@ bundle exec rake
 export FOG_RC=fog_integration_test.config
 bundle exec rake integration:all
 rm fog_integration_test.config
+
+bundle exec rake publish_gem

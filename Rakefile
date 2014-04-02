@@ -39,3 +39,9 @@ RSpec::Core::RakeTask.new('integration:all') do |t|
 end
 
 task :default => [:spec,:features]
+
+require "gem_publisher"
+task :publish_gem do |t|
+  gem = GemPublisher.publish_if_updated("vcloud-launcher.gemspec", :rubygems)
+  puts "Published #{gem}" if gem
+end
