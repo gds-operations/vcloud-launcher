@@ -1,19 +1,11 @@
-require 'rubygems'
-require 'bundler/setup'
-require 'json'
-require 'yaml'
-require 'csv'
-require 'open3'
-require 'pp'
-
-require 'vcloud/launcher/version'
-
 require 'vcloud/fog'
 require 'vcloud/core'
 
 require 'vcloud/launcher/launch'
 require 'vcloud/launcher/vm_orchestrator'
 require 'vcloud/launcher/vapp_orchestrator'
+
+require 'vcloud/launcher/version'
 
 module Vcloud
 
