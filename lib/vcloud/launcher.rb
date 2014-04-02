@@ -8,13 +8,15 @@ require 'vcloud/launcher/vapp_orchestrator'
 require 'vcloud/launcher/version'
 
 module Vcloud
+  module Launcher
 
-  def self.logger
-    @logger ||= Logger.new(STDOUT)
+    def self.logger
+      @logger ||= Logger.new(STDOUT)
+    end
+
+    def self.clone_object object
+      Marshal.load(Marshal.dump(object))
+    end
+
   end
-
-  def self.clone_object object
-    Marshal.load(Marshal.dump(object))
-  end
-
 end

@@ -6,7 +6,7 @@ module Vcloud
         name, vdc_name = vapp_config[:name], vapp_config[:vdc_name]
 
         if vapp = Vcloud::Core::Vapp.get_by_name_and_vdc_name(name, vdc_name)
-          Vcloud.logger.info("Found existing vApp #{name} in vDC '#{vdc_name}'. Skipping.")
+          Vcloud::Launcher.logger.info("Found existing vApp #{name} in vDC '#{vdc_name}'. Skipping.")
         else
           template = Vcloud::Core::VappTemplate.get(vapp_config[:catalog], vapp_config[:catalog_item])
           template_id = template.id
