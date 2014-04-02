@@ -1,11 +1,8 @@
-require 'bundler'
-require "bundler/gem_tasks"
 require 'rake/clean'
 require 'rake/testtask'
-require 'cucumber'
 require 'cucumber/rake/task'
 require 'rspec/core/rake_task'
-require 'jeweler'
+
 require 'vcloud/launcher/version'
 
 include Rake::DSL
@@ -42,9 +39,3 @@ RSpec::Core::RakeTask.new('integration:all') do |t|
 end
 
 task :default => [:spec,:features]
-
-Jeweler::Tasks.new do |gem|
-  gem.name = 'vcloud-tools'
-  gem.version = Vcloud::Launcher::VERSION
-end
-Jeweler::RubygemsDotOrgTasks.new
