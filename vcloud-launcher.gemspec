@@ -5,11 +5,12 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'vcloud/launcher/version'
 
 Gem::Specification.new do |s|
-  s.name        = 'vcloud-tools'
+  s.name        = 'vcloud-launcher'
   s.version     = Vcloud::Launcher::VERSION
-  s.authors     = ['Government Digital Service']
-  s.summary     = %q{Tools for VMware vCloud}
-  s.homepage    = 'https://github.com/alphagov/vcloud-tools'
+  s.authors     = ['Anna Shipman']
+  s.email       = ['anna.shipman@digital.cabinet-office.gov.uk']
+  s.summary     = 'Tool to launch and configure vCloud vApps'
+  s.homepage    = 'https://github.com/alphagov/vcloud-launcher'
   s.license     = 'MIT'
 
   s.files         = `git ls-files`.split($/)
@@ -19,15 +20,10 @@ Gem::Specification.new do |s|
 
   s.required_ruby_version = '>= 1.9.2'
 
-  s.add_runtime_dependency 'bundler'
   s.add_runtime_dependency 'methadone'
   s.add_runtime_dependency 'vcloud-core', '>= 0.0.9'
-  s.add_runtime_dependency 'hashdiff'
-  s.add_development_dependency 'rake'
-  s.add_development_dependency 'rspec', '~> 2.14.1'
-  s.add_development_dependency 'rspec-mocks', '~> 2.14.4'
-  s.add_development_dependency 'simplecov', '~> 0.8.2'
   s.add_development_dependency 'aruba', '~> 0.5.3'
   s.add_development_dependency 'cucumber', '~> 1.3.10'
-  s.add_development_dependency 'jeweler', '~> 1.8.8'
+  s.add_development_dependency 'rake'
+  s.add_development_dependency 'rspec', '~> 2.14.1'
 end
