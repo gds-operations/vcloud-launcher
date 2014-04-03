@@ -5,15 +5,14 @@ require 'bundler/setup'
 require 'optparse'
 require 'methadone'
 
-require 'vcloud/launcher/launch'
+require 'vcloud/launcher'
 
 class App
   include Methadone::Main
   include Methadone::CLILogging
-  include Vcloud
 
   main do |org_config_file|
-    Launch.new.run(org_config_file, options)
+    Vcloud::Launcher::Launch.new.run(org_config_file, options)
   end
 
   on("-x", "--dont-power-on", "Do not power on vApps (default is to power on)")
