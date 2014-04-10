@@ -131,7 +131,7 @@ The easiest thing to do is create a local shell script called
     export VCLOUD_NETWORK2_NAME="name-of-secondary-network"
     export VCLOUD_NETWORK1_IP="ip-on-primary-network"
     export VCLOUD_NETWORK2_IP="ip-on-secondary-network"
-    export VCLOUD_TEST_STORAGE_PROFILE="storage-profile-name"
+    export VCLOUD_STORAGE_PROFILE_NAME="storage-profile-name"
     export VCLOUD_EDGE_GATEWAY="name-of-edge-gateway-in-vdc"
 
 Then run this before you run the integration tests.
