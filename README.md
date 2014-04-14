@@ -123,16 +123,16 @@ environment, unless care is taken with the entities being tested.
 The easiest thing to do is create a local shell script called
 `vcloud_env.sh` and set the contents:
 
-    export FOG\_CREDENTIAL=test
-    export VCLOUD\_VDC\_NAME="Name of the VDC"
-    export VCLOUD\_CATALOG\_NAME="catalog-name"
-    export VCLOUD\_TEMPLATE\_NAME="name-of-template"
-    export VCLOUD\_NETWORK1\_NAME="name-of-primary-network"
-    export VCLOUD\_NETWORK2\_NAME="name-of-secondary-network"
-    export VCLOUD\_NETWORK1\_IP="ip-on-primary-network"
-    export VCLOUD\_NETWORK2\_IP="ip-on-secondary-network"
-    export VCLOUD\_TEST\_STORAGE\_PROFILE="storage-profile-name"
-    export VCLOUD\_EDGE\_GATEWAY="name-of-edge-gateway-in-vdc"
+    export FOG_CREDENTIAL=test
+    export VCLOUD_VDC_NAME="Name of the VDC"
+    export VCLOUD_CATALOG_NAME="catalog-name"
+    export VCLOUD_TEMPLATE_NAME="name-of-template"
+    export VCLOUD_NETWORK1_NAME="name-of-primary-network"
+    export VCLOUD_NETWORK2_NAME="name-of-secondary-network"
+    export VCLOUD_NETWORK1_IP="ip-on-primary-network"
+    export VCLOUD_NETWORK2_IP="ip-on-secondary-network"
+    export VCLOUD_STORAGE_PROFILE_NAME="storage-profile-name"
+    export VCLOUD_EDGE_GATEWAY="name-of-edge-gateway-in-vdc"
 
 Then run this before you run the integration tests.
 
@@ -144,14 +144,14 @@ There is an integration test to check storage profile behaviour, but it requires
 
 You will need to set the following environment variables:
 
-      export VDC\_NAME\_1="Name of the first vDC"
-      export VDC\_NAME\_2="Name of the second vDC"
-      export VCLOUD\_CATALOG\_NAME="Catalog name" # Can be the same as above settings if appropriate
-      export VCLOUD\_TEMPLATE\_NAME="Template name" # Can be the same as above setting if appropriate
-      export VCLOUD\_STORAGE\_PROFILE\_NAME="Storage profile name" # This needs to exist in both vDCs
-      export VDC\_1\_STORAGE\_PROFILE\_HREF="Href of the named storage profile in vDC 1"
-      export VDC\_2\_STORAGE\_PROFILE\_HREF="Href of the named storage profile in vDC 2"
-      export DEFAULT\_STORAGE\_PROFILE\_NAME="Default storage profile name"
-      export DEFAULT\_STORAGE\_PROFILE\_HREF="Href of default storage profile"
+      export VDC_NAME_1="Name of the first vDC"
+      export VDC_NAME_2="Name of the second vDC"
+      export VCLOUD_CATALOG_NAME="Catalog name" # Can be the same as above settings if appropriate
+      export VCLOUD_TEMPLATE_NAME="Template name" # Can be the same as above setting if appropriate
+      export VCLOUD_STORAGE_PROFILE_NAME="Storage profile name" # This needs to exist in both vDCs
+      export VDC_1_STORAGE_PROFILE_HREF="Href of the named storage profile in vDC 1"
+      export VDC_2_STORAGE_PROFILE_HREF="Href of the named storage profile in vDC 2"
+      export DEFAULT_STORAGE_PROFILE_NAME="Default storage profile name"
+      export DEFAULT_STORAGE_PROFILE_HREF="Href of default storage profile"
 
 To run this test: `rspec spec/integration/launcher/storage_profile_integration_test.rb`
