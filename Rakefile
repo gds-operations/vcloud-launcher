@@ -1,17 +1,6 @@
-require 'rake/clean'
-require 'rake/testtask'
 require 'cucumber/rake/task'
 require 'rspec/core/rake_task'
-
-require 'vcloud/launcher/version'
-
-include Rake::DSL
-
-Bundler::GemHelper.install_tasks
-
-Rake::TestTask.new do |t|
-  t.pattern = 'test/tc_*.rb'
-end
+require 'gem_publisher'
 
 Cucumber::Rake::Task.new(:features) do |t|
   t.cucumber_opts = "--format pretty --no-source"
@@ -37,7 +26,6 @@ end
 
 task :default => [:spec,:features]
 
-require "gem_publisher"
 task :publish_gem do |t|
   gem = GemPublisher.publish_if_updated("vcloud-launcher.gemspec", :rubygems)
   puts "Published #{gem}" if gem
