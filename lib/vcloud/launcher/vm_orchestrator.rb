@@ -58,6 +58,7 @@ module Vcloud
                 internals: {
                   name: { type: 'string', required: false },
                   size: { type: 'string_or_number', required: false },
+                  fs_file: { type: 'string', required: false },
                 },
               },
             },
