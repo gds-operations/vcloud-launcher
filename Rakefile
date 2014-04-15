@@ -13,11 +13,8 @@ Rake::TestTask.new do |t|
   t.pattern = 'test/tc_*.rb'
 end
 
-CUKE_RESULTS = 'results.html'
-CLEAN << CUKE_RESULTS
-
 Cucumber::Rake::Task.new(:features) do |t|
-  t.cucumber_opts = "features --format html -o #{CUKE_RESULTS} --format pretty --no-source -x"
+  t.cucumber_opts = "--format pretty --no-source"
   t.fork = false
 end
 
