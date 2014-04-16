@@ -1,7 +1,7 @@
 vCloud Launcher
 ===============
-A tool that takes a YAML or JSON configuration file describing a vDC, and provisions
-the vApps and VMs contained within.
+A tool that takes a YAML or JSON configuration file describing a vDC, and
+provisions the vApps and VMs contained within.
 
 ### Supports
 
@@ -14,10 +14,15 @@ the vApps and VMs contained within.
 
 ### Limitations
 
-- Source vApp Template must contain a single VM. This is VMware's recommended 'simple' method of vApp creation. Complex multi-VM vApps are not supported.
+- Source vApp Template must contain a single VM. This is VMware's recommended
+'simple' method of vApp creation. Complex multi-VM vApps are not supported.
 - Org vDC Networks must be precreated.
-- IP addresses are assigned manually (recommended) or via DHCP. VM IP pools are not supported.
-- vCloud has some interesting ideas about the size of potential 'guest customisation scripts' (aka preambles). You may need to use an external minify tool to reduce the size, or speak to your provider to up the limit. 2048 bytes seems to be a practical default maximum.
+- IP addresses are assigned manually (recommended) or via DHCP. VM IP pools are
+not supported.
+- vCloud has some interesting ideas about the size of potential 'guest
+customisation scripts' (aka preambles). You may need to use an external minify
+tool to reduce the size, or speak to your provider to up the limit. 2048 bytes
+seems to be a practical default maximum.
 
 ## Installation
 
@@ -40,7 +45,9 @@ Or install it yourself as:
 
 ## Credentials
 
-vCloud Launcher uses [Fog](http://fog.io/). To use it you'll need to give it credentials that allow it to talk to a VMware environment. Fog offers two ways to do this.
+vCloud Launcher uses [Fog](http://fog.io/). To use it you'll need to give it
+credentials that allow it to talk to a VMware environment. Fog offers two ways
+to do this.
 
 ### 1. Create a `.fog` file containing your credentials
 
@@ -53,7 +60,9 @@ For example:
       vcloud_director_password: 'password'
       vcloud_director_host: 'host.api.example.com'
 
-Unfortunately current usage of fog requires the password in this file. Multiple sets of credentials can be specified in the fog file, using the following format:
+Unfortunately current usage of fog requires the password in this file. Multiple
+sets of credentials can be specified in the fog file, using the following
+format:
 
     test:
       vcloud_director_username: 'username@org_name'
@@ -65,17 +74,22 @@ Unfortunately current usage of fog requires the password in this file. Multiple 
       vcloud_director_password: 'password'
       vcloud_director_host: 'host.api.vendor.net'
 
-You can then pass the `FOG_CREDENTIAL` environment variable at the start of your command. The value of the `FOG_CREDENTIAL` environment variable is the name of the credential set in your fog file which you wish to use.  For instance:
+You can then pass the `FOG_CREDENTIAL` environment variable at the start of your
+command. The value of the `FOG_CREDENTIAL` environment variable is the name of
+the credential set in your fog file which you wish to use.  For instance:
 
     FOG_CREDENTIAL=test2 bundle exec vcloud-launch node.yaml
 
-To understand more about `.fog` files, visit the 'Credentials' section here => http://fog.io/about/getting_started.html.
+To understand more about `.fog` files, visit the 'Credentials' section here
+=> http://fog.io/about/getting_started.html.
 
 ### 2. Log on externally and supply your session token
 
-You can choose to log on externally by interacting independently with the API and supplying your session token to the
-tool by setting the `FOG_VCLOUD_TOKEN` ENV variable. This option reduces the risk footprint by allowing the user to
-store their credentials in safe storage. The default token lifetime is '30 minutes idle' - any activity extends the life by another 30 mins.
+You can choose to log on externally by interacting independently with the API
+and supplying your session token to the tool by setting the `FOG_VCLOUD_TOKEN`
+ENV variable. This option reduces the risk footprint by allowing the user to
+store their credentials in safe storage. The default token lifetime is '30
+minutes idle' - any activity extends the life by another 30 mins.
 
 A basic example of this would be the following:
 
@@ -105,7 +119,9 @@ Use token as ENV var FOG_VCLOUD_TOKEN
 
 ## Other settings
 
-vCloud Launcher uses vCloud Core. If you want to use the latest version of vCloud Core, or a local version, you can export some variables. See the Gemfile for details.
+vCloud Launcher uses vCloud Core. If you want to use the latest version of
+vCloud Core, or a local version, you can export some variables. See the Gemfile
+for details.
 
 ## Testing
 
@@ -140,7 +156,11 @@ Then run this before you run the integration tests.
 
 #### Storage profile tests
 
-There is an integration test to check storage profile behaviour, but it requires a lot of set-up so it is not called by the rake task. If you wish to run it you need access to an environment that has two VDCs, each one containing a storage profile with the same name. This named storage profile needs to be different from teh default storage profile.
+There is an integration test to check storage profile behaviour, but it requires
+a lot of set-up so it is not called by the rake task. If you wish to run it you
+need access to an environment that has two VDCs, each one containing a storage
+profile with the same name. This named storage profile needs to be different
+from the default storage profile.
 
 You will need to set the following environment variables:
 
