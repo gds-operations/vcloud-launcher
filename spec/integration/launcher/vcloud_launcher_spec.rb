@@ -135,7 +135,7 @@ describe Vcloud::Launcher::Launch do
 
   def extract_disks(vm)
     vm[:'ovf:VirtualHardwareSection'][:'ovf:Item'].collect { |d|
-      {:name => d[:"rasd:ElementName"], :size => d[:"rasd:HostResource"][:ns12_capacity]} if d[:'rasd:ResourceType'] == '17'
+      {:name => d[:"rasd:ElementName"], :size => (d[:"rasd:HostResource"][:ns12_capacity] || d[:"rasd:HostResource"][:vcloud_capacity])} if d[:'rasd:ResourceType'] == '17'
     }.compact
   end
 
