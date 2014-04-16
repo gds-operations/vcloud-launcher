@@ -91,13 +91,16 @@ ENV variable. This option reduces the risk footprint by allowing the user to
 store their credentials in safe storage. The default token lifetime is '30
 minutes idle' - any activity extends the life by another 30 mins.
 
-A basic example of this would be the following:
+First create a .fog file in your home directory af above, but set the password
+to a dummy value. The version of fog we currently use requires this key, but we
+don't use it.
 
-    curl
-       -D-
-       -d ''
-       -H 'Accept: application/*+xml;version=5.1' -u '<user>@<org>'
-       https://host.com/api/sessions
+You then need to log on independently and get a session token. A basic example
+of this would be the following:
+
+    curl -D- -d '' \
+       -H 'Accept: application/*+xml;version=5.1' -u '<user>@<org>' \
+       https://api.vcd.portal.skyscapecloud.com/api/sessions
 
 This will prompt for your password.
 
@@ -108,6 +111,18 @@ From the headers returned, select the header below
 Use token as ENV var FOG_VCLOUD_TOKEN
 
     FOG_VCLOUD_TOKEN=AAAABBBBBCCCCCCDDDDDDEEEEEEFFFFF= bundle exec ...
+
+Or
+
+    export FOG_VCLOUD_TOKEN=AAAABBBBBCCCCCCDDDDDDEEEEEEFFFFF=
+
+You can then export the `FOG_CREDENTIAL` environment variable or set it at the
+start of your command.  The value of the `FOG_CREDENTIAL` environment variable
+is the name of the credential set in your fog file which you wish to use.  For
+instance:
+
+    FOG_CREDENTIAL=test2 bundle exec vcloud-launch node.yaml
+
 
 ## Contributing
 
