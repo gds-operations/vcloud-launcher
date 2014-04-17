@@ -14,4 +14,3 @@ coverage/
 results.html
 fog_integration_test.config
 .idea
-spec/integration/launcher/data/output_*
