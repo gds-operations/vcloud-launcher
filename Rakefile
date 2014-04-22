@@ -2,7 +2,7 @@ require 'cucumber/rake/task'
 require 'rspec/core/rake_task'
 require 'gem_publisher'
 
-task :default => [:spec,:feature]
+task :default => [:spec,:features]
 
 RSpec::Core::RakeTask.new(:spec) do |task|
   # Set a bogus Fog credential, otherwise it's possible for the unit
@@ -12,7 +12,7 @@ RSpec::Core::RakeTask.new(:spec) do |task|
   task.pattern = FileList['spec/vcloud/**/*_spec.rb']
 end
 
-Cucumber::Rake::Task.new(:feature) do |t|
+Cucumber::Rake::Task.new(:features) do |t|
   t.cucumber_opts = "--format pretty --no-source"
   t.fork = false
 end
