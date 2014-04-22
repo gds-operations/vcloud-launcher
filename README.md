@@ -119,6 +119,7 @@ Default target: `bundle exec rake`
 Runs the unit and feature tests (pretty quick right now)
 
 * Unit tests only: `bundle exec rake spec`
+* Feature tests only: `bundle exec rake features`
 * Integration tests ('quick' tests): `bundle exec rake integration:quick`
 * Integration tests (all tests - takes 20mins+): `bundle exec rake integration:all`
 

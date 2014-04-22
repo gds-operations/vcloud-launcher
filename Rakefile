@@ -1,25 +1,8 @@
-require 'rake/clean'
-require 'rake/testtask'
 require 'cucumber/rake/task'
 require 'rspec/core/rake_task'
+require 'gem_publisher'
 
-require 'vcloud/launcher/version'
-
-include Rake::DSL
-
-Bundler::GemHelper.install_tasks
-
-Rake::TestTask.new do |t|
-  t.pattern = 'test/tc_*.rb'
-end
-
-CUKE_RESULTS = 'results.html'
-CLEAN << CUKE_RESULTS
-
-Cucumber::Rake::Task.new(:features) do |t|
-  t.cucumber_opts = "features --format html -o #{CUKE_RESULTS} --format pretty --no-source -x"
-  t.fork = false
-end
+task :default => [:spec,:features]
 
 RSpec::Core::RakeTask.new(:spec) do |task|
   # Set a bogus Fog credential, otherwise it's possible for the unit
@@ -27,6 +10,11 @@ RSpec::Core::RakeTask.new(:spec) do |task|
   # environment, if Fog connection is not stubbed correctly.
   ENV['FOG_CREDENTIAL'] = 'random_nonsense_owiejfoweijf'
   task.pattern = FileList['spec/vcloud/**/*_spec.rb']
+end
+
+Cucumber::Rake::Task.new(:features) do |t|
+  t.cucumber_opts = "--format pretty --no-source"
+  t.fork = false
 end
 
 RSpec::Core::RakeTask.new('integration:quick') do |t|
@@ -38,9 +26,6 @@ RSpec::Core::RakeTask.new('integration:all') do |t|
   t.pattern = FileList['spec/integration/**/*_spec.rb']
 end
 
-task :default => [:spec,:features]
-
-require "gem_publisher"
 task :publish_gem do |t|
   gem = GemPublisher.publish_if_updated("vcloud-launcher.gemspec", :rubygems)
   puts "Published #{gem}" if gem
