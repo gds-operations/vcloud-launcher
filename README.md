@@ -148,6 +148,8 @@ Runs the unit and feature tests (pretty quick right now)
 * Integration tests ('quick' tests): `bundle exec rake integration:quick`
 * Integration tests (all tests - takes 20mins+): `bundle exec rake integration:all`
 
+NB. `bundle exec rake integration` is an alias for `bundle exec rake integration:all`.
+
 You need access to a suitable vCloud Director organization to run the
 integration tests. It is not necessarily safe to run them against an existing
 environment, unless care is taken with the entities being tested.
