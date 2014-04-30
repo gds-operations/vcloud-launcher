@@ -7,6 +7,7 @@ module Vcloud
       end
 
       def run(config_file = nil, cli_options = {})
+        set_logging_level(cli_options)
         config = @config_loader.load_config(config_file, config_schema)
         config[:vapps].each do |vapp_config|
           Vcloud::Core.logger.info("\n")
@@ -41,6 +42,15 @@ module Vcloud
         }
       }
       end
+
+      def set_logging_level(cli_options)
+        if cli_options[:verbose]
+          Vcloud::Core.logger.level = Logger::DEBUG
+        elsif cli_options[:quiet]
+          Vcloud::Core.logger.level = Logger::ERROR
+        end
+      end
+
     end
   end
 end
