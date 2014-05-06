@@ -2,7 +2,7 @@ require 'cucumber/rake/task'
 require 'rspec/core/rake_task'
 require 'gem_publisher'
 
-task :default => [:spec,:features]
+task :default => [:rubocop, :spec, :features]
 task :integration => ['integration:all']
 
 RSpec::Core::RakeTask.new(:spec) do |task|
@@ -30,4 +30,9 @@ end
 task :publish_gem do |t|
   gem = GemPublisher.publish_if_updated("vcloud-launcher.gemspec", :rubygems)
   puts "Published #{gem}" if gem
+end
+
+require 'rubocop/rake_task'
+Rubocop::RakeTask.new(:rubocop) do |task|
+  task.options = ['--lint']
 end
