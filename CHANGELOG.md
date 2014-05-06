@@ -1,3 +1,9 @@
+## Current
+
+Features:
+
+- Add '--quiet' and '--verbose' options
+
 ## 0.0.4 (2014-05-01)
 
   - Use pessimistic version dependency for vcloud-core
