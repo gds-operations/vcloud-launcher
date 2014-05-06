@@ -55,8 +55,11 @@ module Vcloud
         Vcloud::Launcher::Launch.new.set_logging_level(:verbose => true)
       end
 
-      it "sets the logging level to ERROR when :quiet is specified" do
+      it "sets the logging level to ERROR and suppresses progress bar when :quiet is specified" do
+        stub_fog_credentials = {}
+        expect(::Fog).to receive(:credentials).and_return(stub_fog_credentials)
         expect(Vcloud::Core.logger).to receive(:level=).with(Logger::ERROR)
+        expect(stub_fog_credentials[:vcloud_director_show_progress]).to be_false
         Vcloud::Launcher::Launch.new.set_logging_level(:quiet => true)
       end
 
