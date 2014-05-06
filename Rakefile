@@ -27,7 +27,7 @@ RSpec::Core::RakeTask.new('integration:all') do |t|
   t.pattern = FileList['spec/integration/**/*_spec.rb']
 end
 
-task :publish_gem do |t|
+task :publish_gem do
   gem = GemPublisher.publish_if_updated("vcloud-launcher.gemspec", :rubygems)
   puts "Published #{gem}" if gem
 end
