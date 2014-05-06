@@ -4,11 +4,6 @@ module Vcloud
   module Launcher
     describe VappOrchestrator do
 
-      before(:each) do
-        @mock_fog_interface = StubFogInterface.new
-        Vcloud::Fog::ServiceInterface.stub(:new).and_return(@mock_fog_interface)
-      end
-
       context "provision a vapp" do
 
         before(:each) do
