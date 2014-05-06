@@ -48,5 +48,24 @@ module Vcloud
 
     end
 
+    context "#set_logging_level" do
+
+      it "sets the logging level to DEBUG when :verbose is specified" do
+        expect(Vcloud::Core.logger).to receive(:level=).with(Logger::DEBUG)
+        Vcloud::Launcher::Launch.new.set_logging_level(:verbose => true)
+      end
+
+      it "sets the logging level to ERROR when :quiet is specified" do
+        expect(Vcloud::Core.logger).to receive(:level=).with(Logger::ERROR)
+        Vcloud::Launcher::Launch.new.set_logging_level(:quiet => true)
+      end
+
+      it "sets the logging level to DEBUG when :quiet and :verbose are specified" do
+        expect(Vcloud::Core.logger).to receive(:level=).with(Logger::DEBUG)
+        Vcloud::Launcher::Launch.new.set_logging_level(:quiet => true, :verbose => true)
+      end
+
+    end
+
   end
 end
