@@ -30,35 +30,35 @@ describe Vcloud::Launcher::Launch do
     end
 
     it "vdc 1 should have a storage profile without the href being specified" do
-        @vm_1[:StorageProfile][:name].should == @test_data[:storage_profile]
+        @vm_1[:StorageProfile][:name].should eq(@test_data[:storage_profile])
     end
 
     it "vdc 1's storage profile should have the expected href" do
-        @vm_1[:StorageProfile][:href].should == @test_data[:vdc_1_sp_href]
+        @vm_1[:StorageProfile][:href].should eq(@test_data[:vdc_1_sp_href])
     end
 
     it "vdc 2 should have the same named storage profile as vdc 1" do
-        @vm_2[:StorageProfile][:name].should == @test_data[:storage_profile]
+        @vm_2[:StorageProfile][:name].should eq(@test_data[:storage_profile])
     end
 
     it "the storage profile in vdc 2 should have a different href to the storage profile in vdc 1" do
-        @vm_2[:StorageProfile][:href].should == @test_data[:vdc_2_sp_href]
+        @vm_2[:StorageProfile][:href].should eq(@test_data[:vdc_2_sp_href])
     end
 
     it "when a storage profile is not specified, vm uses the default and continues" do
-        @vm_3[:StorageProfile][:name].should == @test_data[:default_storage_profile_name]
-        @vm_3[:StorageProfile][:href].should == @test_data[:default_storage_profile_href]
+        @vm_3[:StorageProfile][:name].should eq(@test_data[:default_storage_profile_name])
+        @vm_3[:StorageProfile][:href].should eq(@test_data[:default_storage_profile_href])
     end
 
    it "when a storage profile is not specified, customize continues with other customizations" do
         @vm_3_id = @vm_3[:href].split('/').last
         @vm_3_metadata = Vcloud::Core::Vm.get_metadata @vm_3_id
-        @vm_3_metadata[:storage_profile_test_vm].should == true
+        @vm_3_metadata[:storage_profile_test_vm].should eq(true)
     end
 
     it "when a storage profile specified does not exist, vm uses the default" do
-        @vm_4[:StorageProfile][:name].should == @test_data[:default_storage_profile_name]
-        @vm_4[:StorageProfile][:href].should == @test_data[:default_storage_profile_href]
+        @vm_4[:StorageProfile][:name].should eq(@test_data[:default_storage_profile_name])
+        @vm_4[:StorageProfile][:href].should eq(@test_data[:default_storage_profile_href])
     end
 
     # This is a bug - if it has failed customization it should let the user know
@@ -71,10 +71,10 @@ describe Vcloud::Launcher::Launch do
     after(:all) do
       unless ENV['VCLOUD_TOOLS_RSPEC_NO_DELETE_VAPP']
         File.delete @config_yaml
-        @fog_interface.delete_vapp(@vapp_id_1).should == true
-        @fog_interface.delete_vapp(@vapp_id_2).should == true
-        @fog_interface.delete_vapp(@vapp_id_3).should == true
-        @fog_interface.delete_vapp(@vapp_id_4).should == true
+        @fog_interface.delete_vapp(@vapp_id_1).should eq(true)
+        @fog_interface.delete_vapp(@vapp_id_2).should eq(true)
+        @fog_interface.delete_vapp(@vapp_id_3).should eq(true)
+        @fog_interface.delete_vapp(@vapp_id_4).should eq(true)
       end
     end
 
