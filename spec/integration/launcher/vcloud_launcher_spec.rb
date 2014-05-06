@@ -18,14 +18,14 @@ describe Vcloud::Launcher::Launch do
       provisioned_vapp = @fog_interface.get_vapp @provisioned_vapp_id
 
       provisioned_vapp.should_not be_nil
-      provisioned_vapp[:name].should == test_data_1[:vapp_name]
-      provisioned_vapp[:Children][:Vm].count.should == 1
+      provisioned_vapp[:name].should eq(test_data_1[:vapp_name])
+      provisioned_vapp[:Children][:Vm].count.should eq(1)
     end
 
     after(:each) do
       unless ENV['VCLOUD_TOOLS_RSPEC_NO_DELETE_VAPP']
         File.delete @minimum_data_yaml
-        @fog_interface.delete_vapp(@provisioned_vapp_id).should == true
+        @fog_interface.delete_vapp(@provisioned_vapp_id).should eq(true)
       end
     end
   end
@@ -49,8 +49,8 @@ describe Vcloud::Launcher::Launch do
 
     context 'provision vapp' do
       it 'should create a vapp' do
-        @vapp[:name].should == @test_data[:vapp_name]
-        @vapp[:'ovf:NetworkSection'][:'ovf:Network'].count.should == 2
+        @vapp[:name].should eq(@test_data[:vapp_name])
+        @vapp[:'ovf:NetworkSection'][:'ovf:Network'].count.should eq(2)
         vapp_networks = @vapp[:'ovf:NetworkSection'][:'ovf:Network'].collect { |connection| connection[:ovf_name] }
         vapp_networks.should =~ [@test_data[:network1], @test_data[:network2]]
       end
@@ -63,23 +63,23 @@ describe Vcloud::Launcher::Launch do
 
     context "customize vm" do
       it "change cpu for given vm" do
-        extract_memory(@vm).should == '8192'
-        extract_cpu(@vm).should == '4'
+        extract_memory(@vm).should eq('8192')
+        extract_cpu(@vm).should eq('4')
       end
 
       it "should have added the right number of metadata values" do
-        @vm_metadata.count.should == 6
+        @vm_metadata.count.should eq(6)
       end
 
       it "the metadata should be equivalent to our input" do
-        @vm_metadata[:is_true].should == true
-        @vm_metadata[:is_integer].should == -999
-        @vm_metadata[:is_string].should == 'Hello World'
+        @vm_metadata[:is_true].should eq(true)
+        @vm_metadata[:is_integer].should eq(-999)
+        @vm_metadata[:is_string].should eq('Hello World')
       end
 
       it "should attach extra hard disks to vm" do
         disks = extract_disks(@vm)
-        disks.count.should == 3
+        disks.count.should eq(3)
         [{:name => 'Hard disk 2', :size => '1024'}, {:name => 'Hard disk 3', :size => '2048'}].each do |new_disk|
           disks.should include(new_disk)
         end
@@ -88,30 +88,30 @@ describe Vcloud::Launcher::Launch do
       it "should configure the vm network interface" do
         vm_network_connection = @vm[:NetworkConnectionSection][:NetworkConnection]
         vm_network_connection.should_not be_nil
-        vm_network_connection.count.should == 2
+        vm_network_connection.count.should eq(2)
 
 
         primary_nic = vm_network_connection.detect { |connection| connection[:network] == @test_data[:network1] }
-        primary_nic[:network].should == @test_data[:network1]
-        primary_nic[:NetworkConnectionIndex].should == @vm[:NetworkConnectionSection][:PrimaryNetworkConnectionIndex]
-        primary_nic[:IpAddress].should == @test_data[:network1_ip]
-        primary_nic[:IpAddressAllocationMode].should == 'MANUAL'
+        primary_nic[:network].should eq(@test_data[:network1])
+        primary_nic[:NetworkConnectionIndex].should eq(@vm[:NetworkConnectionSection][:PrimaryNetworkConnectionIndex])
+        primary_nic[:IpAddress].should eq(@test_data[:network1_ip])
+        primary_nic[:IpAddressAllocationMode].should eq('MANUAL')
 
         second_nic = vm_network_connection.detect { |connection| connection[:network] == @test_data[:network2] }
-        second_nic[:network].should == @test_data[:network2]
-        second_nic[:NetworkConnectionIndex].should == '1'
-        second_nic[:IpAddress].should == @test_data[:network2_ip]
-        second_nic[:IpAddressAllocationMode].should == 'MANUAL'
+        second_nic[:network].should eq(@test_data[:network2])
+        second_nic[:NetworkConnectionIndex].should eq('1')
+        second_nic[:IpAddress].should eq(@test_data[:network2_ip])
+        second_nic[:IpAddressAllocationMode].should eq('MANUAL')
 
       end
 
       it 'should assign guest customization script to the VM' do
         @vm[:GuestCustomizationSection][:CustomizationScript].should =~ /message: hello world/
-        @vm[:GuestCustomizationSection][:ComputerName].should == @test_data[:vapp_name]
+        @vm[:GuestCustomizationSection][:ComputerName].should eq(@test_data[:vapp_name])
       end
 
       it "should assign storage profile to the VM" do
-        @vm[:StorageProfile][:name].should == @test_data[:storage_profile]
+        @vm[:StorageProfile][:name].should eq(@test_data[:storage_profile])
       end
 
     end
@@ -119,7 +119,7 @@ describe Vcloud::Launcher::Launch do
     after(:all) do
       unless ENV['VCLOUD_TOOLS_RSPEC_NO_DELETE_VAPP']
         File.delete @config_yaml
-        @fog_interface.delete_vapp(@vapp_id).should == true
+        @fog_interface.delete_vapp(@vapp_id).should eq(true)
       end
     end
 
