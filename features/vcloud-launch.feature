@@ -12,5 +12,7 @@ Feature: "vcloud-launch" works as a useful command-line tool
       |--version|
       |--dont-power-on|
       |--continue-on-error|
+      |--verbose|
+      |--quiet|
     And the banner should document that this app's arguments are:
       |org_config_file|

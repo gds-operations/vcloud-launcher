@@ -17,6 +17,8 @@ class App
 
   on("-x", "--dont-power-on", "Do not power on vApps (default is to power on)")
   on("-c", "--continue-on-error", "Continue on error ( default is false) ")
+  on("-q", "--quiet",   "Quiet output - only report errors")
+  on("-v", "--verbose", "Verbose output")
 
   arg :org_config_file
 
