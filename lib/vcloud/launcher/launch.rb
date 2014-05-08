@@ -45,6 +45,7 @@ module Vcloud
           Vcloud::Core.logger.level = Logger::DEBUG
         elsif cli_options[:quiet]
           Vcloud::Core.logger.level = Logger::ERROR
+          ::Fog.credentials[:vcloud_director_show_progress] = false
         else
           Vcloud::Core.logger.level = Logger::INFO
         end
