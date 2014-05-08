@@ -2,7 +2,7 @@
 
 Features:
 
-- Add '--quiet' and '--verbose' options
+- Add '--quiet' and '--verbose' options. Default now only shows major operations and progress bar.
 
 ## 0.0.4 (2014-05-01)
 
