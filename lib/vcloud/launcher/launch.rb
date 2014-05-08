@@ -45,6 +45,8 @@ module Vcloud
           Vcloud::Core.logger.level = Logger::DEBUG
         elsif cli_options[:quiet]
           Vcloud::Core.logger.level = Logger::ERROR
+        else
+          Vcloud::Core.logger.level = Logger::INFO
         end
       end
 

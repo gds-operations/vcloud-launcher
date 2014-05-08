@@ -65,6 +65,11 @@ module Vcloud
         Vcloud::Launcher::Launch.new.set_logging_level(:quiet => true, :verbose => true)
       end
 
+      it "sets the logging level to INFO by default" do
+        expect(Vcloud::Core.logger).to receive(:level=).with(Logger::INFO)
+        Vcloud::Launcher::Launch.new.set_logging_level({})
+      end
+
     end
 
   end
