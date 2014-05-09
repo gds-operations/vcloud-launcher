@@ -143,7 +143,7 @@ describe Vcloud::Launcher::Launch do
   def define_test_data
     {
         vapp_name: "vapp-vcloud-tools-tests-#{Time.now.strftime('%s')}",
-        vdc_name: ENV['VCLOUD_VDC_NAME'],
+        vdc_name: ENV['VDC_NAME_1'],
         catalog: ENV['VCLOUD_CATALOG_NAME'],
         vapp_template: ENV['VCLOUD_TEMPLATE_NAME'],
         network_1: ENV['VCLOUD_NETWORK1_NAME'],
