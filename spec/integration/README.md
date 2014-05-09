@@ -37,4 +37,4 @@ default: # This is the fog credential that refers to your testing environment, e
 
 ## To run the tests
 
-  `bundle exec integration`
+  `FOG_CREDENTIAL=test_credential bundle exec integration`

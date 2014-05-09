@@ -141,18 +141,21 @@ describe Vcloud::Launcher::Launch do
   end
 
   def define_test_data
+    config_file = File.join(File.dirname(__FILE__),
+      "../vcloud_tools_testing_config.yaml")
+    parameters = Vcloud::Tools::Tester::TestParameters.new(config_file)
     {
-        vapp_name: "vapp-vcloud-tools-tests-#{Time.now.strftime('%s')}",
-        vdc_name: ENV['VDC_NAME_1'],
-        catalog: ENV['VCLOUD_CATALOG_NAME'],
-        vapp_template: ENV['VCLOUD_TEMPLATE_NAME'],
-        network_1: ENV['VCLOUD_NETWORK1_NAME'],
-        network_2: ENV['VCLOUD_NETWORK2_NAME'],
-        network_1_ip: ENV['VCLOUD_NETWORK1_IP'],
-        network_2_ip: ENV['VCLOUD_NETWORK2_IP'],
-        storage_profile: ENV['VCLOUD_STORAGE_PROFILE_NAME'],
-        bootstrap_script: File.join(File.dirname(__FILE__), "data/basic_preamble_test.erb"),
-        date_metadata: DateTime.parse('2013-10-23 15:34:00 +0000')
+      vapp_name: "vapp-vcloud-tools-tests-#{Time.now.strftime('%s')}",
+      vdc_name: parameters.vdc_1_name,
+      catalog: parameters.catalog,
+      vapp_template: parameters.vapp_template,
+      storage_profile: parameters.storage_profile,
+      network_1: parameters.network_1,
+      network_2: parameters.network_2,
+      network_1_ip: parameters.network_1_ip,
+      network_2_ip: parameters.network_2_ip,
+      bootstrap_script: File.join(File.dirname(__FILE__), "data/basic_preamble_test.erb"),
+      date_metadata: DateTime.parse('2013-10-23 15:34:00 +0000')
     }
   end
 end

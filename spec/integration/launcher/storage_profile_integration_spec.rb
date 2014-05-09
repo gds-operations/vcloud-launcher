@@ -84,21 +84,24 @@ describe Vcloud::Launcher::Launch do
 end
 
 def define_test_data
+  config_file = File.join(File.dirname(__FILE__),
+    "../vcloud_tools_testing_config.yaml")
+  parameters = Vcloud::Tools::Tester::TestParameters.new(config_file)
   {
-      vapp_name_1: "vdc-1-sp-#{Time.now.strftime('%s')}",
-      vapp_name_2: "vdc-2-sp-#{Time.now.strftime('%s')}",
-      vapp_name_3: "vdc-3-sp-#{Time.now.strftime('%s')}",
-      vapp_name_4: "vdc-4-sp-#{Time.now.strftime('%s')}",
-      vdc_1_name: ENV['VDC_NAME_1'],
-      vdc_2_name: ENV['VDC_NAME_2'],
-      catalog: ENV['VCLOUD_CATALOG_NAME'],
-      vapp_template: ENV['VCLOUD_TEMPLATE_NAME'],
-      storage_profile: ENV['VCLOUD_STORAGE_PROFILE_NAME'],
-      vdc_1_sp_href: ENV['VDC_1_STORAGE_PROFILE_HREF'],
-      vdc_2_sp_href: ENV['VDC_2_STORAGE_PROFILE_HREF'],
-      default_storage_profile_name: ENV['DEFAULT_STORAGE_PROFILE_NAME'],
-      default_storage_profile_href: ENV['DEFAULT_STORAGE_PROFILE_HREF'],
-      nonsense_storage_profile: "nonsense-storage-profile-name",
-      bootstrap_script: File.join(File.dirname(__FILE__), "data/basic_preamble_test.erb"),
+    vapp_name_1: "vdc-1-sp-#{Time.now.strftime('%s')}",
+    vapp_name_2: "vdc-2-sp-#{Time.now.strftime('%s')}",
+    vapp_name_3: "vdc-3-sp-#{Time.now.strftime('%s')}",
+    vapp_name_4: "vdc-4-sp-#{Time.now.strftime('%s')}",
+    vdc_1_name: parameters.vdc_1_name,
+    vdc_2_name: parameters.vdc_2_name,
+    catalog: parameters.catalog,
+    vapp_template: parameters.vapp_template,
+    storage_profile: parameters.storage_profile,
+    vdc_1_sp_href: parameters.vdc_1_storage_profile_href,
+    vdc_2_sp_href: parameters.vdc_2_storage_profile_href,
+    default_storage_profile_name: parameters.default_storage_profile_name,
+    default_storage_profile_href: parameters.default_storage_profile_href,
+    nonsense_storage_profile: "nonsense-storage-profile-name",
+    bootstrap_script: File.join(File.dirname(__FILE__), "data/basic_preamble_test.erb"),
   }
 end
