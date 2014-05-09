@@ -1,0 +1,14 @@
+default:
+  vdc_1_name:
+  vdc_2_name:
+  catalog:
+  vapp_template:
+  network_1:
+  network_1_ip:
+  network_2:
+  network_2_ip:
+  storage_profile:
+  default_storage_profile_name:
+  default_storage_profile_href:
+  vdc_1_storage_profile_href:
+  vdc_2_storage_profile_href:
