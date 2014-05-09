@@ -53,7 +53,7 @@ describe Vcloud::Launcher::Launch do
         @vapp[:name].should eq(@test_data[:vapp_name])
         @vapp[:'ovf:NetworkSection'][:'ovf:Network'].count.should eq(2)
         vapp_networks = @vapp[:'ovf:NetworkSection'][:'ovf:Network'].collect { |connection| connection[:ovf_name] }
-        vapp_networks.should =~ [@test_data[:network1], @test_data[:network2]]
+        vapp_networks.should =~ [@test_data[:network_1], @test_data[:network_2]]
       end
 
       it "should create vm within vapp" do
@@ -92,16 +92,16 @@ describe Vcloud::Launcher::Launch do
         vm_network_connection.count.should eq(2)
 
 
-        primary_nic = vm_network_connection.detect { |connection| connection[:network] == @test_data[:network1] }
-        primary_nic[:network].should eq(@test_data[:network1])
+        primary_nic = vm_network_connection.detect { |connection| connection[:network] == @test_data[:network_1] }
+        primary_nic[:network].should eq(@test_data[:network_1])
         primary_nic[:NetworkConnectionIndex].should eq(@vm[:NetworkConnectionSection][:PrimaryNetworkConnectionIndex])
-        primary_nic[:IpAddress].should eq(@test_data[:network1_ip])
+        primary_nic[:IpAddress].should eq(@test_data[:network_1_ip])
         primary_nic[:IpAddressAllocationMode].should eq('MANUAL')
 
-        second_nic = vm_network_connection.detect { |connection| connection[:network] == @test_data[:network2] }
-        second_nic[:network].should eq(@test_data[:network2])
+        second_nic = vm_network_connection.detect { |connection| connection[:network] == @test_data[:network_2] }
+        second_nic[:network].should eq(@test_data[:network_2])
         second_nic[:NetworkConnectionIndex].should eq('1')
-        second_nic[:IpAddress].should eq(@test_data[:network2_ip])
+        second_nic[:IpAddress].should eq(@test_data[:network_2_ip])
         second_nic[:IpAddressAllocationMode].should eq('MANUAL')
 
       end
@@ -146,10 +146,10 @@ describe Vcloud::Launcher::Launch do
         vdc_name: ENV['VCLOUD_VDC_NAME'],
         catalog: ENV['VCLOUD_CATALOG_NAME'],
         vapp_template: ENV['VCLOUD_TEMPLATE_NAME'],
-        network1: ENV['VCLOUD_NETWORK1_NAME'],
-        network2: ENV['VCLOUD_NETWORK2_NAME'],
-        network1_ip: ENV['VCLOUD_NETWORK1_IP'],
-        network2_ip: ENV['VCLOUD_NETWORK2_IP'],
+        network_1: ENV['VCLOUD_NETWORK1_NAME'],
+        network_2: ENV['VCLOUD_NETWORK2_NAME'],
+        network_1_ip: ENV['VCLOUD_NETWORK1_IP'],
+        network_2_ip: ENV['VCLOUD_NETWORK2_IP'],
         storage_profile: ENV['VCLOUD_STORAGE_PROFILE_NAME'],
         bootstrap_script: File.join(File.dirname(__FILE__), "data/basic_preamble_test.erb"),
         date_metadata: DateTime.parse('2013-10-23 15:34:00 +0000')
