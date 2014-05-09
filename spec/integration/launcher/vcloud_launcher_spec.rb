@@ -2,6 +2,7 @@ require 'spec_helper'
 require 'pp'
 require 'erb'
 require 'ostruct'
+require 'vcloud/tools/tester'
 
 describe Vcloud::Launcher::Launch do
   context "with minimum input setup" do

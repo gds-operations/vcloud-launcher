@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'vcloud/tools/tester'
 
 describe Vcloud::Launcher::Launch do
   context "storage profile", :take_too_long => true do
