@@ -112,15 +112,17 @@ If you want to be sure you are pinning to 5.1, or use 5.5, you can set the API v
 
 ## Testing
 
-Default target: `bundle exec rake`
-Runs the unit and feature tests (pretty quick right now)
+Run the default suite of tests (e.g. lint, unit, features):
 
-* Unit tests only: `bundle exec rake spec`
-* Feature tests only: `bundle exec rake features`
-* Integration tests ('quick' tests): `bundle exec rake integration:quick`
-* Integration tests (all tests - takes 20mins+): `bundle exec rake integration:all`
+    bundle exec rake
 
-NB. `bundle exec rake integration` is an alias for `bundle exec rake integration:all`.
+Run the integration tests (slower and requires a real environment):
+
+    bundle exec rake integration
+
+Run the integration tests minus some that are very slow:
+
+    bundle exec rake integration:quick
 
 You need access to a suitable vCloud Director organization to run the
 integration tests. It is not necessarily safe to run them against an existing
