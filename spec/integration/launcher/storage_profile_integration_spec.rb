@@ -9,22 +9,22 @@ describe Vcloud::Launcher::Launch do
       @fog_interface = Vcloud::Fog::ServiceInterface.new
       Vcloud::Launcher::Launch.new.run(@config_yaml, {'dont-power-on' => true})
 
-      @vapp_query_result_1 = @fog_interface.get_vapp_by_name_and_vdc_name(@test_data[:vapp_name_1], @test_data[:vdc_name_1])
+      @vapp_query_result_1 = @fog_interface.get_vapp_by_name_and_vdc_name(@test_data[:vapp_name_1], @test_data[:vdc_1_name])
       @vapp_id_1 = @vapp_query_result_1[:href].split('/').last
       @vapp_1 = @fog_interface.get_vapp @vapp_id_1
       @vm_1 = @vapp_1[:Children][:Vm].first
 
-      @vapp_query_result_2 = @fog_interface.get_vapp_by_name_and_vdc_name(@test_data[:vapp_name_2], @test_data[:vdc_name_2])
+      @vapp_query_result_2 = @fog_interface.get_vapp_by_name_and_vdc_name(@test_data[:vapp_name_2], @test_data[:vdc_2_name])
       @vapp_id_2 = @vapp_query_result_2[:href].split('/').last
       @vapp_2 = @fog_interface.get_vapp @vapp_id_2
       @vm_2 = @vapp_2[:Children][:Vm].first
 
-      @vapp_query_result_3 = @fog_interface.get_vapp_by_name_and_vdc_name(@test_data[:vapp_name_3], @test_data[:vdc_name_1])
+      @vapp_query_result_3 = @fog_interface.get_vapp_by_name_and_vdc_name(@test_data[:vapp_name_3], @test_data[:vdc_1_name])
       @vapp_id_3 = @vapp_query_result_3[:href].split('/').last
       @vapp_3 = @fog_interface.get_vapp @vapp_id_3
       @vm_3 = @vapp_3[:Children][:Vm].first
 
-      @vapp_query_result_4 = @fog_interface.get_vapp_by_name_and_vdc_name(@test_data[:vapp_name_4], @test_data[:vdc_name_1])
+      @vapp_query_result_4 = @fog_interface.get_vapp_by_name_and_vdc_name(@test_data[:vapp_name_4], @test_data[:vdc_1_name])
       @vapp_id_4 = @vapp_query_result_4[:href].split('/').last
       @vapp_4 = @fog_interface.get_vapp @vapp_id_4
       @vm_4 = @vapp_4[:Children][:Vm].first
@@ -89,8 +89,8 @@ def define_test_data
       vapp_name_2: "vdc-2-sp-#{Time.now.strftime('%s')}",
       vapp_name_3: "vdc-3-sp-#{Time.now.strftime('%s')}",
       vapp_name_4: "vdc-4-sp-#{Time.now.strftime('%s')}",
-      vdc_name_1: ENV['VDC_NAME_1'],
-      vdc_name_2: ENV['VDC_NAME_2'],
+      vdc_1_name: ENV['VDC_NAME_1'],
+      vdc_2_name: ENV['VDC_NAME_2'],
       catalog: ENV['VCLOUD_CATALOG_NAME'],
       vapp_template: ENV['VCLOUD_TEMPLATE_NAME'],
       storage_profile: ENV['VCLOUD_STORAGE_PROFILE_NAME'],
