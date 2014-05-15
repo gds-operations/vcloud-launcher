@@ -23,7 +23,7 @@ module Vcloud
 
           Vcloud::Core::Vapp.should_receive(:get_by_name_and_vdc_name).with('test-vapp-1', 'test-vdc-1').and_return(existing_vapp)
           Vcloud::Core.logger.should_receive(:info).with('Found existing vApp test-vapp-1 in vDC \'test-vdc-1\'. Skipping.')
-          actual_vapp = VappOrchestrator.provision @config
+          actual_vapp = Vcloud::Launcher::VappOrchestrator.provision @config
           actual_vapp.should_not be_nil
           actual_vapp.should == existing_vapp
         end
@@ -40,9 +40,9 @@ module Vcloud
 
           Vcloud::Core::Vapp.should_receive(:instantiate).with('test-vapp-1', ['org-vdc-1-net-1'], 1, 'test-vdc-1')
           .and_return(mock_vapp)
-          VmOrchestrator.should_receive(:new).with(mock_fog_vm, mock_vapp).and_return(mock_vm_orchestrator)
+          Vcloud::Launcher::VmOrchestrator.should_receive(:new).with(mock_fog_vm, mock_vapp).and_return(mock_vm_orchestrator)
 
-          new_vapp = VappOrchestrator.provision @config
+          new_vapp = Vcloud::Launcher::VappOrchestrator.provision @config
           new_vapp.should == mock_vapp
         end
 

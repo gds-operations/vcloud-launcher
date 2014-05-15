@@ -50,7 +50,7 @@ module Vcloud
         vm.should_receive(:update_metadata).with(vm_config[:metadata])
         vm.should_receive(:configure_guest_customization_section).with('web-app1', vm_config[:bootstrap], vm_config[:extra_disks])
 
-        VmOrchestrator.new(fog_vm, vapp).customize(vm_config)
+        Vcloud::Launcher::VmOrchestrator.new(fog_vm, vapp).customize(vm_config)
       end
 
       it "if a storage_profile is not specified, customize continues with other customizations" do
@@ -72,7 +72,7 @@ module Vcloud
         vm.should_receive(:configure_network_interfaces).with(vm_config[:network_connections])
         vm.should_receive(:configure_guest_customization_section).with('web-app1', vm_config[:bootstrap], vm_config[:extra_disks])
 
-        VmOrchestrator.new(fog_vm, vapp).customize(vm_config)
+        Vcloud::Launcher::VmOrchestrator.new(fog_vm, vapp).customize(vm_config)
 
       end
     end
