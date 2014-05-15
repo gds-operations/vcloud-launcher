@@ -33,7 +33,7 @@ describe Vcloud::Launcher::Launch do
       expect(Vcloud::Launcher::VappOrchestrator).not_to receive(:provision).with(@successful_app_2)
 
       cli_options = {}
-      Vcloud::Launcher::Launch.new.run('input_config_yaml', cli_options)
+      subject.run('input_config_yaml', cli_options)
     end
 
     it "should continue on error if cli option continue-on-error is set" do
@@ -42,7 +42,7 @@ describe Vcloud::Launcher::Launch do
       expect(Vcloud::Launcher::VappOrchestrator).to receive(:provision).with(@successful_app_2).and_return(double(:vapp, :power_on => true))
 
       cli_options = {"continue-on-error" => true}
-      Vcloud::Launcher::Launch.new.run('input_config_yaml', cli_options)
+      subject.run('input_config_yaml', cli_options)
     end
 
   end
@@ -51,22 +51,22 @@ describe Vcloud::Launcher::Launch do
 
     it "sets the logging level to DEBUG when :verbose is specified" do
       expect(Vcloud::Core.logger).to receive(:level=).with(Logger::DEBUG)
-      Vcloud::Launcher::Launch.new.set_logging_level(:verbose => true)
+      subject.set_logging_level(:verbose => true)
     end
 
     it "sets the logging level to ERROR when :quiet is specified" do
       expect(Vcloud::Core.logger).to receive(:level=).with(Logger::ERROR)
-      Vcloud::Launcher::Launch.new.set_logging_level(:quiet => true)
+      subject.set_logging_level(:quiet => true)
     end
 
     it "sets the logging level to DEBUG when :quiet and :verbose are specified" do
       expect(Vcloud::Core.logger).to receive(:level=).with(Logger::DEBUG)
-      Vcloud::Launcher::Launch.new.set_logging_level(:quiet => true, :verbose => true)
+      subject.set_logging_level(:quiet => true, :verbose => true)
     end
 
     it "sets the logging level to INFO by default" do
       expect(Vcloud::Core.logger).to receive(:level=).with(Logger::INFO)
-      Vcloud::Launcher::Launch.new.set_logging_level({})
+      subject.set_logging_level({})
     end
 
   end
