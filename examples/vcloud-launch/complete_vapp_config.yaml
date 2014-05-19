@@ -30,7 +30,7 @@ vapps:
   - name: 'vapp-example-complete'
     vdc_name: 'Our vDC 1'
     catalog: 'our-catalog'
-    catalog_item: 'our-template-vapp'
+    vapp_template_name: 'our-template-vapp'
     vm:
       hardware_config:
         memory: 4096

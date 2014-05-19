@@ -21,7 +21,7 @@ describe Vcloud::Launcher::VappOrchestrator do
           :name => 'test-vapp-1',
           :vdc_name => 'test-vdc-1',
           :catalog => 'org-1-catalog',
-          :catalog_item => 'org-1-template',
+          :vapp_template_name => 'org-1-template',
           :vm => {
               :network_connections => [{:name => 'org-vdc-1-net-1'}]
           }
@@ -50,6 +50,26 @@ describe Vcloud::Launcher::VappOrchestrator do
 
       new_vapp = subject.provision @config
       new_vapp.should == mock_vapp
+    end
+
+    context "deprecated config items" do
+      let(:mock_vapp_template) {
+        double(:vapp_template, :id => 2)
+      }
+      before(:each) {
+        Vcloud::Core::Vapp.stub(:get_by_name_and_vdc_name)
+        Vcloud::Core::Vapp.stub(:instantiate).and_return(mock_vapp)
+        Vcloud::Launcher::VmOrchestrator.stub(:new).and_return(mock_vm_orchestrator)
+      }
+
+      it "should use catalog_item when vapp_template_name is not present" do
+        config = @config.clone
+        config.delete(:vapp_template_name)
+        config[:catalog_item] = 'deprecated-template'
+
+        Vcloud::Core::VappTemplate.should_receive(:get).with('deprecated-template', 'org-1-catalog').and_return(mock_vapp_template)
+        Vcloud::Launcher::VappOrchestrator.provision(config)
+      end
     end
 
   end

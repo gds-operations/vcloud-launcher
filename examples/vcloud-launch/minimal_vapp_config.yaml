@@ -8,4 +8,4 @@ vapps:
   - name: 'vapp-example-1'
     vdc_name: 'vDC Example [1]'
     catalog: 'example-catalog'
-    catalog_item: 'our-vapp-template'
+    vapp_template_name: 'our-vapp-template'

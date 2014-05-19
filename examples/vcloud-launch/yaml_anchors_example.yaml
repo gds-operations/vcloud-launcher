@@ -21,7 +21,7 @@ anchors:
 - &BASE_VAPP
   vdc_name: *VDC_NAME
   catalog:  our-catalog
-  catalog_item: *VAPP_TEMPLATE
+  vapp_template_name: *VAPP_TEMPLATE
 
 - &BASE_VM
   metadata:

@@ -11,7 +11,8 @@ module Vcloud
           return vapp_existing
         end
 
-        template = Vcloud::Core::VappTemplate.get(vapp_config[:catalog_item], vapp_config[:catalog])
+        template_name = vapp_config[:vapp_template_name] || vapp_config[:catalog_item]
+        template = Vcloud::Core::VappTemplate.get(template_name, vapp_config[:catalog])
         template_id = template.id
 
         network_names = extract_vm_networks(vapp_config)
@@ -27,10 +28,11 @@ module Vcloud
           required: true,
           allowed_empty: false,
           internals: {
-            name:      { type: 'string', required: true, allowed_empty: false },
-            vdc_name:  { type: 'string', required: true, allowed_empty: false },
-            catalog:   { type: 'string', required: true, allowed_empty: false },
-            catalog_item: { type: 'string', required: true, allowed_empty: false },
+            name:               { type: 'string', required: true, allowed_empty: false },
+            vdc_name:           { type: 'string', required: true, allowed_empty: false },
+            catalog:            { type: 'string', required: true, allowed_empty: false },
+            catalog_item:       { type: 'string', deprecated_by: 'vapp_template_name', allowed_empty: false },
+            vapp_template_name: { type: 'string', required: true, allowed_empty: false },
             vm: Vcloud::Launcher::VmOrchestrator.customize_schema,
           }
         }

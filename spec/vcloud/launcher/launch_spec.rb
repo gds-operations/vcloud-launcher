@@ -9,19 +9,19 @@ describe Vcloud::Launcher::Launch do
           :name => "successful app 1",
           :vdc_name => "Test Vdc",
           :catalog => "default",
-          :catalog_item => "ubuntu-precise"
+          :vapp_template_name => "ubuntu-precise"
       }
       @fake_failing_app = {
           :name => "fake failing app",
           :vdc_name => "wrong vdc",
           :catalog => "default",
-          :catalog_item => "ubuntu-precise"
+          :vapp_template_name => "ubuntu-precise"
       }
       @successful_app_2 = {
           :name => "successful app 2",
           :vdc_name => "Test Vdc",
           :catalog => "default",
-          :catalog_item => "ubuntu-precise"
+          :vapp_template_name => "ubuntu-precise"
       }
       expect(config_loader).to receive(:load_config).
         and_return({:vapps => [@successful_app_1, @fake_failing_app, @successful_app_2]})

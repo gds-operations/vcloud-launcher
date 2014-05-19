@@ -11,7 +11,7 @@ vapps:
 - name: vapp-example-1
   vdc_name: "Our VDC1"
   catalog: our-catalog
-  catalog_item: our-vapp-template
+  vapp_template_name: our-vapp-template
   vm:
     hardware_config:
       memory: '4096'
@@ -23,7 +23,7 @@ vapps:
 - name: vapp-example-2
   vdc_name: "Our VDC1"
   catalog: our-catalog
-  catalog_item: our-vapp-template
+  vapp_template_name: our-vapp-template
   vm:
     hardware_config:
       memory: '4096'
@@ -35,7 +35,7 @@ vapps:
 - name: vapp-example-3
   vdc_name: "Our VDC1"
   catalog: our-catalog
-  catalog_item: our-vapp-template
+  vapp_template_name: our-vapp-template
   vm:
     hardware_config:
       memory: '4096'
