@@ -11,7 +11,7 @@ module Vcloud
           return vapp_existing
         end
 
-        template = Vcloud::Core::VappTemplate.get(vapp_config[:catalog], vapp_config[:catalog_item])
+        template = Vcloud::Core::VappTemplate.get(vapp_config[:catalog_item], vapp_config[:catalog])
         template_id = template.id
 
         network_names = extract_vm_networks(vapp_config)

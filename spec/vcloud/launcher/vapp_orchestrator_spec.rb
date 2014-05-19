@@ -36,7 +36,7 @@ describe Vcloud::Launcher::VappOrchestrator do
 
 
       Vcloud::Core::Vapp.should_receive(:get_by_name_and_vdc_name).with('test-vapp-1', 'test-vdc-1').and_return(nil)
-      Vcloud::Core::VappTemplate.should_receive(:get).with('org-1-catalog', 'org-1-template').and_return(double(:vapp_template, :id => 1))
+      Vcloud::Core::VappTemplate.should_receive(:get).with('org-1-template', 'org-1-catalog').and_return(double(:vapp_template, :id => 1))
 
       Vcloud::Core::Vapp.should_receive(:instantiate).with('test-vapp-1', ['org-vdc-1-net-1'], 1, 'test-vdc-1')
       .and_return(mock_vapp)
