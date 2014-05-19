@@ -6,6 +6,16 @@ describe Vcloud::Launcher::VappOrchestrator do
 
   context "provision a vapp" do
 
+    let(:mock_fog_vm) {
+      double(:vm)
+    }
+    let(:mock_vapp) {
+      double(:vapp, :fog_vms => [mock_fog_vm], :reload => self)
+    }
+    let(:mock_vm_orchestrator) {
+      double(:vm_orchestrator, :customize => true)
+    }
+
     before(:each) do
       @config = {
           :name => 'test-vapp-1',
@@ -30,10 +40,6 @@ describe Vcloud::Launcher::VappOrchestrator do
 
     it "should create a vapp if it does not exist" do
       #this test highlights the problems in vapp
-      mock_fog_vm = double(:vm)
-      mock_vapp = double(:vapp, :fog_vms => [mock_fog_vm], :reload => self)
-      mock_vm_orchestrator = double(:vm_orchestrator, :customize => true)
-
 
       Vcloud::Core::Vapp.should_receive(:get_by_name_and_vdc_name).with('test-vapp-1', 'test-vdc-1').and_return(nil)
       Vcloud::Core::VappTemplate.should_receive(:get).with('org-1-template', 'org-1-catalog').and_return(double(:vapp_template, :id => 1))
