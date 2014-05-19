@@ -7,5 +7,5 @@
 vapps:
   - name: 'vapp-example-1'
     vdc_name: 'vDC Example [1]'
-    catalog: 'example-catalog'
+    catalog_name: 'example-catalog'
     vapp_template_name: 'our-vapp-template'

@@ -20,7 +20,7 @@ anchors:
 
 - &BASE_VAPP
   vdc_name: *VDC_NAME
-  catalog:  our-catalog
+  catalog_name:  our-catalog
   vapp_template_name: *VAPP_TEMPLATE
 
 - &BASE_VM

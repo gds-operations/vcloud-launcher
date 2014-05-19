@@ -29,7 +29,7 @@
 vapps:
   - name: 'vapp-example-complete'
     vdc_name: 'Our vDC 1'
-    catalog: 'our-catalog'
+    catalog_name: 'our-catalog'
     vapp_template_name: 'our-template-vapp'
     vm:
       hardware_config:
