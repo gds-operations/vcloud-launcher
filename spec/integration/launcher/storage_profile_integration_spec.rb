@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'vcloud/tools/tester'
 
 describe Vcloud::Launcher::Launch do
   context "storage profile", :take_too_long => true do
@@ -8,22 +9,22 @@ describe Vcloud::Launcher::Launch do
       @fog_interface = Vcloud::Fog::ServiceInterface.new
       Vcloud::Launcher::Launch.new.run(@config_yaml, {'dont-power-on' => true})
 
-      @vapp_query_result_1 = @fog_interface.get_vapp_by_name_and_vdc_name(@test_data[:vapp_name_1], @test_data[:vdc_name_1])
+      @vapp_query_result_1 = @fog_interface.get_vapp_by_name_and_vdc_name(@test_data[:vapp_name_1], @test_data[:vdc_1_name])
       @vapp_id_1 = @vapp_query_result_1[:href].split('/').last
       @vapp_1 = @fog_interface.get_vapp @vapp_id_1
       @vm_1 = @vapp_1[:Children][:Vm].first
 
-      @vapp_query_result_2 = @fog_interface.get_vapp_by_name_and_vdc_name(@test_data[:vapp_name_2], @test_data[:vdc_name_2])
+      @vapp_query_result_2 = @fog_interface.get_vapp_by_name_and_vdc_name(@test_data[:vapp_name_2], @test_data[:vdc_2_name])
       @vapp_id_2 = @vapp_query_result_2[:href].split('/').last
       @vapp_2 = @fog_interface.get_vapp @vapp_id_2
       @vm_2 = @vapp_2[:Children][:Vm].first
 
-      @vapp_query_result_3 = @fog_interface.get_vapp_by_name_and_vdc_name(@test_data[:vapp_name_3], @test_data[:vdc_name_1])
+      @vapp_query_result_3 = @fog_interface.get_vapp_by_name_and_vdc_name(@test_data[:vapp_name_3], @test_data[:vdc_1_name])
       @vapp_id_3 = @vapp_query_result_3[:href].split('/').last
       @vapp_3 = @fog_interface.get_vapp @vapp_id_3
       @vm_3 = @vapp_3[:Children][:Vm].first
 
-      @vapp_query_result_4 = @fog_interface.get_vapp_by_name_and_vdc_name(@test_data[:vapp_name_4], @test_data[:vdc_name_1])
+      @vapp_query_result_4 = @fog_interface.get_vapp_by_name_and_vdc_name(@test_data[:vapp_name_4], @test_data[:vdc_1_name])
       @vapp_id_4 = @vapp_query_result_4[:href].split('/').last
       @vapp_4 = @fog_interface.get_vapp @vapp_id_4
       @vm_4 = @vapp_4[:Children][:Vm].first
@@ -83,21 +84,24 @@ describe Vcloud::Launcher::Launch do
 end
 
 def define_test_data
+  config_file = File.join(File.dirname(__FILE__),
+    "../vcloud_tools_testing_config.yaml")
+  parameters = Vcloud::Tools::Tester::TestParameters.new(config_file)
   {
-      vapp_name_1: "vdc-1-sp-#{Time.now.strftime('%s')}",
-      vapp_name_2: "vdc-2-sp-#{Time.now.strftime('%s')}",
-      vapp_name_3: "vdc-3-sp-#{Time.now.strftime('%s')}",
-      vapp_name_4: "vdc-4-sp-#{Time.now.strftime('%s')}",
-      vdc_name_1: ENV['VDC_NAME_1'],
-      vdc_name_2: ENV['VDC_NAME_2'],
-      catalog: ENV['VCLOUD_CATALOG_NAME'],
-      vapp_template: ENV['VCLOUD_TEMPLATE_NAME'],
-      storage_profile: ENV['VCLOUD_STORAGE_PROFILE_NAME'],
-      vdc_1_sp_href: ENV['VDC_1_STORAGE_PROFILE_HREF'],
-      vdc_2_sp_href: ENV['VDC_2_STORAGE_PROFILE_HREF'],
-      default_storage_profile_name: ENV['DEFAULT_STORAGE_PROFILE_NAME'],
-      default_storage_profile_href: ENV['DEFAULT_STORAGE_PROFILE_HREF'],
-      nonsense_storage_profile: "nonsense-storage-profile-name",
-      bootstrap_script: File.join(File.dirname(__FILE__), "data/basic_preamble_test.erb"),
+    vapp_name_1: "vdc-1-sp-#{Time.now.strftime('%s')}",
+    vapp_name_2: "vdc-2-sp-#{Time.now.strftime('%s')}",
+    vapp_name_3: "vdc-3-sp-#{Time.now.strftime('%s')}",
+    vapp_name_4: "vdc-4-sp-#{Time.now.strftime('%s')}",
+    vdc_1_name: parameters.vdc_1_name,
+    vdc_2_name: parameters.vdc_2_name,
+    catalog: parameters.catalog,
+    vapp_template: parameters.vapp_template,
+    storage_profile: parameters.storage_profile,
+    vdc_1_sp_href: parameters.vdc_1_storage_profile_href,
+    vdc_2_sp_href: parameters.vdc_2_storage_profile_href,
+    default_storage_profile_name: parameters.default_storage_profile_name,
+    default_storage_profile_href: parameters.default_storage_profile_href,
+    nonsense_storage_profile: "nonsense-storage-profile-name",
+    bootstrap_script: File.join(File.dirname(__FILE__), "data/basic_preamble_test.erb"),
   }
 end

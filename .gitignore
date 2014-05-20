@@ -9,3 +9,4 @@
 /pkg/
 fog_integration_test.config
 .idea
+/spec/integration/vcloud_tools_testing_config.yaml
