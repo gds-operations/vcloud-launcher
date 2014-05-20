@@ -123,45 +123,5 @@ Runs the unit and feature tests (pretty quick right now)
 NB. `bundle exec rake integration` is an alias for `bundle exec rake integration:all`.
 
 You need access to a suitable vCloud Director organization to run the
-integration tests. It is not necessarily safe to run them against an existing
-environment, unless care is taken with the entities being tested.
-
-The easiest thing to do is create a local shell script called
-`vcloud_env.sh` and set the contents:
-
-    export FOG_CREDENTIAL=test
-    export VCLOUD_VDC_NAME="Name of the VDC"
-    export VCLOUD_CATALOG_NAME="catalog-name"
-    export VCLOUD_TEMPLATE_NAME="name-of-template"
-    export VCLOUD_NETWORK1_NAME="name-of-primary-network"
-    export VCLOUD_NETWORK2_NAME="name-of-secondary-network"
-    export VCLOUD_NETWORK1_IP="ip-on-primary-network"
-    export VCLOUD_NETWORK2_IP="ip-on-secondary-network"
-    export VCLOUD_STORAGE_PROFILE_NAME="storage-profile-name"
-    export VCLOUD_EDGE_GATEWAY="name-of-edge-gateway-in-vdc"
-
-Then run this before you run the integration tests.
-
-### Specific integration tests
-
-#### Storage profile tests
-
-There is an integration test to check storage profile behaviour, but it requires
-a lot of set-up so it is not called by the rake task. If you wish to run it you
-need access to an environment that has two VDCs, each one containing a storage
-profile with the same name. This named storage profile needs to be different
-from the default storage profile.
-
-You will need to set the following environment variables:
-
-      export VDC_NAME_1="Name of the first vDC"
-      export VDC_NAME_2="Name of the second vDC"
-      export VCLOUD_CATALOG_NAME="Catalog name" # Can be the same as above settings if appropriate
-      export VCLOUD_TEMPLATE_NAME="Template name" # Can be the same as above setting if appropriate
-      export VCLOUD_STORAGE_PROFILE_NAME="Storage profile name" # This needs to exist in both vDCs
-      export VDC_1_STORAGE_PROFILE_HREF="Href of the named storage profile in vDC 1"
-      export VDC_2_STORAGE_PROFILE_HREF="Href of the named storage profile in vDC 2"
-      export DEFAULT_STORAGE_PROFILE_NAME="Default storage profile name"
-      export DEFAULT_STORAGE_PROFILE_HREF="Href of default storage profile"
-
-To run this test: `rspec spec/integration/launcher/storage_profile_integration_test.rb`
+integration tests. See the [integration tests README](/spec/integration/README.md) for
+further details.
