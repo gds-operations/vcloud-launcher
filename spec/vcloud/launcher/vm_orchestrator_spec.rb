@@ -6,6 +6,16 @@ describe Vcloud::Launcher::VmOrchestrator do
     @vm_id = "vm-12345678-1234-1234-1234-123456712312"
   end
 
+  let(:fog_vm) {
+    { :href => "/#{@vm_id}" }
+  }
+  let(:vapp) {
+    double(:vapp, :name => 'web-app1')
+  }
+  subject {
+    Vcloud::Launcher::VmOrchestrator.new(fog_vm, vapp)
+  }
+
   it "orchestrate customization" do
     vm_config = {
         :hardware_config => {
@@ -34,8 +44,6 @@ describe Vcloud::Launcher::VmOrchestrator do
             :href => 'https://vcloud.example.net/api/vdcStorageProfile/000aea1e-a5e9-4dd1-a028-40db8c98d237'
         }
     }
-    fog_vm = { :href => "/#{@vm_id}" }
-    vapp = double(:vapp, :name => 'web-app1')
     vm = double(:vm, :id => @vm_id, :vapp_name => 'web-app1', :vapp => vapp, :name => 'test-vm-1')
     Vcloud::Core::Vm.should_receive(:new).with(@vm_id, vapp).and_return(vm)
 
@@ -48,12 +56,10 @@ describe Vcloud::Launcher::VmOrchestrator do
     vm.should_receive(:update_metadata).with(vm_config[:metadata])
     vm.should_receive(:configure_guest_customization_section).with('web-app1', vm_config[:bootstrap], vm_config[:extra_disks])
 
-    Vcloud::Launcher::VmOrchestrator.new(fog_vm, vapp).customize(vm_config)
+    subject.customize(vm_config)
   end
 
   it "if a storage_profile is not specified, customize continues with other customizations" do
-    fog_vm = { :href => "/#{@vm_id}" }
-    vapp = double(:vapp, :name => 'web-app1')
     vm = double(:vm, :id => @vm_id, :vapp_name => 'web-app1', :vapp => vapp, :name => 'test-vm-1')
     vm_config = {
       :metadata => {:shutdown => true},
@@ -70,7 +76,7 @@ describe Vcloud::Launcher::VmOrchestrator do
     vm.should_receive(:configure_network_interfaces).with(vm_config[:network_connections])
     vm.should_receive(:configure_guest_customization_section).with('web-app1', vm_config[:bootstrap], vm_config[:extra_disks])
 
-    Vcloud::Launcher::VmOrchestrator.new(fog_vm, vapp).customize(vm_config)
+    subject.customize(vm_config)
 
   end
 end
