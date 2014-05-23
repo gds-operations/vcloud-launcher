@@ -1,3 +1,10 @@
+## 0.1.0 (UNRELEASED)
+
+Maint:
+
+  - Deprecate 'catalog_item' for 'vapp_template_name' in config.
+  - Deprecate 'catalog' for 'catalog_name' in config.
+
 ## 0.0.5 (2014-05-14)
 
 Features:

@@ -2,8 +2,8 @@
 vapps:
   - name: <%= vapp_name_1 %>
     vdc_name: <%= vdc_1_name %>
-    catalog: <%= catalog %>
-    catalog_item: <%= vapp_template %>
+    catalog_name: <%= catalog %>
+    vapp_template_name: <%= vapp_template %>
     vm:
       hardware_config: &hardware_config
         memory: 4096
@@ -15,8 +15,8 @@ vapps:
       storage_profile: <%= storage_profile %>
   - name: <%= vapp_name_2 %>
     vdc_name: <%= vdc_2_name %>
-    catalog: <%= catalog %>
-    catalog_item: <%= vapp_template %>
+    catalog_name: <%= catalog %>
+    vapp_template_name: <%= vapp_template %>
     vm:
       hardware_config:
         <<: *hardware_config
@@ -25,8 +25,8 @@ vapps:
       storage_profile: <%= storage_profile %>
   - name: <%= vapp_name_3 %>
     vdc_name: <%= vdc_1_name %>
-    catalog: <%= catalog %>
-    catalog_item: <%= vapp_template %>
+    catalog_name: <%= catalog %>
+    vapp_template_name: <%= vapp_template %>
     vm:
       hardware_config:
         <<: *hardware_config
@@ -36,8 +36,8 @@ vapps:
         <<: *bootstrap
   - name: <%= vapp_name_4 %>
     vdc_name: <%= vdc_1_name %>
-    catalog: <%= catalog %>
-    catalog_item: <%= vapp_template %>
+    catalog_name: <%= catalog %>
+    vapp_template_name: <%= vapp_template %>
     vm:
       hardware_config:
         <<: *hardware_config
