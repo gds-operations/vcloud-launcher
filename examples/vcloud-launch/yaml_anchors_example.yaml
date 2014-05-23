@@ -10,7 +10,7 @@
 ---
 anchors:
 
-- &VAPP_TEMPLATE our-vapp-template
+- &VAPP_TEMPLATE_NAME our-vapp-template
 
 - &ENVIRONMENT example
 - &VDC_NAME    example-vdc
@@ -21,17 +21,17 @@ anchors:
 - &BASE_VAPP
   vdc_name: *VDC_NAME
   catalog_name:  our-catalog
-  vapp_template_name: *VAPP_TEMPLATE
+  vapp_template_name: *VAPP_TEMPLATE_NAME
 
 - &BASE_VM
   metadata:
     environment:   *ENVIRONMENT
-    vapp_template: *VAPP_TEMPLATE
+    vapp_template: *VAPP_TEMPLATE_NAME
   bootstrap: &BASE_VM_BOOTSTRAP
     script_path: basic_preamble.erb
     vars: &BASE_VM_VARS
       environment: *ENVIRONMENT
-      vapp_template: *VAPP_TEMPLATE
+      vapp_template: *VAPP_TEMPLATE_NAME
       vdc: *VDC_NAME
 
 - &SMALL_VM
