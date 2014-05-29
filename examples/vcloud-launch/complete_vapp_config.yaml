@@ -39,6 +39,7 @@ vapps:
       - name: 'FrontendNetwork'
         ip_address: '192.0.2.10'
       - name: 'BackendNetwork'
+        allocation_mode: 'pool'
       extra_disks:
       - name: logs-disk
         size: 10240
