@@ -37,6 +37,7 @@ module Vcloud
                 internals: {
                   name: { type: 'string', required: true },
                   ip_address: { type: 'ip_address', required: false },
+                  allocation_mode: { type: 'string', required: false },
                 },
               },
             },
