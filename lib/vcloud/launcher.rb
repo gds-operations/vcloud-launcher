@@ -1,6 +1,10 @@
 require 'vcloud/fog'
 require 'vcloud/core'
 
+require 'vcloud/launcher/schema/vm'
+require 'vcloud/launcher/schema/vapp'
+require 'vcloud/launcher/schema/launcher_vapps'
+
 require 'vcloud/launcher/launch'
 require 'vcloud/launcher/vm_orchestrator'
 require 'vcloud/launcher/vapp_orchestrator'

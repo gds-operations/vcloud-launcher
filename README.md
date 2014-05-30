@@ -43,6 +43,12 @@ Or install it yourself as:
 
 `vcloud-launch node.yaml`
 
+## Configuration schemas
+
+Configuration schemas can be found in [`lib/vcloud/launcher/schema/`][schema].
+
+[schema]: /lib/vcloud/launcher/schema
+
 ## Credentials
 
 vCloud Launcher is based around [fog](http://fog.io/). To use it you'll need to give it

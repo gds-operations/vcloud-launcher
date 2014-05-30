@@ -8,7 +8,7 @@ module Vcloud
 
       def run(config_file = nil, cli_options = {})
         set_logging_level(cli_options)
-        config = @config_loader.load_config(config_file, config_schema)
+        config = @config_loader.load_config(config_file, Vcloud::Launcher::Schema::LAUNCHER_VAPPS)
         config[:vapps].each do |vapp_config|
           Vcloud::Core.logger.info("Provisioning vApp #{vapp_config[:name]}.")
           begin
@@ -22,22 +22,6 @@ module Vcloud
           end
 
         end
-      end
-
-      def config_schema
-        {
-          type: 'hash',
-          allowed_empty: false,
-          permit_unknown_parameters: true,
-          internals: {
-            vapps: {
-            type: 'array',
-            required: false,
-            allowed_empty: true,
-            each_element_is: ::Vcloud::Launcher::VappOrchestrator.schema
-          },
-        }
-      }
       end
 
       def set_logging_level(cli_options)
