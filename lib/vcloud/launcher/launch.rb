@@ -34,7 +34,7 @@ module Vcloud
             type: 'array',
             required: false,
             allowed_empty: true,
-            each_element_is: ::Vcloud::Launcher::VappOrchestrator.provision_schema
+            each_element_is: ::Vcloud::Launcher::VappOrchestrator.schema
           },
         }
       }

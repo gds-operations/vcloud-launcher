@@ -23,7 +23,7 @@ module Vcloud
         vapp
       end
 
-      def self.provision_schema
+      def self.schema
         {
           type: 'hash',
           required: true,
@@ -35,7 +35,7 @@ module Vcloud
             catalog_name:       { type: 'string', required: true, allowed_empty: false },
             catalog_item:       { type: 'string', deprecated_by: 'vapp_template_name', allowed_empty: false },
             vapp_template_name: { type: 'string', required: true, allowed_empty: false },
-            vm: Vcloud::Launcher::VmOrchestrator.customize_schema,
+            vm: Vcloud::Launcher::VmOrchestrator.schema,
           }
         }
       end

@@ -23,7 +23,7 @@ module Vcloud
         )
       end
 
-      def self.customize_schema
+      def self.schema
         {
           type: 'hash',
           required: false,
