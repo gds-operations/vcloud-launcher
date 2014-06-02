@@ -1,5 +1,9 @@
 ## 0.1.0 (UNRELEASED)
 
+Features:
+
+  - Support 'pool' mode for VM IP address allocation. Thanks @geriBatai.
+
 Maint:
 
   - Deprecate 'catalog_item' for 'vapp_template_name' in config.
