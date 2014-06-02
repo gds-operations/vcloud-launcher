@@ -1,4 +1,8 @@
-## 0.1.0 (UNRELEASED)
+## 0.1.0 (2014-06-02)
+
+Features:
+
+  - Support 'pool' mode for VM IP address allocation. Thanks @geriBatai.
 
 Maint:
 
