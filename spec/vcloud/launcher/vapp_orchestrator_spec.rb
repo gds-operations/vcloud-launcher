@@ -31,25 +31,25 @@ describe Vcloud::Launcher::VappOrchestrator do
     it "should return a vapp if it already exists" do
       existing_vapp = double(:vapp, :name => 'existing-vapp-1')
 
-      Vcloud::Core::Vapp.should_receive(:get_by_name_and_vdc_name).with('test-vapp-1', 'test-vdc-1').and_return(existing_vapp)
-      Vcloud::Core.logger.should_receive(:info).with('Found existing vApp test-vapp-1 in vDC \'test-vdc-1\'. Skipping.')
+      expect(Vcloud::Core::Vapp).to receive(:get_by_name_and_vdc_name).with('test-vapp-1', 'test-vdc-1').and_return(existing_vapp)
+      expect(Vcloud::Core.logger).to receive(:info).with('Found existing vApp test-vapp-1 in vDC \'test-vdc-1\'. Skipping.')
       actual_vapp = subject.provision @config
-      actual_vapp.should_not be_nil
-      actual_vapp.should == existing_vapp
+      expect(actual_vapp).not_to be_nil
+      expect(actual_vapp).to eq(existing_vapp)
     end
 
     it "should create a vapp if it does not exist" do
       #this test highlights the problems in vapp
 
-      Vcloud::Core::Vapp.should_receive(:get_by_name_and_vdc_name).with('test-vapp-1', 'test-vdc-1').and_return(nil)
-      Vcloud::Core::VappTemplate.should_receive(:get).with('org-1-template', 'org-1-catalog').and_return(double(:vapp_template, :id => 1))
+      expect(Vcloud::Core::Vapp).to receive(:get_by_name_and_vdc_name).with('test-vapp-1', 'test-vdc-1').and_return(nil)
+      expect(Vcloud::Core::VappTemplate).to receive(:get).with('org-1-template', 'org-1-catalog').and_return(double(:vapp_template, :id => 1))
 
-      Vcloud::Core::Vapp.should_receive(:instantiate).with('test-vapp-1', ['org-vdc-1-net-1'], 1, 'test-vdc-1')
+      expect(Vcloud::Core::Vapp).to receive(:instantiate).with('test-vapp-1', ['org-vdc-1-net-1'], 1, 'test-vdc-1')
       .and_return(mock_vapp)
-      Vcloud::Launcher::VmOrchestrator.should_receive(:new).with(mock_fog_vm, mock_vapp).and_return(mock_vm_orchestrator)
+      expect(Vcloud::Launcher::VmOrchestrator).to receive(:new).with(mock_fog_vm, mock_vapp).and_return(mock_vm_orchestrator)
 
       new_vapp = subject.provision @config
-      new_vapp.should == mock_vapp
+      expect(new_vapp).to eq(mock_vapp)
     end
 
     context "deprecated config items" do
@@ -57,9 +57,9 @@ describe Vcloud::Launcher::VappOrchestrator do
         double(:vapp_template, :id => 2)
       }
       before(:each) {
-        Vcloud::Core::Vapp.stub(:get_by_name_and_vdc_name)
-        Vcloud::Core::Vapp.stub(:instantiate).and_return(mock_vapp)
-        Vcloud::Launcher::VmOrchestrator.stub(:new).and_return(mock_vm_orchestrator)
+        allow(Vcloud::Core::Vapp).to receive(:get_by_name_and_vdc_name)
+        allow(Vcloud::Core::Vapp).to receive(:instantiate).and_return(mock_vapp)
+        allow(Vcloud::Launcher::VmOrchestrator).to receive(:new).and_return(mock_vm_orchestrator)
       }
 
       it "should use catalog_item when vapp_template_name is not present" do
@@ -67,7 +67,7 @@ describe Vcloud::Launcher::VappOrchestrator do
         config.delete(:vapp_template_name)
         config[:catalog_item] = 'deprecated-template'
 
-        Vcloud::Core::VappTemplate.should_receive(:get).with('deprecated-template', 'org-1-catalog').and_return(mock_vapp_template)
+        expect(Vcloud::Core::VappTemplate).to receive(:get).with('deprecated-template', 'org-1-catalog').and_return(mock_vapp_template)
         Vcloud::Launcher::VappOrchestrator.provision(config)
       end
 
@@ -76,7 +76,7 @@ describe Vcloud::Launcher::VappOrchestrator do
         config.delete(:catalog_name)
         config[:catalog] = 'deprecated-catalog'
 
-        Vcloud::Core::VappTemplate.should_receive(:get).with('org-1-template', 'deprecated-catalog').and_return(mock_vapp_template)
+        expect(Vcloud::Core::VappTemplate).to receive(:get).with('org-1-template', 'deprecated-catalog').and_return(mock_vapp_template)
         Vcloud::Launcher::VappOrchestrator.provision(config)
       end
     end

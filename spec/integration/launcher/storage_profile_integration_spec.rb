@@ -31,51 +31,51 @@ describe Vcloud::Launcher::Launch do
     end
 
     it "vdc 1 should have a storage profile without the href being specified" do
-      @vm_1[:StorageProfile][:name].should eq(@test_data[:storage_profile])
+      expect(@vm_1[:StorageProfile][:name]).to eq(@test_data[:storage_profile])
     end
 
     it "vdc 1's storage profile should have the expected href" do
-      @vm_1[:StorageProfile][:href].should eq(@test_data[:vdc_1_sp_href])
+      expect(@vm_1[:StorageProfile][:href]).to eq(@test_data[:vdc_1_sp_href])
     end
 
     it "vdc 2 should have the same named storage profile as vdc 1" do
-      @vm_2[:StorageProfile][:name].should eq(@test_data[:storage_profile])
+      expect(@vm_2[:StorageProfile][:name]).to eq(@test_data[:storage_profile])
     end
 
     it "the storage profile in vdc 2 should have a different href to the storage profile in vdc 1" do
-      @vm_2[:StorageProfile][:href].should eq(@test_data[:vdc_2_sp_href])
+      expect(@vm_2[:StorageProfile][:href]).to eq(@test_data[:vdc_2_sp_href])
     end
 
     it "when a storage profile is not specified, vm uses the default and continues" do
-      @vm_3[:StorageProfile][:name].should eq(@test_data[:default_storage_profile_name])
-      @vm_3[:StorageProfile][:href].should eq(@test_data[:default_storage_profile_href])
+      expect(@vm_3[:StorageProfile][:name]).to eq(@test_data[:default_storage_profile_name])
+      expect(@vm_3[:StorageProfile][:href]).to eq(@test_data[:default_storage_profile_href])
     end
 
     it "when a storage profile is not specified, customize continues with other customizations" do
       @vm_3_id = @vm_3[:href].split('/').last
       @vm_3_metadata = Vcloud::Core::Vm.get_metadata @vm_3_id
-      @vm_3_metadata[:storage_profile_test_vm].should eq(true)
+      expect(@vm_3_metadata[:storage_profile_test_vm]).to eq(true)
     end
 
     it "when a storage profile specified does not exist, vm uses the default" do
-      @vm_4[:StorageProfile][:name].should eq(@test_data[:default_storage_profile_name])
-      @vm_4[:StorageProfile][:href].should eq(@test_data[:default_storage_profile_href])
+      expect(@vm_4[:StorageProfile][:name]).to eq(@test_data[:default_storage_profile_name])
+      expect(@vm_4[:StorageProfile][:href]).to eq(@test_data[:default_storage_profile_href])
     end
 
     # This is a bug - if it has failed customization it should let the user know
     it "when storage profile specified doesn't exist, it errors and continues" do
       @vm_4_id = @vm_4[:href].split('/').last
       @vm_4_metadata = Vcloud::Core::Vm.get_metadata @vm_4_id
-      @vm_4_metadata[:storage_profile_test_vm].should be_nil
+      expect(@vm_4_metadata[:storage_profile_test_vm]).to be_nil
     end
 
     after(:all) do
       unless ENV['VCLOUD_TOOLS_RSPEC_NO_DELETE_VAPP']
         File.delete @config_yaml
-        @fog_interface.delete_vapp(@vapp_id_1).should eq(true)
-        @fog_interface.delete_vapp(@vapp_id_2).should eq(true)
-        @fog_interface.delete_vapp(@vapp_id_3).should eq(true)
-        @fog_interface.delete_vapp(@vapp_id_4).should eq(true)
+        expect(@fog_interface.delete_vapp(@vapp_id_1)).to eq(true)
+        expect(@fog_interface.delete_vapp(@vapp_id_2)).to eq(true)
+        expect(@fog_interface.delete_vapp(@vapp_id_3)).to eq(true)
+        expect(@fog_interface.delete_vapp(@vapp_id_4)).to eq(true)
       end
     end
 
