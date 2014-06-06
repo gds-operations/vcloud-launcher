@@ -150,7 +150,7 @@ describe Vcloud::Launcher::Cli do
       end
 
       it "prints usage and exits normally" do
-        expect(subject.stderr).to match(/\AUsage: \S+ \[options\] org_config_file\n/)
+        expect(subject.stderr).to match(/\AUsage: \S+ \[options\] config_file\n/)
         expect(subject.exitstatus).to eq(0)
       end
     end
@@ -174,13 +174,13 @@ describe Vcloud::Launcher::Cli do
     context "when run without any arguments" do
       let(:args) { %w{} }
 
-      it_behaves_like "print usage and exit abnormally", "must supply org_config_file"
+      it_behaves_like "print usage and exit abnormally", "must supply config_file"
     end
 
     context "when given multiple config files" do
       let(:args) { %w{one.yaml two.yaml} }
 
-      it_behaves_like "print usage and exit abnormally", "must supply org_config_file"
+      it_behaves_like "print usage and exit abnormally", "must supply config_file"
     end
 
     context "when given an unrecognised argument" do
