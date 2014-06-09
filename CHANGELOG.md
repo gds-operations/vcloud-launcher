@@ -1,3 +1,10 @@
+## 0.2.0 (UNRELEASED)
+
+Features:
+
+  - `vcloud-configure-edge --version` now only returns the version string
+      and no usage information.
+
 ## 0.1.0 (2014-06-02)
 
 Features:
