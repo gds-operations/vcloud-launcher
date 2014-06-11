@@ -51,22 +51,9 @@ describe Vcloud::Launcher::Launch do
       expect(@vm_3[:StorageProfile][:href]).to eq(@test_data[:default_storage_profile_href])
     end
 
-    it "when a storage profile is not specified, customize continues with other customizations" do
-      @vm_3_id = @vm_3[:href].split('/').last
-      @vm_3_metadata = Vcloud::Core::Vm.get_metadata @vm_3_id
-      expect(@vm_3_metadata[:storage_profile_test_vm]).to eq(true)
-    end
-
     it "when a storage profile specified does not exist, vm uses the default" do
       expect(@vm_4[:StorageProfile][:name]).to eq(@test_data[:default_storage_profile_name])
       expect(@vm_4[:StorageProfile][:href]).to eq(@test_data[:default_storage_profile_href])
-    end
-
-    # This is a bug - if it has failed customization it should let the user know
-    it "when storage profile specified doesn't exist, it errors and continues" do
-      @vm_4_id = @vm_4[:href].split('/').last
-      @vm_4_metadata = Vcloud::Core::Vm.get_metadata @vm_4_id
-      expect(@vm_4_metadata[:storage_profile_test_vm]).to be_nil
     end
 
     after(:all) do
