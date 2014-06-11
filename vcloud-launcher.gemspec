@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.authors     = ['Anna Shipman']
   s.email       = ['anna.shipman@digital.cabinet-office.gov.uk']
   s.summary     = 'Tool to launch and configure vCloud vApps'
-  s.homepage    = 'https://github.com/alphagov/vcloud-launcher'
+  s.homepage    = 'https://github.com/gds-operations/vcloud-launcher'
   s.license     = 'MIT'
 
   s.files         = `git ls-files`.split($/)

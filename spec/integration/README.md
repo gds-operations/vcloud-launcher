@@ -12,7 +12,7 @@
 
   There is a [template file](/spec/integration/vcloud_tools_testing_config.yaml.template) to help with this. Copy the template file to `/spec/integration` (i.e. next to the template file) and remove the `.template`. This file will now be ignored by Git and you can safely add the parameters relevant to your environment.
 
-- You need to include the set-up for your testing environment in your [fog file](https://github.com/alphagov/vcloud-launcher#credentials).
+- You need to include the set-up for your testing environment in your [fog file](https://github.com/gds-operations/vcloud-launcher#credentials).
 
 - The tests use the [vCloud Tools Tester](http://rubygems.org/gems/vcloud-tools-tester) gem. You do not need to install this, `bundler` will do this for you.
 
