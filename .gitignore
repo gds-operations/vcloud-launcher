@@ -6,6 +6,7 @@
 /.ruby-version
 /Gemfile.lock
 /bundle/
+/coverage/
 /pkg/
 fog_integration_test.config
 .idea
