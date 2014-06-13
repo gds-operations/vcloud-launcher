@@ -24,10 +24,6 @@ describe Vcloud::Launcher::Launch do
       @vapp_3 = @fog_interface.get_vapp @vapp_id_3
       @vm_3 = @vapp_3[:Children][:Vm].first
 
-      @vapp_query_result_4 = @fog_interface.get_vapp_by_name_and_vdc_name(@test_data[:vapp_name_4], @test_data[:vdc_1_name])
-      @vapp_id_4 = @vapp_query_result_4[:href].split('/').last
-      @vapp_4 = @fog_interface.get_vapp @vapp_id_4
-      @vm_4 = @vapp_4[:Children][:Vm].first
     end
 
     it "vdc 1 should have a storage profile without the href being specified" do
@@ -46,27 +42,9 @@ describe Vcloud::Launcher::Launch do
       expect(@vm_2[:StorageProfile][:href]).to eq(@test_data[:vdc_2_sp_href])
     end
 
-    it "when a storage profile is not specified, vm uses the default and continues" do
+    it "when a storage profile is not specified, vm uses the default" do
       expect(@vm_3[:StorageProfile][:name]).to eq(@test_data[:default_storage_profile_name])
       expect(@vm_3[:StorageProfile][:href]).to eq(@test_data[:default_storage_profile_href])
-    end
-
-    it "when a storage profile is not specified, customize continues with other customizations" do
-      @vm_3_id = @vm_3[:href].split('/').last
-      @vm_3_metadata = Vcloud::Core::Vm.get_metadata @vm_3_id
-      expect(@vm_3_metadata[:storage_profile_test_vm]).to eq(true)
-    end
-
-    it "when a storage profile specified does not exist, vm uses the default" do
-      expect(@vm_4[:StorageProfile][:name]).to eq(@test_data[:default_storage_profile_name])
-      expect(@vm_4[:StorageProfile][:href]).to eq(@test_data[:default_storage_profile_href])
-    end
-
-    # This is a bug - if it has failed customization it should let the user know
-    it "when storage profile specified doesn't exist, it errors and continues" do
-      @vm_4_id = @vm_4[:href].split('/').last
-      @vm_4_metadata = Vcloud::Core::Vm.get_metadata @vm_4_id
-      expect(@vm_4_metadata[:storage_profile_test_vm]).to be_nil
     end
 
     after(:all) do
@@ -75,7 +53,6 @@ describe Vcloud::Launcher::Launch do
         expect(@fog_interface.delete_vapp(@vapp_id_1)).to eq(true)
         expect(@fog_interface.delete_vapp(@vapp_id_2)).to eq(true)
         expect(@fog_interface.delete_vapp(@vapp_id_3)).to eq(true)
-        expect(@fog_interface.delete_vapp(@vapp_id_4)).to eq(true)
       end
     end
 
@@ -91,7 +68,6 @@ def define_test_data
     vapp_name_1: "vdc-1-sp-#{Time.now.strftime('%s')}",
     vapp_name_2: "vdc-2-sp-#{Time.now.strftime('%s')}",
     vapp_name_3: "vdc-3-sp-#{Time.now.strftime('%s')}",
-    vapp_name_4: "vdc-4-sp-#{Time.now.strftime('%s')}",
     vdc_1_name: parameters.vdc_1_name,
     vdc_2_name: parameters.vdc_2_name,
     catalog: parameters.catalog,
