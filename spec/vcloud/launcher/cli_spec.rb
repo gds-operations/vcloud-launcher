@@ -206,7 +206,7 @@ describe Vcloud::Launcher::Cli do
       let(:args) { %w{non-existent.yaml} }
 
       it "raises a descriptive error" do
-        expect(subject.stderr).to eq("No such file or directory - non-existent.yaml")
+        expect(subject.stderr).to match("No such file or directory(?: @ rb_sysopen)? - non-existent.yaml")
         expect(subject.exitstatus).to eq(1)
       end
     end
