@@ -29,5 +29,5 @@ Gem::Specification.new do |s|
   # Pin SimpleCov to < 0.8.x until this issue is resolved:
   # https://github.com/colszowka/simplecov/issues/281
   s.add_development_dependency 'simplecov', '~> 0.7.1'
-  s.add_development_dependency 'vcloud-tools-tester', '0.0.3'
+  s.add_development_dependency 'vcloud-tools-tester', '0.1.0'
 end
