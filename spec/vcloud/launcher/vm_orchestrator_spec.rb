@@ -79,4 +79,40 @@ describe Vcloud::Launcher::VmOrchestrator do
     subject.customize(vm_config)
 
   end
+
+  context "when generating a preamble" do
+    # the majority of preamble handling is tested in preamble_spec,
+    # but this is specific behaviour to maintain vcloud-core's
+    # behaviour of silently using an empty string if prerequisites are
+    # not met.
+    shared_examples "it silently swallows errors" do
+      it "must not propagate preamble configuration errors" do
+        expect { subject.send(:generate_preamble, vm_config) }.not_to raise_error
+      end
+
+      it "returns an empty preamble string" do
+        expect(subject.send(:generate_preamble, vm_config)).to eq ''
+      end
+    end
+
+    describe "without supplying a template path" do
+      let(:vm_config) do
+        { bootstrap_config: {
+            vars: { bob: 'Hello', mary: 'Hola' }
+          }
+        }
+      end
+      it_behaves_like "it silently swallows errors"
+    end
+
+    describe "without supplying template vars hash" do
+      let(:vm_config) do
+        { bootstrap_config: {
+            script_path: 'hello_world.erb'
+          }
+        }
+      end
+      it_behaves_like "it silently swallows errors"
+    end
+  end
 end

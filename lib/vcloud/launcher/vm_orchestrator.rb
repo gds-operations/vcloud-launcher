@@ -17,13 +17,20 @@ module Vcloud
         end
         @vm.add_extra_disks(vm_config[:extra_disks])
         @vm.update_metadata(vm_config[:metadata])
-        @vm.configure_guest_customization_section(
-            @vm.vapp_name,
-            vm_config[:bootstrap],
-            vm_config[:extra_disks]
-        )
+
+        preamble = generate_preamble(vm_config)
+        @vm.configure_guest_customization_section(preamble)
       end
 
+      private
+
+      def generate_preamble(vm_config)
+        preamble = ::Vcloud::Launcher::Preamble.new(@vm.vapp_name, vm_config)
+        preamble.generate
+      rescue ::Vcloud::Launcher::Preamble::MissingTemplateError,
+             ::Vcloud::Launcher::Preamble::MissingConfigurationError
+        ''
+      end
     end
   end
 end
