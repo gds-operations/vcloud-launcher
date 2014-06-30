@@ -201,7 +201,7 @@ module Vcloud
           end
 
           it "returns the post processor output" do
-            expect(subject.generate).to match(/^\s+\d+/)
+            expect(subject.generate).to match(/^\s*\d+/)
           end
         end
 
@@ -226,7 +226,7 @@ module Vcloud
             subject { Vcloud::Launcher::Preamble.new(vm_name, complete_vm_config) }
 
             it "returns the post-processed interpolated template" do
-              expect(subject.output).to match(/\s+#{minimal_template_lines}/)
+              expect(subject.output).to match(/\s*#{minimal_template_lines}/)
             end
           end
         end
