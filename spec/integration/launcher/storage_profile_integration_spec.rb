@@ -63,7 +63,19 @@ end
 def define_test_data
   config_file = File.join(File.dirname(__FILE__),
     "../vcloud_tools_testing_config.yaml")
-  parameters = Vcloud::Tools::Tester::TestSetup.new(config_file, []).test_params
+  required_user_parameters = [
+    "vdc_1_name",
+    "vdc_2_name",
+    "catalog",
+    "vapp_template",
+    "storage_profile",
+    "vdc_1_storage_profile_href",
+    "vdc_2_storage_profile_href",
+    "default_storage_profile_name",
+    "default_storage_profile_href",
+  ]
+
+  parameters = Vcloud::Tools::Tester::TestSetup.new(config_file, required_user_parameters).test_params
   {
     vapp_name_1: "vdc-1-sp-#{Time.now.strftime('%s')}",
     vapp_name_2: "vdc-2-sp-#{Time.now.strftime('%s')}",

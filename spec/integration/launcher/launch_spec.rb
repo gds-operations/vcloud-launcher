@@ -143,7 +143,18 @@ describe Vcloud::Launcher::Launch do
   def define_test_data
     config_file = File.join(File.dirname(__FILE__),
       "../vcloud_tools_testing_config.yaml")
-    parameters = Vcloud::Tools::Tester::TestSetup.new(config_file, []).test_params
+    required_user_params = [
+      "vdc_1_name",
+      "catalog",
+      "vapp_template",
+      "storage_profile",
+      "network_1",
+      "network_2",
+      "network_1_ip",
+      "network_2_ip",
+    ]
+
+    parameters = Vcloud::Tools::Tester::TestSetup.new(config_file, required_user_params).test_params
     {
       vapp_name: "vapp-vcloud-tools-tests-#{Time.now.strftime('%s')}",
       vdc_name: parameters.vdc_1_name,
