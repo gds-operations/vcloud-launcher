@@ -48,7 +48,6 @@ module Vcloud
 
           it { should respond_to(:generate) }
           it { should respond_to(:interpolated_preamble) }
-          it { should respond_to(:output) }
 
           it { should respond_to(:preamble_vars) }
           it { should respond_to(:script_path) }
@@ -200,8 +199,8 @@ module Vcloud
             subject.generate
           end
 
-          it "returns the post processor output" do
-            expect(subject.generate).to match(/^\s*\d+/)
+          it "returns the post-processed interpolated template" do
+            expect(subject.generate).to match(/\s*#{minimal_template_lines}/)
           end
         end
 
@@ -210,24 +209,6 @@ module Vcloud
 
           it "returns the interpolated template" do
             expect(subject.interpolated_preamble).to eq minimal_template_output
-          end
-        end
-
-        describe ".output" do
-          context "when there is no post processor" do
-            subject { Vcloud::Launcher::Preamble.new(vm_name, minimal_vm_config) }
-
-            it "returns the interpolated template" do
-              expect(subject.output).to eq minimal_template_output
-            end
-          end
-
-          context "when there is a post processor" do
-            subject { Vcloud::Launcher::Preamble.new(vm_name, complete_vm_config) }
-
-            it "returns the post-processed interpolated template" do
-              expect(subject.output).to match(/\s*#{minimal_template_lines}/)
-            end
           end
         end
       end

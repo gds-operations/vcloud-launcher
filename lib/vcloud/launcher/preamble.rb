@@ -27,15 +27,11 @@ module Vcloud
       end
 
       def generate
-        @output ||= @script_post_processor ? post_process_erb_output : interpolated_preamble
+        @script_post_processor ? post_process_erb_output : interpolated_preamble
       end
 
       def interpolated_preamble
         @interpolated_preamble = interpolate_erb_file
-      end
-
-      def output
-        @output ||= self.generate
       end
 
       private
