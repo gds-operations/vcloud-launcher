@@ -19,10 +19,6 @@ module Vcloud
         @preamble_vars = bootstrap_config.fetch(:vars, {})
         extra_disks    = vm_config.fetch(:extra_disks, {})
 
-        # FIXME: current behaviour is to silently return empty
-        # string. IMHO empty vars should be acceptable, but the
-        # template should be returned untemplated, which opens up the
-        # possibilty of just post-processing a script.
         raise MissingConfigurationError, "Missing vars" if @preamble_vars.empty?
 
         @preamble_vars.merge!(extra_disks: extra_disks)
