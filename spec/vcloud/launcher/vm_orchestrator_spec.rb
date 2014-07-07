@@ -100,7 +100,7 @@ describe Vcloud::Launcher::VmOrchestrator do
 
     let(:vm) { double(:vm, id: @vm_id, vapp_name: 'web-app1', vapp: vapp, name: 'test-vm-1') }
 
-    before do
+    before(:each) do
       Vcloud::Core::Vm.stub(:new).and_return(vm)
       allow(vm).to receive(:update_name)
       allow(vm).to receive(:configure_network_interfaces)

@@ -126,7 +126,7 @@ module Vcloud
       describe ".generate" do
         subject { Vcloud::Launcher::Preamble.new(vm_name, minimal_vm_config) }
 
-        before do
+        before(:each) do
           subject.stub(:load_erb_file).and_return(minimal_template)
         end
 
@@ -139,7 +139,7 @@ module Vcloud
           subject { Vcloud::Launcher::Preamble.new(vm_name, minimal_vm_config) }
 
           context "environment variables" do
-            before do
+            before(:each) do
               stub_const('ENV', {'TEST_INTERPOLATED_ENVVAR' => 'test_interpolated_env'})
               subject.stub(:load_erb_file).and_return('env_var: <%= ENV["TEST_INTERPOLATED_ENVVAR"] -%>')
             end
@@ -150,7 +150,7 @@ module Vcloud
           end
 
           context "vars hash" do
-            before do
+            before(:each) do
               subject.stub(:load_erb_file).and_return(minimal_template)
             end
 
@@ -160,7 +160,7 @@ module Vcloud
           end
 
           context "vapp_name" do
-            before do
+            before(:each) do
               subject.stub(:load_erb_file).and_return('vapp_name: <%= vapp_name -%>')
             end
 
@@ -190,7 +190,7 @@ module Vcloud
 
           subject { Vcloud::Launcher::Preamble.new(vm_name, vm_config) }
 
-          before do
+          before(:each) do
             subject.stub(:load_erb_file).and_return(template)
           end
 
