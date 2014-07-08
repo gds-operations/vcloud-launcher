@@ -18,7 +18,8 @@ module Vcloud
         @vm.add_extra_disks(vm_config[:extra_disks])
         @vm.update_metadata(vm_config[:metadata])
 
-        preamble = generate_preamble(vm_config)
+        preamble = vm_config[:bootstrap] ? generate_preamble(vm_config) : ''
+
         @vm.configure_guest_customization_section(preamble)
       end
 

@@ -33,12 +33,6 @@ describe Vcloud::Launcher::VmOrchestrator do
         :network_connections => [
             {:name => "network1", :ip_address => "198.12.1.21"},
         ],
-        :bootstrap => {
-            :script_path => '/tmp/boostrap.erb',
-            :vars => {
-                :message => 'hello world'
-            }
-        },
         :storage_profile => {
             :name => 'basic-storage',
             :href => 'https://vcloud.example.net/api/vdcStorageProfile/000aea1e-a5e9-4dd1-a028-40db8c98d237'
@@ -55,7 +49,7 @@ describe Vcloud::Launcher::VmOrchestrator do
     expect(vm).to receive(:add_extra_disks).with(vm_config[:extra_disks])
     expect(vm).to receive(:update_metadata).with(vm_config[:metadata])
 
-    allow(vm).to receive(:configure_guest_customization_section)
+    allow(vm).to receive(:configure_guest_customization_section).with('')
 
     subject.customize(vm_config)
   end
@@ -82,7 +76,7 @@ describe Vcloud::Launcher::VmOrchestrator do
   end
 
   context "when customizing a VM" do
-    let(:vm_config) do
+    let(:vm_config_with_bootstrap) do
       {
         hardware_config: {
           memory: 4096,
@@ -98,6 +92,18 @@ describe Vcloud::Launcher::VmOrchestrator do
       }
     end
 
+    let(:vm_config_without_bootstrap) do
+      {
+        hardware_config: {
+          memory: 4096,
+          cpu: 2
+        },
+        network_connections: [
+          { name: "network1", ip_address: "198.12.1.21" }
+        ]
+      }
+    end
+
     let(:vm) { double(:vm, id: @vm_id, vapp_name: 'web-app1', vapp: vapp, name: 'test-vm-1') }
 
     before(:each) do
@@ -110,72 +116,54 @@ describe Vcloud::Launcher::VmOrchestrator do
       allow(vm).to receive(:update_metadata)
     end
 
-    context "Vcloud::Launcher::Preamble used to generate a preamble" do
-      it "instantiates Vcloud::Launcher::Preamble" do
-        preamble = double
-        allow(preamble).to receive(:generate)
-        allow(vm).to receive(:configure_guest_customization_section)
+    context "when bootstrap configuration is omitted" do
+      before { allow(vm).to receive(:configure_guest_customization_section) }
 
-        expect(Vcloud::Launcher::Preamble).to receive(:new).with(vm.vapp_name, vm_config).and_return(preamble)
+      it "skips preamble processing" do
+        expect(Vcloud::Launcher::Preamble).not_to receive(:new)
+        expect(Vcloud::Launcher::Preamble).not_to receive(:generate)
 
-        subject.customize(vm_config)
+        subject.customize(vm_config_without_bootstrap)
       end
 
-      it "uses Vcloud::Launcher::Preamble.generate to template a preamble" do
-        preamble = double
-        allow(Vcloud::Launcher::Preamble).to receive(:new).with(vm.vapp_name, vm_config).and_return(preamble)
-        allow(vm).to receive(:configure_guest_customization_section)
-
-        expect(preamble).to receive(:generate)
-
-        subject.customize(vm_config)
-      end
-
-      it "passes the generated preamble to configure_guest_customization_section" do
-        preamble = double
-        allow(Vcloud::Launcher::Preamble).to receive(:new).with(vm.vapp_name, vm_config).and_return(preamble)
-        allow(preamble).to receive(:generate).and_return('FAKE_PREAMBLE')
-
-        expect(vm).to receive(:configure_guest_customization_section).with('FAKE_PREAMBLE')
-
-        subject.customize(vm_config)
-      end
-    end
-  end
-
-  context "when generating a preamble" do
-    # the majority of preamble handling is tested in preamble_spec,
-    # but this is specific behaviour to maintain vcloud-core's
-    # behaviour of silently using an empty string if prerequisites are
-    # not met.
-    shared_examples "it silently swallows errors" do
-      it "must not propagate preamble configuration errors" do
-        expect { subject.send(:generate_preamble, vm_config) }.not_to raise_error
-      end
-
-      it "returns an empty preamble string" do
-        expect(subject.send(:generate_preamble, vm_config)).to eq ''
+      it "uses an empty string as the host preamble" do
+        expect(vm).to receive(:configure_guest_customization_section).with('')
+        subject.customize(vm_config_without_bootstrap)
       end
     end
 
-    describe "without supplying a template path" do
-      let(:vm_config) do
-        { bootstrap_config: {
-            vars: { bob: 'Hello', mary: 'Hola' }
-          }
-        }
-      end
-      it_behaves_like "it silently swallows errors"
-    end
+    context "when bootstrap configuration is supplied" do
+      context "Vcloud::Launcher::Preamble used to generate a preamble" do
+        it "instantiates Vcloud::Launcher::Preamble" do
+          preamble = double
+          allow(preamble).to receive(:generate)
+          allow(vm).to receive(:configure_guest_customization_section)
 
-    describe "without supplying template vars hash" do
-      let(:vm_config) do
-        { bootstrap_config: {
-            script_path: 'hello_world.erb'
-          }
-        }
+          expect(Vcloud::Launcher::Preamble).to receive(:new).with(vm.vapp_name, vm_config_with_bootstrap).and_return(preamble)
+
+          subject.customize(vm_config_with_bootstrap)
+        end
+
+        it "uses Vcloud::Launcher::Preamble.generate to template a preamble" do
+          preamble = double
+          allow(Vcloud::Launcher::Preamble).to receive(:new).with(vm.vapp_name, vm_config_with_bootstrap).and_return(preamble)
+          allow(vm).to receive(:configure_guest_customization_section)
+
+          expect(preamble).to receive(:generate)
+
+          subject.customize(vm_config_with_bootstrap)
+        end
+
+        it "passes the generated preamble to configure_guest_customization_section" do
+          preamble = double
+          allow(Vcloud::Launcher::Preamble).to receive(:new).with(vm.vapp_name, vm_config_with_bootstrap).and_return(preamble)
+          allow(preamble).to receive(:generate).and_return('FAKE_PREAMBLE')
+
+          expect(vm).to receive(:configure_guest_customization_section).with('FAKE_PREAMBLE')
+
+          subject.customize(vm_config_with_bootstrap)
+        end
       end
-      it_behaves_like "it silently swallows errors"
     end
   end
 end
