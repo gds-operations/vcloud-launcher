@@ -19,8 +19,6 @@ module Vcloud
         @preamble_vars = bootstrap_config.fetch(:vars, {})
         extra_disks    = vm_config.fetch(:extra_disks, {})
 
-        raise MissingConfigurationError, "Missing vars" if @preamble_vars.empty?
-
         @preamble_vars.merge!(extra_disks: extra_disks)
 
         @script_post_processor = bootstrap_config.fetch(:script_post_processor, nil)

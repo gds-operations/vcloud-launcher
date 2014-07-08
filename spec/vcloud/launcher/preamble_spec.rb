@@ -90,10 +90,8 @@ module Vcloud
             }
           end
 
-          it "raises a MissingConfigurationError" do
-            pending("empty vars should be legal, noop template")
-            expect { subject.new(vm_name, vm_config ) }.
-              to raise_error(Vcloud::Launcher::Preamble::MissingConfigurationError)
+          it "does not raise an error (allows for post-processing only)" do
+            expect { subject.new(vm_name, vm_config ) }.not_to raise_error
           end
         end
 
@@ -107,10 +105,8 @@ module Vcloud
             }
           end
 
-          it "raises a MissingConfigurationError" do
-            pending("empty vars should be legal, noop template")
-            expect { subject.new(vm_name, vm_config ) }.
-              to raise_error(Vcloud::Launcher::Preamble::MissingConfigurationError)
+          it "raises a MissingConfigurationError (allows for post-processing only)" do
+            expect { subject.new(vm_name, vm_config ) }.not_to raise_error
           end
         end
 
