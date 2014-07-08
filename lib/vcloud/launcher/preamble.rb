@@ -8,7 +8,7 @@ module Vcloud
 
       def initialize(vapp_name, vm_config)
         @vapp_name        = vapp_name
-        bootstrap_config  = vm_config[:bootstrap_config]
+        bootstrap_config  = vm_config[:bootstrap]
 
         raise MissingConfigurationError if bootstrap_config.nil?
 

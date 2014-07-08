@@ -7,7 +7,7 @@ module Vcloud
 
       let(:vm_name) { 'test-vm' }
       let(:minimal_vm_config) do
-        { bootstrap_config: {
+        { bootstrap: {
             script_path: 'hello_world.erb',
             vars: { bob: 'Hello', mary: 'Hola' }
           }
@@ -30,7 +30,7 @@ module Vcloud
       let(:minimal_template_lines) { 3 }
 
       let(:complete_vm_config) do
-        { bootstrap_config: {
+        { bootstrap: {
             script_path: 'hello_world.erb',
             script_post_processor: '/usr/bin/wc -l',
             vars: { bob: 'Hello', mary: 'Hola' }
@@ -61,7 +61,7 @@ module Vcloud
 
         context "when the preamble template is missing" do
           let(:vm_config) do
-            { bootstrap_config: {
+            { bootstrap: {
                 script_post_processor: 'remove_hello.rb',
                 vars: { bob: 'hello', mary: 'hola' }
               }
@@ -83,7 +83,7 @@ module Vcloud
 
         context "when vars are absent" do
           let(:vm_config) do
-            { bootstrap_config: {
+            { bootstrap: {
                 script_path: 'hello_world.erb',
                 script_post_processor: 'remove_hello.rb'
               },
@@ -97,7 +97,7 @@ module Vcloud
 
         context "when vars are empty" do
           let(:vm_config) do
-            { bootstrap_config: {
+            { bootstrap: {
                 script_path: 'hello_world.erb',
                 script_post_processor: 'remove_hello.rb',
                 vars: {},
@@ -168,7 +168,7 @@ module Vcloud
 
         context "when a post processor is supplied" do
           let(:vm_config) do
-            { bootstrap_config: {
+            { bootstrap: {
                 script_path: 'hello_world.erb',
                 script_post_processor: '/usr/bin/wc -l',
                 vars: { bob: 'hello', mary: 'hola' }
