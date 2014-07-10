@@ -2,13 +2,21 @@ module Vcloud
   module Launcher
     class Launch
 
+      class MissingPreambleError < RuntimeError ; end
+      class MissingConfigurationError < RuntimeError ; end
+
+      attr_reader :config
+
       def initialize
         @config_loader = Vcloud::Core::ConfigLoader.new
       end
 
       def run(config_file = nil, cli_options = {})
         set_logging_level(cli_options)
-        config = @config_loader.load_config(config_file, Vcloud::Launcher::Schema::LAUNCHER_VAPPS)
+        @config = @config_loader.load_config(config_file, Vcloud::Launcher::Schema::LAUNCHER_VAPPS)
+
+        validate_config
+
         config[:vapps].each do |vapp_config|
           Vcloud::Core.logger.info("Provisioning vApp #{vapp_config[:name]}.")
           begin
@@ -34,6 +42,27 @@ module Vcloud
         end
       end
 
+      private
+
+      def validate_config
+        @config[:vapps].each do |vapp_config|
+          validate_vapp_config(vapp_config)
+        end
+      end
+
+      def validate_vapp_config(vapp_config)
+        bootstrap_config = vapp_config.fetch(:bootstrap, nil)
+
+        return unless bootstrap_config
+
+        if ! bootstrap_config[:script_path]
+          raise MissingConfigurationError, "Preamble script (script_path) not specified"
+        end
+
+        if bootstrap_config[:script_path] && ! File.exist?( bootstrap_config[:script_path])
+          raise MissingPreambleError, "Unable to find specified preamble script (#{bootstrap_config[:script_path]})"
+        end
+      end
     end
   end
 end
