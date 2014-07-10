@@ -16,7 +16,7 @@ describe Vcloud::Launcher::VmOrchestrator do
     Vcloud::Launcher::VmOrchestrator.new(fog_vm, vapp)
   }
 
-  it "orchestrate customization" do
+  it "orchestrates customization" do
     vm_config = {
         :hardware_config => {
             :memory => 4096,
@@ -86,7 +86,7 @@ describe Vcloud::Launcher::VmOrchestrator do
           { name: "network1", ip_address: "198.12.1.21" }
         ],
         bootstrap: {
-          script_path: '/tmp/boostrap.erb',
+          script_path: '/tmp/bootstrap.erb',
           vars: { message: 'hello world' }
         }
       }
