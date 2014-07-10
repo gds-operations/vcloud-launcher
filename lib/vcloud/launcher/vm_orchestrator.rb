@@ -28,9 +28,6 @@ module Vcloud
       def generate_preamble(vm_config)
         preamble = ::Vcloud::Launcher::Preamble.new(@vm.vapp_name, vm_config)
         preamble.generate
-      rescue ::Vcloud::Launcher::Preamble::MissingTemplateError,
-             ::Vcloud::Launcher::Preamble::MissingConfigurationError
-        ''
       end
     end
   end
