@@ -62,6 +62,12 @@ module Vcloud
         if bootstrap_config[:script_path] && ! File.exist?( bootstrap_config[:script_path])
           raise MissingPreambleError, "Unable to find specified preamble script (#{bootstrap_config[:script_path]})"
         end
+
+        template_vars = bootstrap_config.fetch(:vars, {})
+
+        if bootstrap_config[:script_path] && template_vars.empty?
+          Vcloud::Core.logger.info("Preamble file/template specified without variables to template.")
+        end
       end
     end
   end
