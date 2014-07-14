@@ -1,9 +1,15 @@
-## 0.2.0 (UNRELEASED)
+## 0.2.0 (2014-07-14)
 
 Features:
 
   - `vcloud-configure-edge --version` now only returns the version string
       and no usage information.
+
+API changes:
+
+  - New `Vcloud::Launcher::Preamble` class for generating preambles, containing
+    logic moved from vCloud Core. Thanks to @bazbremner for this contribution.
+  - The minimum required Ruby version is now 1.9.3.
 
 ## 0.1.0 (2014-06-02)
 
