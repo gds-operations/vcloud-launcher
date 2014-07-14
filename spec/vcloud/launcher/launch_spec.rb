@@ -68,7 +68,113 @@ describe Vcloud::Launcher::Launch do
       expect(Vcloud::Core.logger).to receive(:level=).with(Logger::INFO)
       subject.set_logging_level({})
     end
-
   end
 
+  describe "configuration validation" do
+    let(:config_file) { 'foo' }
+
+    before(:each) do
+      Vcloud::Core::ConfigLoader.any_instance.stub(:load_config).and_return(config)
+
+      allow(Vcloud::Launcher::VappOrchestrator).
+        to receive(:provision).and_return(double(:vapp, :power_on => true))
+    end
+
+    subject { Vcloud::Launcher::Launch.new }
+
+    context "when bootstrap configuration is supplied" do
+      context "script_path is missing" do
+        let(:config) do
+          { vapps: [
+              {
+                name: "test_vapp_name",
+                vdc_name: "Test VDC",
+                catalog_name: "default",
+                vapp_template_name: "ubuntu-precise",
+                bootstrap: {
+                  vars: { foo: 'bar' }
+                }
+              }
+            ]
+          }
+        end
+
+        it "raises MissingConfigurationError" do
+          expect{ subject.run(config_file) }.
+            to raise_error(Vcloud::Launcher::Launch::MissingConfigurationError)
+        end
+      end
+
+      context "script_path does not exist" do
+        let(:config) do
+          { vapps: [
+              {
+                name: "test_vapp_name",
+                vdc_name: "Test VDC",
+                catalog_name: "default",
+                vapp_template_name: "ubuntu-precise",
+                bootstrap: {
+                  script_path: 'nonexistent_preamble.sh.erb',
+                  vars: { foo: 'bar' }
+                }
+              }
+            ]
+          }
+        end
+
+        it "raises MissingPreambleError" do
+          expect{ subject.run(config_file) }.
+            to raise_error(Vcloud::Launcher::Launch::MissingPreambleError)
+        end
+      end
+
+      context "script_path is specified, without vars" do
+        # Avoid triggering exceptions on missing preamble file.
+        before do
+          File.stub(:exist?).and_return(true)
+          allow(Vcloud::Core.logger).to receive(:info)
+        end
+
+        let(:config) do
+          { vapps: [
+              {
+                name: "test_vapp_name",
+                vdc_name: "Test VDC",
+                catalog_name: "default",
+                vapp_template_name: "ubuntu-precise",
+                bootstrap: {
+                  script_path: 'nonexistent_preamble.sh.erb'
+                }
+              }
+            ]
+          }
+        end
+
+        it "logs an informative message" do
+          # A rather overly specific test to find the message of
+          # interest amongst other log messages.
+          expect(Vcloud::Core.logger).to receive(:info).with(/without variables to template/)
+          subject.run(config_file)
+        end
+      end
+    end
+
+    context "when bootstrap configuration is absent" do
+      let(:config) do
+        { vapps: [
+            {
+              name: "test_vapp_name",
+              vdc_name: "Test VDC",
+              catalog_name: "default",
+              vapp_template_name: "ubuntu-precise"
+            }
+          ]
+        }
+      end
+
+      it "should not raise an error" do
+        expect{ subject.run(config_file) }.not_to raise_error
+      end
+    end
+  end
 end
