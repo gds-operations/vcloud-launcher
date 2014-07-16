@@ -38,9 +38,8 @@ describe Vcloud::Launcher::Cli do
     shared_examples "a good CLI command" do
       it "passes the right CLI options and exits normally" do
         expect(Vcloud::Launcher::Launch).to receive(:new).
-          and_return(mock_launch)
-        expect(mock_launch).to receive(:run).
-          with(config_file, cli_options)
+          with(config_file, cli_options).and_return(mock_launch)
+
         expect(subject.exitstatus).to eq(0)
       end
     end

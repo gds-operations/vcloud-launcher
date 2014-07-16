@@ -1,72 +1,144 @@
 require 'spec_helper'
 
 describe Vcloud::Launcher::Launch do
+  let(:good_vapp_one) do
+    {
+      name: "successful app 1",
+      vdc_name: "Test Vdc",
+      catalog_name: "default",
+      vapp_template_name: "ubuntu-precise"
+    }
+  end
+  let(:good_vapp_two) do
+    {
+      name: "successful app 2",
+      vdc_name: "Test Vdc",
+      catalog_name: "default",
+      vapp_template_name: "ubuntu-precise"
+    }
+  end
+  let(:bad_vapp_one) do
+    {
+      name: "fake failing app",
+      vdc_name: "wrong vdc",
+      catalog_name: "default",
+      vapp_template_name: "ubuntu-precise"
+    }
+  end
+
+  let(:config) do
+    { vapps: [ good_vapp_one, bad_vapp_one, good_vapp_two ] }
+  end
+
+  let(:config_file) { 'foo.yml' }
+  let(:config_loader) { double(:config_loader) }
+
+  before do
+    allow(Vcloud::Core::ConfigLoader).to receive(:new).and_return(config_loader)
+    allow(config_loader).to receive(:load_config).and_return(config)
+  end
+
+  describe '#new' do
+    subject { Vcloud::Launcher::Launch }
+
+    context 'with minimally correct configuration' do
+      it 'does not raise an error' do
+        expect{ subject.new(config_file) }.not_to raise_error
+      end
+
+      it 'loads configuration' do
+        config_loader.should_receive(:load_config).and_return(config)
+        subject.new(config_file)
+      end
+
+      it 'validates the configuration' do
+        subject.any_instance.should_receive(:validate_config)
+        subject.new(config_file)
+      end
+    end
+
+    context 'without a configuration file' do
+      # Earlier behaviour was to default to 'nil' as the config_file,
+      # be explicit that no config is bad, m'kay?
+
+      it 'raises an error' do
+        expect { subject.new }.to raise_error(ArgumentError)
+      end
+    end
+  end
+
   context "#run" do
-    before(:each) do
-      config_loader = double(:config_loader)
-      expect(Vcloud::Core::ConfigLoader).to receive(:new).and_return(config_loader)
-      @successful_app_1 = {
-          :name => "successful app 1",
-          :vdc_name => "Test Vdc",
-          :catalog_name => "default",
-          :vapp_template_name => "ubuntu-precise"
-      }
-      @fake_failing_app = {
-          :name => "fake failing app",
-          :vdc_name => "wrong vdc",
-          :catalog_name => "default",
-          :vapp_template_name => "ubuntu-precise"
-      }
-      @successful_app_2 = {
-          :name => "successful app 2",
-          :vdc_name => "Test Vdc",
-          :catalog_name => "default",
-          :vapp_template_name => "ubuntu-precise"
-      }
-      expect(config_loader).to receive(:load_config).
-        and_return({:vapps => [@successful_app_1, @fake_failing_app, @successful_app_2]})
+    subject { Vcloud::Launcher::Launch.new(config_file, cli_options) }
+
+    before do
+      allow(Vcloud::Launcher::VappOrchestrator).to receive(:provision).
+        with(good_vapp_one).and_return(double(:vapp, power_on: true))
     end
 
-    it "should stop on failure by default" do
-      expect(Vcloud::Launcher::VappOrchestrator).to receive(:provision).with(@successful_app_1).and_return(double(:vapp, :power_on => true))
-      expect(Vcloud::Launcher::VappOrchestrator).to receive(:provision).with(@fake_failing_app).and_raise(RuntimeError.new('failed to find vdc'))
-      expect(Vcloud::Launcher::VappOrchestrator).not_to receive(:provision).with(@successful_app_2)
+    context "default behaviour on failure" do
+      let(:cli_options) { {} }
 
-      cli_options = {}
-      subject.run('input_config_yaml', cli_options)
+      it "should stop" do
+        allow(Vcloud::Launcher::VappOrchestrator).to receive(:provision).
+          with(bad_vapp_one).and_raise(RuntimeError.new('failed to find vdc'))
+
+        expect(Vcloud::Launcher::VappOrchestrator).not_to receive(:provision).with(good_vapp_two)
+
+        subject.run
+      end
     end
 
-    it "should continue on error if cli option continue-on-error is set" do
-      expect(Vcloud::Launcher::VappOrchestrator).to receive(:provision).with(@successful_app_1).and_return(double(:vapp, :power_on => true))
-      expect(Vcloud::Launcher::VappOrchestrator).to receive(:provision).with(@fake_failing_app).and_raise(RuntimeError.new('failed to find vdc'))
-      expect(Vcloud::Launcher::VappOrchestrator).to receive(:provision).with(@successful_app_2).and_return(double(:vapp, :power_on => true))
+    context "with continue-on-error set" do
+      let(:cli_options) { {"continue-on-error" => true} }
 
-      cli_options = {"continue-on-error" => true}
-      subject.run('input_config_yaml', cli_options)
+      it "should continue" do
+        allow(Vcloud::Launcher::VappOrchestrator).to receive(:provision).
+          with(bad_vapp_one).and_raise(RuntimeError.new('failed to find vdc'))
+
+        expect(Vcloud::Launcher::VappOrchestrator).to receive(:provision).with(good_vapp_two).and_return(double(:vapp, :power_on => true))
+
+        subject.run
+      end
     end
-
   end
 
   context "#set_logging_level" do
+    subject { Vcloud::Launcher::Launch.new(config_file, cli_options) }
 
-    it "sets the logging level to DEBUG when :verbose is specified" do
-      expect(Vcloud::Core.logger).to receive(:level=).with(Logger::DEBUG)
-      subject.set_logging_level(:verbose => true)
+    describe "default log level" do
+      let(:cli_options) { {} }
+
+      it "sets the logging level to INFO" do
+        expect(Vcloud::Core.logger).to receive(:level=).with(Logger::INFO)
+        subject
+      end
     end
 
-    it "sets the logging level to ERROR when :quiet is specified" do
-      expect(Vcloud::Core.logger).to receive(:level=).with(Logger::ERROR)
-      subject.set_logging_level(:quiet => true)
+    describe "when :verbose is specified" do
+      let(:cli_options) { { verbose: true } }
+
+      it "sets the logging level to DEBUG" do
+        expect(Vcloud::Core.logger).to receive(:level=).with(Logger::DEBUG)
+        subject
+      end
     end
 
-    it "sets the logging level to DEBUG when :quiet and :verbose are specified" do
-      expect(Vcloud::Core.logger).to receive(:level=).with(Logger::DEBUG)
-      subject.set_logging_level(:quiet => true, :verbose => true)
+    describe "when :quiet is specified" do
+      let(:cli_options) { { quiet: true } }
+
+      it "sets the logging level to ERROR" do
+        expect(Vcloud::Core.logger).to receive(:level=).with(Logger::ERROR)
+        subject
+      end
     end
 
-    it "sets the logging level to INFO by default" do
-      expect(Vcloud::Core.logger).to receive(:level=).with(Logger::INFO)
-      subject.set_logging_level({})
+    describe "when :quiet and :verbose are specified" do
+      let(:cli_options) { { quiet: true, verbose: true } }
+
+      it "sets the logging level to DEBUG when :quiet and :verbose are specified" do
+        expect(Vcloud::Core.logger).to receive(:level=).with(Logger::DEBUG)
+        subject
+      end
     end
   end
 
@@ -80,7 +152,7 @@ describe Vcloud::Launcher::Launch do
         to receive(:provision).and_return(double(:vapp, :power_on => true))
     end
 
-    subject { Vcloud::Launcher::Launch.new }
+    subject { Vcloud::Launcher::Launch.new(config_file) }
 
     context "when bootstrap configuration is supplied" do
       context "script_path is missing" do
@@ -100,7 +172,7 @@ describe Vcloud::Launcher::Launch do
         end
 
         it "raises MissingConfigurationError" do
-          expect{ subject.run(config_file) }.
+          expect{ subject }.
             to raise_error(Vcloud::Launcher::Launch::MissingConfigurationError)
         end
       end
@@ -123,7 +195,7 @@ describe Vcloud::Launcher::Launch do
         end
 
         it "raises MissingPreambleError" do
-          expect{ subject.run(config_file) }.
+          expect{ subject }.
             to raise_error(Vcloud::Launcher::Launch::MissingPreambleError)
         end
       end
@@ -154,7 +226,7 @@ describe Vcloud::Launcher::Launch do
           # A rather overly specific test to find the message of
           # interest amongst other log messages.
           expect(Vcloud::Core.logger).to receive(:info).with(/without variables to template/)
-          subject.run(config_file)
+          subject
         end
       end
     end
@@ -173,7 +245,7 @@ describe Vcloud::Launcher::Launch do
       end
 
       it "should not raise an error" do
-        expect{ subject.run(config_file) }.not_to raise_error
+        expect{ subject }.not_to raise_error
       end
     end
   end
