@@ -1,6 +1,5 @@
 require 'vcloud/core'
 
-require 'vcloud/launcher/cli'
 require 'vcloud/launcher/schema/vm'
 require 'vcloud/launcher/schema/vapp'
 require 'vcloud/launcher/schema/launcher_vapps'

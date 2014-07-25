@@ -85,8 +85,8 @@ describe Vcloud::Launcher::Launch do
       end
     end
 
-    context "with continue-on-error set" do
-      let(:cli_options) { {"continue-on-error" => true} }
+    context "with continue_on_error set" do
+      let(:cli_options) { {continue_on_error: true} }
 
       it "should continue" do
         allow(Vcloud::Launcher::VappOrchestrator).to receive(:provision).

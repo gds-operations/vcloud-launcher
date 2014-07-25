@@ -2,4 +2,32 @@
 
 require 'vcloud/launcher'
 
-Vcloud::Launcher::Cli.new(ARGV).run
+banner_text = <<EOF
+vcloud-launch takes a configuration describing a vCloud Org,
+and tries to make it a reality.
+
+See https://github.com/gds-operations/vcloud-tools for more info
+EOF
+
+opts = Trollop::options do
+  banner banner_text
+
+  opt :config_file,       "Configuration file",    required: true
+  opt :power_on,          "Power on VMs",          default: true
+  opt :continue_on_error, "Ignore errors",         default: false
+  opt :verbose,           "Enable verbose output", default: false
+  opt :quiet,             "Reduced output",        default: false
+  opt :version,           "Show version",          default: false
+
+  conflicts :verbose, :quiet
+end
+
+if opts[:version]
+  puts Vcloud::Launcher::VERSION
+  exit
+end
+
+# FIXME - config_file as a separate arg.
+launcher = Vcloud::Launcher::Launch.new(opts[:config_file], opts)
+launcher.run
+
