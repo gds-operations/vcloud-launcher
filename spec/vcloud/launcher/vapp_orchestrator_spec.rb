@@ -10,7 +10,7 @@ describe Vcloud::Launcher::VappOrchestrator do
       double(:vm)
     }
     let(:mock_vapp) {
-      double(:vapp, :fog_vms => [mock_fog_vm], :reload => self)
+      double(:vapp, :vms => [mock_fog_vm], :reload => self)
     }
     let(:mock_vm_orchestrator) {
       double(:vm_orchestrator, :customize => true)
