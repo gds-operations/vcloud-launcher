@@ -6,11 +6,11 @@ describe Vcloud::Launcher::VappOrchestrator do
 
   context "provision a vapp" do
 
-    let(:mock_fog_vm) {
+    let(:mock_vcloud_vm) {
       double(:vm)
     }
     let(:mock_vapp) {
-      double(:vapp, :vms => [mock_fog_vm], :reload => self)
+      double(:vapp, :vms => [mock_vcloud_vm], :reload => self)
     }
     let(:mock_vm_orchestrator) {
       double(:vm_orchestrator, :customize => true)
@@ -46,7 +46,7 @@ describe Vcloud::Launcher::VappOrchestrator do
 
       expect(Vcloud::Core::Vapp).to receive(:instantiate).with('test-vapp-1', ['org-vdc-1-net-1'], 1, 'test-vdc-1')
       .and_return(mock_vapp)
-      expect(Vcloud::Launcher::VmOrchestrator).to receive(:new).with(mock_fog_vm, mock_vapp).and_return(mock_vm_orchestrator)
+      expect(Vcloud::Launcher::VmOrchestrator).to receive(:new).with(mock_vcloud_vm, mock_vapp).and_return(mock_vm_orchestrator)
 
       new_vapp = subject.provision @config
       expect(new_vapp).to eq(mock_vapp)
