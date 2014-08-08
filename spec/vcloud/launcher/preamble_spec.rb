@@ -36,8 +36,8 @@ module Vcloud
             vars: { bob: 'Hello', mary: 'Hola' }
           },
           extra_disks: [
-            { size:  5120, fs_file: '/opt/test_disk1' },
-            { size: 10240, fs_file: '/opt/test_disk2' },
+            { name: 'test_disk1', size:  5120 },
+            { name: 'test_disk2', size: 10240 },
           ]
         }
       end

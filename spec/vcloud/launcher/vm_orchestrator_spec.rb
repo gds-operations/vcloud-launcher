@@ -26,10 +26,9 @@ describe Vcloud::Launcher::VmOrchestrator do
             :shutdown => true
         },
         :extra_disks => [
-            {:size => '1024', :name => 'Hard disk 2', :fs_file => 'mysql', :fs_mntops => 'mysql-something'},
-            {:size => '2048', :name => 'Hard disk 3', :fs_file => 'solr', :fs_mntops => 'solr-something'}
+            {:name => 'Hard disk 2', :size => '1024'},
+            {:name => 'Hard disk 3', :size => '2048'},
         ],
-
         :network_connections => [
             {:name => "network1", :ip_address => "198.12.1.21"},
         ],
