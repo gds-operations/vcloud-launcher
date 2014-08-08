@@ -6,22 +6,22 @@ describe Vcloud::Launcher::Launch do
     before(:all) do
       @test_data = define_test_data
       @config_yaml = ErbHelper.convert_erb_template_to_yaml(@test_data, File.join(File.dirname(__FILE__), 'data/storage_profile.yaml.erb'))
-      @fog_interface = Vcloud::Fog::ServiceInterface.new
+      @api_interface = Vcloud::Core::ApiInterface.new
       Vcloud::Launcher::Launch.new.run(@config_yaml, {'dont-power-on' => true})
 
-      @vapp_query_result_1 = @fog_interface.get_vapp_by_name_and_vdc_name(@test_data[:vapp_name_1], @test_data[:vdc_1_name])
+      @vapp_query_result_1 = @api_interface.get_vapp_by_name_and_vdc_name(@test_data[:vapp_name_1], @test_data[:vdc_1_name])
       @vapp_id_1 = @vapp_query_result_1[:href].split('/').last
-      @vapp_1 = @fog_interface.get_vapp @vapp_id_1
+      @vapp_1 = @api_interface.get_vapp @vapp_id_1
       @vm_1 = @vapp_1[:Children][:Vm].first
 
-      @vapp_query_result_2 = @fog_interface.get_vapp_by_name_and_vdc_name(@test_data[:vapp_name_2], @test_data[:vdc_2_name])
+      @vapp_query_result_2 = @api_interface.get_vapp_by_name_and_vdc_name(@test_data[:vapp_name_2], @test_data[:vdc_2_name])
       @vapp_id_2 = @vapp_query_result_2[:href].split('/').last
-      @vapp_2 = @fog_interface.get_vapp @vapp_id_2
+      @vapp_2 = @api_interface.get_vapp @vapp_id_2
       @vm_2 = @vapp_2[:Children][:Vm].first
 
-      @vapp_query_result_3 = @fog_interface.get_vapp_by_name_and_vdc_name(@test_data[:vapp_name_3], @test_data[:vdc_1_name])
+      @vapp_query_result_3 = @api_interface.get_vapp_by_name_and_vdc_name(@test_data[:vapp_name_3], @test_data[:vdc_1_name])
       @vapp_id_3 = @vapp_query_result_3[:href].split('/').last
-      @vapp_3 = @fog_interface.get_vapp @vapp_id_3
+      @vapp_3 = @api_interface.get_vapp @vapp_id_3
       @vm_3 = @vapp_3[:Children][:Vm].first
 
     end
@@ -50,9 +50,9 @@ describe Vcloud::Launcher::Launch do
     after(:all) do
       unless ENV['VCLOUD_TOOLS_RSPEC_NO_DELETE_VAPP']
         File.delete @config_yaml
-        expect(@fog_interface.delete_vapp(@vapp_id_1)).to eq(true)
-        expect(@fog_interface.delete_vapp(@vapp_id_2)).to eq(true)
-        expect(@fog_interface.delete_vapp(@vapp_id_3)).to eq(true)
+        expect(@api_interface.delete_vapp(@vapp_id_1)).to eq(true)
+        expect(@api_interface.delete_vapp(@vapp_id_2)).to eq(true)
+        expect(@api_interface.delete_vapp(@vapp_id_3)).to eq(true)
       end
     end
 

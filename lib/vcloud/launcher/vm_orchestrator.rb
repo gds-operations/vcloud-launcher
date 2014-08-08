@@ -2,8 +2,8 @@ module Vcloud
   module Launcher
     class VmOrchestrator
 
-      def initialize fog_vm, vapp
-        vm_id = fog_vm[:href].split('/').last
+      def initialize vcloud_vm, vapp
+        vm_id = vcloud_vm[:href].split('/').last
         @vm = Core::Vm.new(vm_id, vapp)
       end
 

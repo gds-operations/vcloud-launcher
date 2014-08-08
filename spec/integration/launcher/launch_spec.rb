@@ -10,13 +10,13 @@ describe Vcloud::Launcher::Launch do
       test_data_1 = define_test_data
       minimum_data_erb = File.join(File.dirname(__FILE__), 'data/minimum_data_setup.yaml.erb')
       @minimum_data_yaml = ErbHelper.convert_erb_template_to_yaml(test_data_1, minimum_data_erb)
-      @fog_interface = Vcloud::Fog::ServiceInterface.new
+      @api_interface = Vcloud::Core::ApiInterface.new
 
       Vcloud::Launcher::Launch.new.run(@minimum_data_yaml, {"dont-power-on" => true})
 
-      vapp_query_result = @fog_interface.get_vapp_by_name_and_vdc_name(test_data_1[:vapp_name], test_data_1[:vdc_name])
+      vapp_query_result = @api_interface.get_vapp_by_name_and_vdc_name(test_data_1[:vapp_name], test_data_1[:vdc_name])
       @provisioned_vapp_id = vapp_query_result[:href].split('/').last
-      provisioned_vapp = @fog_interface.get_vapp @provisioned_vapp_id
+      provisioned_vapp = @api_interface.get_vapp @provisioned_vapp_id
 
       expect(provisioned_vapp).not_to be_nil
       expect(provisioned_vapp[:name]).to eq(test_data_1[:vapp_name])
@@ -26,7 +26,7 @@ describe Vcloud::Launcher::Launch do
     after(:each) do
       unless ENV['VCLOUD_TOOLS_RSPEC_NO_DELETE_VAPP']
         File.delete @minimum_data_yaml
-        expect(@fog_interface.delete_vapp(@provisioned_vapp_id)).to eq(true)
+        expect(@api_interface.delete_vapp(@provisioned_vapp_id)).to eq(true)
       end
     end
   end
@@ -35,13 +35,13 @@ describe Vcloud::Launcher::Launch do
     before(:all) do
       @test_data = define_test_data
       @config_yaml = ErbHelper.convert_erb_template_to_yaml(@test_data, File.join(File.dirname(__FILE__), 'data/happy_path.yaml.erb'))
-      @fog_interface = Vcloud::Fog::ServiceInterface.new
+      @api_interface = Vcloud::Core::ApiInterface.new
       Vcloud::Launcher::Launch.new.run(@config_yaml, { "dont-power-on" => true })
 
-      @vapp_query_result = @fog_interface.get_vapp_by_name_and_vdc_name(@test_data[:vapp_name], @test_data[:vdc_name])
+      @vapp_query_result = @api_interface.get_vapp_by_name_and_vdc_name(@test_data[:vapp_name], @test_data[:vdc_name])
       @vapp_id = @vapp_query_result[:href].split('/').last
 
-      @vapp = @fog_interface.get_vapp @vapp_id
+      @vapp = @api_interface.get_vapp @vapp_id
       @vm = @vapp[:Children][:Vm].first
       @vm_id = @vm[:href].split('/').last
 
@@ -120,7 +120,7 @@ describe Vcloud::Launcher::Launch do
     after(:all) do
       unless ENV['VCLOUD_TOOLS_RSPEC_NO_DELETE_VAPP']
         File.delete @config_yaml
-        expect(@fog_interface.delete_vapp(@vapp_id)).to eq(true)
+        expect(@api_interface.delete_vapp(@vapp_id)).to eq(true)
       end
     end
 

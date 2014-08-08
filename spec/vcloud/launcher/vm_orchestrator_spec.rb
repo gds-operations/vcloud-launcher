@@ -6,14 +6,14 @@ describe Vcloud::Launcher::VmOrchestrator do
     @vm_id = "vm-12345678-1234-1234-1234-123456712312"
   end
 
-  let(:fog_vm) {
+  let(:vcloud_vm) {
     { :href => "/#{@vm_id}" }
   }
   let(:vapp) {
     double(:vapp, :name => 'web-app1')
   }
   subject {
-    Vcloud::Launcher::VmOrchestrator.new(fog_vm, vapp)
+    Vcloud::Launcher::VmOrchestrator.new(vcloud_vm, vapp)
   }
 
   it "orchestrates customization" do
