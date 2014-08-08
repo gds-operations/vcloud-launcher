@@ -1,12 +1,14 @@
-## 0.3.0 (2014-07-29)
+## 0.3.0 (2014-08-08)
 
-Update to vCloud Core 0.7.0 for the following:
+This release bumps the dependency to vCloud Core 0.9.0:
 
   - New vcloud-login tool for fetching session tokens without the need to
     store your password in a plaintext FOG_RC file.
-  - Deprecate the use of :vcloud_director_password in a plaintext FOG_RC
+  - Deprecates the use of :vcloud_director_password in a plaintext FOG_RC
     file. A warning will be printed to STDERR at load time. Please use
     vcloud-login instead.
+  - This gem no longer directly references fog, instead using vCloud Core's
+    API for its interaction with the vCloud API.
 
 ## 0.2.0 (2014-07-14)
 
