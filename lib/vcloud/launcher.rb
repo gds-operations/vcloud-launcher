@@ -1,4 +1,3 @@
-require 'vcloud/fog'
 require 'vcloud/core'
 
 require 'vcloud/launcher/cli'
