@@ -1,3 +1,10 @@
+## 0.3.1 (2014-08-11)
+
+Maintenance:
+
+  - Upgrade dependency on vCloud Core to 0.10.0 for parity with the other
+    vCloud Tools gems.
+
 ## 0.3.0 (2014-08-08)
 
 This release bumps the dependency to vCloud Core 0.9.0:
