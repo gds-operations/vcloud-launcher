@@ -18,7 +18,7 @@ module Vcloud
       end
 
       def run
-        config[:vapps].each do |vapp_config|
+        @config[:vapps].each do |vapp_config|
           Vcloud::Core.logger.info("Provisioning vApp #{vapp_config[:name]}.")
           begin
             vapp = ::Vcloud::Launcher::VappOrchestrator.provision(vapp_config)
