@@ -58,9 +58,6 @@ describe Vcloud::Launcher::Launch do
     end
 
     context 'without a configuration file' do
-      # Earlier behaviour was to default to 'nil' as the config_file,
-      # be explicit that no config is bad, m'kay?
-
       it 'raises an error' do
         expect { subject.new }.to raise_error(ArgumentError)
       end
