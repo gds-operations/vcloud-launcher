@@ -155,6 +155,24 @@ describe Vcloud::Launcher::Cli do
     end
   end
 
+  describe '.run' do
+    let(:mock_launch) { double(:launch, :run => true) }
+
+    subject { Vcloud::Launcher::Cli.new([ config_file ]) }
+
+    it 'calls Vcloud::Launcher::Launch.run' do
+      allow( Vcloud::Launcher::Launch).to receive(:new).and_return(mock_launch)
+
+      expect(mock_launch).to receive(:run)
+
+      begin
+        subject.run
+      rescue SystemExit => e
+        e.exitstatus
+      end
+    end
+  end
+
   describe "incorrect usage" do
     shared_examples "print usage and exit abnormally" do |error|
       it "does not call Launch" do
