@@ -7,7 +7,7 @@ describe Vcloud::Launcher::Launch do
       @test_data = define_test_data
       @config_yaml = ErbHelper.convert_erb_template_to_yaml(@test_data, File.join(File.dirname(__FILE__), 'data/storage_profile.yaml.erb'))
       @api_interface = Vcloud::Core::ApiInterface.new
-      Vcloud::Launcher::Launch.new.run(@config_yaml, {'dont-power-on' => true})
+      Vcloud::Launcher::Launch.new(@config_yaml, {'dont-power-on' => true}).run
 
       @vapp_query_result_1 = @api_interface.get_vapp_by_name_and_vdc_name(@test_data[:vapp_name_1], @test_data[:vdc_1_name])
       @vapp_id_1 = @vapp_query_result_1[:href].split('/').last
