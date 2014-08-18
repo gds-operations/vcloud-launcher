@@ -12,7 +12,7 @@ describe Vcloud::Launcher::Launch do
       @minimum_data_yaml = ErbHelper.convert_erb_template_to_yaml(test_data_1, minimum_data_erb)
       @api_interface = Vcloud::Core::ApiInterface.new
 
-      Vcloud::Launcher::Launch.new.run(@minimum_data_yaml, {"dont-power-on" => true})
+      Vcloud::Launcher::Launch.new(@minimum_data_yaml, {"dont-power-on" => true}).run
 
       vapp_query_result = @api_interface.get_vapp_by_name_and_vdc_name(test_data_1[:vapp_name], test_data_1[:vdc_name])
       @provisioned_vapp_id = vapp_query_result[:href].split('/').last
@@ -36,7 +36,7 @@ describe Vcloud::Launcher::Launch do
       @test_data = define_test_data
       @config_yaml = ErbHelper.convert_erb_template_to_yaml(@test_data, File.join(File.dirname(__FILE__), 'data/happy_path.yaml.erb'))
       @api_interface = Vcloud::Core::ApiInterface.new
-      Vcloud::Launcher::Launch.new.run(@config_yaml, { "dont-power-on" => true })
+      Vcloud::Launcher::Launch.new(@config_yaml, { "dont-power-on" => true }).run
 
       @vapp_query_result = @api_interface.get_vapp_by_name_and_vdc_name(@test_data[:vapp_name], @test_data[:vdc_name])
       @vapp_id = @vapp_query_result[:href].split('/').last
