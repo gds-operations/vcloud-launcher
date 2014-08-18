@@ -5,19 +5,20 @@ module Vcloud
       class MissingPreambleError < RuntimeError ; end
       class MissingConfigurationError < RuntimeError ; end
 
-      attr_reader :config
+      attr_reader :config, :cli_options
 
-      def initialize
-        @config_loader = Vcloud::Core::ConfigLoader.new
-      end
+      def initialize(config_file, cli_options = {})
+        config_loader = ::Vcloud::Core::ConfigLoader.new
+        @cli_options = cli_options
 
-      def run(config_file = nil, cli_options = {})
-        set_logging_level(cli_options)
-        @config = @config_loader.load_config(config_file, Vcloud::Launcher::Schema::LAUNCHER_VAPPS)
+        set_logging_level
+        @config = config_loader.load_config(config_file, Vcloud::Launcher::Schema::LAUNCHER_VAPPS)
 
         validate_config
+      end
 
-        config[:vapps].each do |vapp_config|
+      def run
+        @config[:vapps].each do |vapp_config|
           Vcloud::Core.logger.info("Provisioning vApp #{vapp_config[:name]}.")
           begin
             vapp = ::Vcloud::Launcher::VappOrchestrator.provision(vapp_config)
@@ -32,7 +33,9 @@ module Vcloud
         end
       end
 
-      def set_logging_level(cli_options)
+      private
+
+      def set_logging_level
         if cli_options[:verbose]
           Vcloud::Core.logger.level = Logger::DEBUG
         elsif cli_options[:quiet]
@@ -41,8 +44,6 @@ module Vcloud
           Vcloud::Core.logger.level = Logger::INFO
         end
       end
-
-      private
 
       def validate_config
         @config[:vapps].each do |vapp_config|

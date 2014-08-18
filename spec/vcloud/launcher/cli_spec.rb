@@ -38,9 +38,8 @@ describe Vcloud::Launcher::Cli do
     shared_examples "a good CLI command" do
       it "passes the right CLI options and exits normally" do
         expect(Vcloud::Launcher::Launch).to receive(:new).
-          and_return(mock_launch)
-        expect(mock_launch).to receive(:run).
-          with(config_file, cli_options)
+          with(config_file, cli_options).and_return(mock_launch)
+
         expect(subject.exitstatus).to eq(0)
       end
     end
@@ -152,6 +151,24 @@ describe Vcloud::Launcher::Cli do
       it "prints usage and exits normally" do
         expect(subject.stderr).to match(/\AUsage: \S+ \[options\] config_file\n/)
         expect(subject.exitstatus).to eq(0)
+      end
+    end
+  end
+
+  describe '.run' do
+    let(:mock_launch) { double(:launch, :run => true) }
+
+    subject { Vcloud::Launcher::Cli.new([ config_file ]) }
+
+    it 'calls Vcloud::Launcher::Launch.run' do
+      allow( Vcloud::Launcher::Launch).to receive(:new).and_return(mock_launch)
+
+      expect(mock_launch).to receive(:run)
+
+      begin
+        subject.run
+      rescue SystemExit => e
+        e.exitstatus
       end
     end
   end

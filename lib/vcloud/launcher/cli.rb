@@ -19,7 +19,8 @@ module Vcloud
 
       def run
         begin
-          Vcloud::Launcher::Launch.new.run(@config_file, @options)
+          launch = Vcloud::Launcher::Launch.new(@config_file, @options)
+          launch.run
         rescue => error_msg
           $stderr.puts(error_msg)
           exit 1
