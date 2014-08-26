@@ -79,9 +79,9 @@ describe Vcloud::Launcher::VappOrchestrator do
         .with('test-vapp-1', [["org-vdc-1-net-1"], ["org-vdc-1-net-1"]], 1, 'test-vdc-1')
         .and_return(mock_vapp)
 
-#      expect(Vcloud::Launcher::VmOrchestrator).to receive(:new)
-#        .with(double(:vm), mock_vapp_with_multi_vm)
-#        .and_return(mock_vm_orchestrator)
+      expect(Vcloud::Launcher::VmOrchestrator).to receive(:new)
+        .with(double(:vm), mock_vapp_with_multi_vm)
+        .and_return(mock_vm_orchestrator)
 
       new_vapp = subject.provision config
       expect(new_vapp).to eq(mock_vapp_with_multi_vm)
