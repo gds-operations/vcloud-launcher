@@ -24,7 +24,7 @@ describe Vcloud::Launcher::VappOrchestrator do
           :vapp_template_name => 'org-1-template',
           :vm => {
               :network_connections => [{:name => 'org-vdc-1-net-1'}]
-          }
+          },
       }
     end
 
@@ -50,6 +50,41 @@ describe Vcloud::Launcher::VappOrchestrator do
 
       new_vapp = subject.provision @config
       expect(new_vapp).to eq(mock_vapp)
+    end
+
+    it "should create a vapp with multiple vms if it does not exist" do
+      config = @config.clone
+      config[:vm] = [
+        {
+          :name => "vm1",
+          :network_connections => [{:name => 'org-vdc-1-net-1'}],
+        },
+        {
+          :name => "vm2",
+          :network_connections => [{:name => 'org-vdc-1-net-1'}],
+        }
+      ]
+      mock_fog_multi_vm = [double(:vm), double(:vm)]
+      mock_vapp_with_multi_vm = double(:vapp, :fog_vms => mock_fog_multi_vm, :reload => self)
+
+      expect(Vcloud::Core::Vapp).to receive(:get_by_name_and_vdc_name)
+        .with('test-vapp-1', 'test-vdc-1')
+        .and_return(nil)
+
+      expect(Vcloud::Core::VappTemplate).to receive(:get)
+        .with('org-1-template', 'org-1-catalog')
+        .and_return(double(:vapp_template, :id => 1))
+
+      expect(Vcloud::Core::Vapp).to receive(:instantiate)
+        .with('test-vapp-1', [["org-vdc-1-net-1"], ["org-vdc-1-net-1"]], 1, 'test-vdc-1')
+        .and_return(mock_vapp)
+
+#      expect(Vcloud::Launcher::VmOrchestrator).to receive(:new)
+#        .with(double(:vm), mock_vapp_with_multi_vm)
+#        .and_return(mock_vm_orchestrator)
+
+      new_vapp = subject.provision config
+      expect(new_vapp).to eq(mock_vapp_with_multi_vm)
     end
 
     context "deprecated config items" do

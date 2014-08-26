@@ -32,28 +32,53 @@ vapps:
     catalog_name: 'our-catalog'
     vapp_template_name: 'our-template-vapp'
     vm:
-      hardware_config:
-        memory: 4096
-        cpu: 2
-      network_connections:
-      - name: 'FrontendNetwork'
-        ip_address: '192.0.2.10'
-      - name: 'BackendNetwork'
-        allocation_mode: 'pool'
-      extra_disks:
-      - name: logs-disk
-        size: 10240
-      - name: data-disk
-        size: 20480
-      bootstrap:
-        script_path: 'scripts/bootstrap_preamble.erb'
-        script_post_processor: 'scripts/minify_bash.py'
-        vars:
-          message: hello world
+      - name: 'vapp-example-complete-1'
+        hardware_config:
+          memory: 4096
+          cpu: 2
+        network_connections:
+        - name: 'FrontendNetwork'
+          ip_address: '192.0.2.10'
+        - name: 'BackendNetwork'
+          allocation_mode: 'pool'
+        extra_disks:
+        - name: logs-disk
+          size: 10240
+        - name: data-disk
+          size: 20480
+        bootstrap:
+          script_path: 'scripts/bootstrap_preamble.erb'
+          script_post_processor: 'scripts/minify_bash.py'
+          vars:
+            message: hello world
+            role: webserver
+            environment: example
+        metadata:
           role: webserver
           environment: example
-      metadata:
-        role: webserver
-        environment: example
-      storage_profile: 'our-updated-storage-profile'
-
+        storage_profile: 'our-updated-storage-profile'
+      - name: 'vapp-example-complete-2'
+        hardware_config:
+          memory: 4096
+          cpu: 2
+        network_connections:
+        - name: 'FrontendNetwork'
+          ip_address: '192.0.2.11'
+        - name: 'BackendNetwork'
+          allocation_mode: 'pool'
+        extra_disks:
+        - name: logs-disk
+          size: 10240
+        - name: data-disk
+          size: 20480
+        bootstrap:
+          script_path: 'scripts/bootstrap_preamble.erb'
+          script_post_processor: 'scripts/minify_bash.py'
+          vars:
+            message: hello world
+            role: webserver
+            environment: example
+        metadata:
+          role: webserver
+          environment: example
+        storage_profile: 'our-updated-storage-profile'
