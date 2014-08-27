@@ -62,11 +62,11 @@ describe Vcloud::Launcher::VappOrchestrator do
       config = @config.clone
       config[:vm] = [
         {
-          :name => "vm",
+          :name => "vm1",
           :network_connections => [{:name => 'org-vdc-1-net-1'}],
         },
         {
-          :name => "vm",
+          :name => "vm2",
           :network_connections => [{:name => 'org-vdc-1-net-1'}],
         }
       ]
@@ -80,7 +80,7 @@ describe Vcloud::Launcher::VappOrchestrator do
 
       expect(Vcloud::Core::Vapp).to receive(:instantiate)
         .with('test-vapp-1', [["org-vdc-1-net-1"], ["org-vdc-1-net-1"]], 1, 'test-vdc-1')
-        .and_return(mock_vapp)
+        .and_return(mock_vapp_with_vm_pair)
 
       expect(Vcloud::Launcher::VmOrchestrator).to receive(:new)
         .with(mock_vcloud_vm_pair.first, mock_vapp_with_vm_pair)
@@ -91,7 +91,7 @@ describe Vcloud::Launcher::VappOrchestrator do
         .and_return(mock_vm_orchestrator)
 
       new_vapp = subject.provision config
-      expect(new_vapp).to eq(mock_vapp_with_multi_vm)
+      expect(new_vapp).to eq(mock_vapp_with_vm_pair)
     end
 
     context "deprecated config items" do
@@ -123,5 +123,12 @@ describe Vcloud::Launcher::VappOrchestrator do
       end
     end
 
+  end
+
+  after do
+    warn "mock_vcloud_vm: #{mock_vcloud_vm}"
+    warn "mock_vcloud_vm_pair: #{mock_vcloud_vm_pair}"
+    warn "mock_vapp: #{mock_vapp}"
+    warn "mock_vapp_with_vm_pair: #{mock_vapp_with_vm_pair}"
   end
 end
