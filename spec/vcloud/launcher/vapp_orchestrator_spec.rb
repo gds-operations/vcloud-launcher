@@ -9,8 +9,14 @@ describe Vcloud::Launcher::VappOrchestrator do
     let(:mock_vcloud_vm) {
       double(:vm)
     }
+    let(:mock_vcloud_vm_pair) {
+      [double(:vm), double(:vm)]
+    }
     let(:mock_vapp) {
       double(:vapp, :vms => [mock_vcloud_vm], :reload => self)
+    }
+    let(:mock_vapp_with_vm_pair) {
+      double(:vapp, :vms => mock_vcloud_vm_pair, :reload => self)
     }
     let(:mock_vm_orchestrator) {
       double(:vm_orchestrator, :customize => true)
@@ -18,13 +24,13 @@ describe Vcloud::Launcher::VappOrchestrator do
 
     before(:each) do
       @config = {
-          :name => 'test-vapp-1',
-          :vdc_name => 'test-vdc-1',
-          :catalog_name => 'org-1-catalog',
-          :vapp_template_name => 'org-1-template',
-          :vm => {
-              :network_connections => [{:name => 'org-vdc-1-net-1'}]
-          },
+        :name => 'test-vapp-1',
+        :vdc_name => 'test-vdc-1',
+        :catalog_name => 'org-1-catalog',
+        :vapp_template_name => 'org-1-template',
+        :vm => {
+          :network_connections => [{:name => 'org-vdc-1-net-1'}]
+        },
       }
     end
 
@@ -56,17 +62,14 @@ describe Vcloud::Launcher::VappOrchestrator do
       config = @config.clone
       config[:vm] = [
         {
-          :name => "vm1",
+          :name => "vm",
           :network_connections => [{:name => 'org-vdc-1-net-1'}],
         },
         {
-          :name => "vm2",
+          :name => "vm",
           :network_connections => [{:name => 'org-vdc-1-net-1'}],
         }
       ]
-      mock_fog_multi_vm = [double(:vm), double(:vm)]
-      mock_vapp_with_multi_vm = double(:vapp, :fog_vms => mock_fog_multi_vm, :reload => self)
-
       expect(Vcloud::Core::Vapp).to receive(:get_by_name_and_vdc_name)
         .with('test-vapp-1', 'test-vdc-1')
         .and_return(nil)
@@ -80,7 +83,11 @@ describe Vcloud::Launcher::VappOrchestrator do
         .and_return(mock_vapp)
 
       expect(Vcloud::Launcher::VmOrchestrator).to receive(:new)
-        .with(double(:vm), mock_vapp_with_multi_vm)
+        .with(mock_vcloud_vm_pair.first, mock_vapp_with_vm_pair)
+        .and_return(mock_vm_orchestrator)
+
+      expect(Vcloud::Launcher::VmOrchestrator).to receive(:new)
+        .with(mock_vcloud_vm_pair.last, mock_vapp_with_vm_pair)
         .and_return(mock_vm_orchestrator)
 
       new_vapp = subject.provision config
