@@ -124,11 +124,4 @@ describe Vcloud::Launcher::VappOrchestrator do
     end
 
   end
-
-  after do
-    warn "mock_vcloud_vm: #{mock_vcloud_vm}"
-    warn "mock_vcloud_vm_pair: #{mock_vcloud_vm_pair}"
-    warn "mock_vapp: #{mock_vapp}"
-    warn "mock_vapp_with_vm_pair: #{mock_vapp_with_vm_pair}"
-  end
 end
