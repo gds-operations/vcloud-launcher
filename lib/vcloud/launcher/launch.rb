@@ -23,6 +23,9 @@ module Vcloud
           begin
             vapp = ::Vcloud::Launcher::VappOrchestrator.provision(vapp_config)
             vapp.power_on unless cli_options["dont-power-on"]
+            if cli_options["script-to-run"]
+              run_script(vapp_config, cli_options["script-to-run"])
+            end
             Vcloud::Core.logger.info("Provisioned vApp #{vapp_config[:name]} successfully.")
           rescue RuntimeError => e
             Vcloud::Core.logger.error("Failure: Could not provision vApp: #{e.message}")
@@ -33,6 +36,29 @@ module Vcloud
       end
 
       private
+
+      def run_script(vapp_definition, script)
+        script_path = File.expand_path("#{script}")
+        if File.exist?(script_path)
+          begin
+            Vcloud::Core.logger.info("Running #{script_path} for #{vapp_definition[:name]}")
+            ENV['VAPP_DEFINITION'] = vapp_definition.to_s
+            exit_status = system("#{script_path}")
+            exit_message = $?
+            if exit_status == false
+              Vcloud::Core.logger.error("Failed to run #{script_path} for #{vapp_definition[:name]} exited with a non-zero response: #{exit_message}")
+            elsif exit_status == nil
+              Vcloud::Core.logger.error("Failed to run #{script_path} for #{vapp_definition[:name]} could not be run: #{exit_message}")
+            else
+              Vcloud::Core.logger.debug("Ran #{script_path} with VAPP_DEFINITION=#{vapp_definition}")
+            end
+          rescue
+            Vcloud::Core.logger.error("Failed to run #{script_path} for #{vapp_definition[:name]}")
+          end
+        else
+          Vcloud::Core.logger.error("#{script_path} does not exist")
+        end
+      end
 
       def set_logging_level
         if cli_options[:verbose]
