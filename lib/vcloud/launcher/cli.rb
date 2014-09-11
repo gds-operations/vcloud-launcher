@@ -11,6 +11,7 @@ module Vcloud
           "dont-power-on"     => false,
           "continue-on-error" => false,
           "quiet"             => false,
+          "script-to-run"     => false,
           "verbose"           => false,
         }
 
@@ -68,6 +69,10 @@ Example configuration files can be found in:
             @options["quiet"] = true
           end
 
+          opts.on("-s SCRIPT", "--script SCRIPT", "Excutable SCRIPT to run when a VM is successfully provisioned") do |script|
+            @options["script-to-run"] = script
+          end
+
           opts.on("-v", "--verbose", "Verbose output") do
             @options["verbose"] = true
           end
@@ -86,7 +91,7 @@ Example configuration files can be found in:
         @usage_text = opt_parser.to_s
         begin
           opt_parser.parse!(args)
-        rescue OptionParser::InvalidOption => e
+        rescue OptionParser::InvalidOption, OptionParser::MissingArgument => e
           exit_error_usage(e)
         end
 

@@ -51,6 +51,7 @@ describe Vcloud::Launcher::Cli do
           "dont-power-on"     => false,
           "continue-on-error" => false,
           "quiet"             => false,
+          "script-to-run"     => false,
           "verbose"           => false,
         }
       }
@@ -65,6 +66,7 @@ describe Vcloud::Launcher::Cli do
           "dont-power-on"     => true,
           "continue-on-error" => false,
           "quiet"             => false,
+          "script-to-run"     => false,
           "verbose"           => false,
         }
       }
@@ -79,6 +81,7 @@ describe Vcloud::Launcher::Cli do
           "dont-power-on"     => false,
           "continue-on-error" => true,
           "quiet"             => false,
+          "script-to-run"     => false,
           "verbose"           => false,
         }
       }
@@ -93,6 +96,7 @@ describe Vcloud::Launcher::Cli do
           "dont-power-on"     => false,
           "continue-on-error" => false,
           "quiet"             => true,
+          "script-to-run"     => false,
           "verbose"           => false,
         }
       }
@@ -107,6 +111,7 @@ describe Vcloud::Launcher::Cli do
           "dont-power-on"     => false,
           "continue-on-error" => false,
           "quiet"             => false,
+          "script-to-run"     => false,
           "verbose"           => true,
         }
       }
@@ -121,7 +126,23 @@ describe Vcloud::Launcher::Cli do
           "dont-power-on"     => false,
           "continue-on-error" => true,
           "quiet"             => false,
+          "script-to-run"     => false,
           "verbose"           => true,
+        }
+      }
+
+      it_behaves_like "a good CLI command"
+    end
+
+    context "when asked to run a script on launch" do
+      let(:args) { [ config_file, "--script", "GIRAFFE" ] }
+      let(:cli_options) {
+        {
+          "dont-power-on"     => false,
+          "continue-on-error" => false,
+          "quiet"             => false,
+          "script-to-run"     => 'GIRAFFE',
+          "verbose"           => false,
         }
       }
 
