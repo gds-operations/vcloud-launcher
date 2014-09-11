@@ -31,6 +31,53 @@ describe Vcloud::Launcher::Launch do
     end
   end
 
+  context "when running successful post-launch commands" do
+    it 'should log that it ran the command' do
+      @test_data = define_test_data
+      @config_yaml = ErbHelper.convert_erb_template_to_yaml(@test_data, File.join(File.dirname(__FILE__), 'data/minimum_data_setup.yaml.erb'))
+
+      # Stub out other debug messages to prevent expectation failing to match
+      Vcloud::Core.logger.stub(:debug).with(anything())
+
+      # Expectation must be set before first use of Vcloud::Core.logger
+      expect(Vcloud::Core.logger).to receive(:debug).with(/Ran.*with VAPP_DEFINITION/)
+
+      @api_interface = Vcloud::Core::ApiInterface.new
+
+      Vcloud::Launcher::Launch.new(@config_yaml, { "continue-on-error" => false, "dont-power-on" => true, "post-launch-cmd" => File.join(File.dirname(__FILE__), 'data/true_cmd') }).run
+
+      @vapp_query_result = @api_interface.get_vapp_by_name_and_vdc_name(@test_data[:vapp_name], @test_data[:vdc_name])
+      @vapp_id = @vapp_query_result[:href].split('/').last
+
+      unless ENV['VCLOUD_TOOLS_RSPEC_NO_DELETE_VAPP']
+        File.delete @config_yaml
+        expect(@api_interface.delete_vapp(@vapp_id)).to eq(true)
+      end
+    end
+  end
+
+  context "When running unsuccessful post-launch commands" do
+    it 'should give an appropriate error message' do
+      @test_data = define_test_data
+      @config_yaml = ErbHelper.convert_erb_template_to_yaml(@test_data, File.join(File.dirname(__FILE__), 'data/minimum_data_setup.yaml.erb'))
+
+      # Expectation must be set before first use of Vcloud::Core.logger
+      expect(Vcloud::Core.logger).to receive(:error).with(/Failed to run/)
+
+      @api_interface = Vcloud::Core::ApiInterface.new
+
+      Vcloud::Launcher::Launch.new(@config_yaml, { "continue-on-error" => false, "dont-power-on" => true, "post-launch-cmd" => File.join(File.dirname(__FILE__), 'data/false_cmd') }).run
+
+      @vapp_query_result = @api_interface.get_vapp_by_name_and_vdc_name(@test_data[:vapp_name], @test_data[:vdc_name])
+      @vapp_id = @vapp_query_result[:href].split('/').last
+
+      unless ENV['VCLOUD_TOOLS_RSPEC_NO_DELETE_VAPP']
+        File.delete @config_yaml
+        expect(@api_interface.delete_vapp(@vapp_id)).to eq(true)
+      end
+    end
+  end
+
   context "happy path" do
     before(:all) do
       @test_data = define_test_data

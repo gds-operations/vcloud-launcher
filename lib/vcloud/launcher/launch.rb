@@ -23,6 +23,9 @@ module Vcloud
           begin
             vapp = ::Vcloud::Launcher::VappOrchestrator.provision(vapp_config)
             vapp.power_on unless cli_options["dont-power-on"]
+            if cli_options["post-launch-cmd"]
+              run_command(vapp_config, cli_options["post-launch-cmd"])
+            end
             Vcloud::Core.logger.info("Provisioned vApp #{vapp_config[:name]} successfully.")
           rescue RuntimeError => e
             Vcloud::Core.logger.error("Failure: Could not provision vApp: #{e.message}")
@@ -33,6 +36,34 @@ module Vcloud
       end
 
       private
+
+      def run_command(vapp_definition, command)
+        command_path = File.expand_path(command)
+        if File.exist?(command_path)
+          begin
+            Vcloud::Core.logger.info("Running #{command_path} for #{vapp_definition[:name]}")
+            ENV['VAPP_DEFINITION'] = vapp_definition.to_s
+            exit_status = system(command_path)
+            exit_message = $?
+            if exit_status == false
+              # The command has returned a non-zero exit code
+              Vcloud::Core.logger.error("Failed to run #{command_path} for #{vapp_definition[:name]} exited with a non-zero response: #{exit_message}")
+            elsif exit_status == nil
+              # The call to system() has returned no exit code
+              Vcloud::Core.logger.error("Failed to run #{command_path} for #{vapp_definition[:name]} could not be run: #{exit_message}")
+            else
+              # The command has returned a zero exit code SUCCESS!
+              Vcloud::Core.logger.debug("Ran #{command_path} with VAPP_DEFINITION=#{vapp_definition}")
+            end
+          rescue
+            # Catch various errors including no permissions or unable to execute script
+            Vcloud::Core.logger.error("Failed to run #{command_path} for #{vapp_definition[:name]}")
+          end
+        else
+          # Catch specific case of a script that does not exist
+          Vcloud::Core.logger.error("#{command_path} does not exist")
+        end
+      end
 
       def set_logging_level
         if cli_options[:verbose]
