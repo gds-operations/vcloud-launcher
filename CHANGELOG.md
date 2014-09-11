@@ -1,3 +1,9 @@
+## 0.4.0 (2014-09-11)
+
+  - Upgrade dependency on vCloud Core to 0.11.0 which prevents plaintext
+    passwords in FOG_RC. Please use tokens via vcloud-login as per
+    the documentation: http://gds-operations.github.io/vcloud-tools/usage/
+
 ## 0.3.1 (2014-08-11)
 
 Maintenance:
