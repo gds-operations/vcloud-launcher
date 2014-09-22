@@ -21,7 +21,7 @@ module Vcloud
               internals: {
                 name:              { type: 'string',  required: true },
                 value:             { type: 'string',  required: true },
-                type:              { type: 'string',  required: false},
+                type:              { type: 'enum',    required: false, acceptable_values: ['string', 'int']},
                 password:          { type: 'boolean', required: false},
                 user_configurable: { type: 'boolean', required: false},
               },
