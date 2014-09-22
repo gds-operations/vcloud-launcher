@@ -18,6 +18,8 @@ module Vcloud
 
         network_names = extract_vm_networks(vapp_config)
         vapp = Vcloud::Core::Vapp.instantiate(name, network_names, template_id, vdc_name)
+        vapp.update_custom_fields vapp_config[:custom_fields]
+
         Vcloud::Launcher::VmOrchestrator.new(vapp.vms.first, vapp).customize(vapp_config[:vm]) if vapp_config[:vm]
 
         vapp
