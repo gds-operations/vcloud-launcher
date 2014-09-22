@@ -22,6 +22,17 @@ describe Vcloud::Launcher::VappOrchestrator do
           :vdc_name => 'test-vdc-1',
           :catalog_name => 'org-1-catalog',
           :vapp_template_name => 'org-1-template',
+          :custom_fields => [
+            {
+              :name  => 'datacenter',
+              :value => 'DC1'
+            },
+            {
+              :name  => 'custom_attribute',
+              :value => '777'
+            }
+
+          ],
           :vm => {
               :network_connections => [{:name => 'org-vdc-1-net-1'}]
           }
@@ -46,6 +57,8 @@ describe Vcloud::Launcher::VappOrchestrator do
 
       expect(Vcloud::Core::Vapp).to receive(:instantiate).with('test-vapp-1', ['org-vdc-1-net-1'], 1, 'test-vdc-1')
       .and_return(mock_vapp)
+      expect(mock_vapp).to receive(:update_custom_fields).with(@config[:custom_fields]).and_return(true)
+
       expect(Vcloud::Launcher::VmOrchestrator).to receive(:new).with(mock_vcloud_vm, mock_vapp).and_return(mock_vm_orchestrator)
 
       new_vapp = subject.provision @config
@@ -59,6 +72,7 @@ describe Vcloud::Launcher::VappOrchestrator do
       before(:each) {
         allow(Vcloud::Core::Vapp).to receive(:get_by_name_and_vdc_name)
         allow(Vcloud::Core::Vapp).to receive(:instantiate).and_return(mock_vapp)
+        allow(mock_vapp).to receive(:update_custom_fields).with(@config[:custom_fields]).and_return(true)
         allow(Vcloud::Launcher::VmOrchestrator).to receive(:new).and_return(mock_vm_orchestrator)
       }
 
