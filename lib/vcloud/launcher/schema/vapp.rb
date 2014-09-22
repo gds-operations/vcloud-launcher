@@ -19,11 +19,11 @@ module Vcloud
             each_element_is: {
               type: 'hash',
               internals: {
-                name: { type: 'string', required: true },
-                value: { type: 'string', required: true },
-                type: { type: 'string', required: false},
-                password: { type: 'string', required: false},
-                user_configurable: { type: 'string', required: false},
+                name:              { type: 'string',  required: true },
+                value:             { type: 'string',  required: true },
+                type:              { type: 'string',  required: false},
+                password:          { type: 'boolean', required: false},
+                user_configurable: { type: 'boolean', required: false},
               },
             },
           },
