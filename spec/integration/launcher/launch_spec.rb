@@ -78,10 +78,18 @@ describe Vcloud::Launcher::Launch do
         expect(@vm_metadata[:is_string]).to eq('Hello World')
       end
 
-      it "should attach extra hard disks to vm" do
-        disks = extract_disks(@vm)
+      it "should attach extra local hard disks to vm" do
+        disks = extract_local_disks(@vm)
         expect(disks.count).to eq(3)
         [{:name => 'Hard disk 2', :size => '1024'}, {:name => 'Hard disk 3', :size => '2048'}].each do |new_disk|
+          expect(disks).to include(new_disk)
+        end
+      end
+
+      it "should attach extra independent disks to vm" do
+        disks = extract_independent_disks(@vm)
+        expect(disks.count).to eq(1)
+        [{:name => 'Hard disk 4'}].each do |new_disk|
           expect(disks).to include(new_disk)
         end
       end
@@ -134,9 +142,26 @@ describe Vcloud::Launcher::Launch do
     vm[:'ovf:VirtualHardwareSection'][:'ovf:Item'].detect { |i| i[:'rasd:ResourceType'] == '3' }[:'rasd:VirtualQuantity']
   end
 
-  def extract_disks(vm)
+  def extract_local_disks(vm)
     vm[:'ovf:VirtualHardwareSection'][:'ovf:Item'].collect { |d|
-      {:name => d[:"rasd:ElementName"], :size => (d[:"rasd:HostResource"][:ns12_capacity] || d[:"rasd:HostResource"][:vcloud_capacity])} if d[:'rasd:ResourceType'] == '17'
+      if d[:'rasd:ResourceType'] == '17' && ! d[:'rasd:HostResource'].key?(:vcloud_disk)
+        {
+          :name => d[:"rasd:ElementName"],
+          :size => (
+            d[:"rasd:HostResource"][:ns12_capacity] || d[:"rasd:HostResource"][:vcloud_capacity]
+          )
+        }
+      end
+    }.compact
+  end
+
+  def extract_independent_disks(vm)
+    vm[:'ovf:VirtualHardwareSection'][:'ovf:Item'].collect { |d|
+      if d[:'rasd:ResourceType'] == '17' && d[:'rasd:HostResource'].key?(:vcloud_disk)
+        {
+          :name => d[:"rasd:ElementName"]
+        }
+      end
     }.compact
   end
 
@@ -147,6 +172,7 @@ describe Vcloud::Launcher::Launch do
       "vdc_1_name",
       "catalog",
       "vapp_template",
+      "existing_independent_disk_1",
       "storage_profile",
       "network_1",
       "network_2",
@@ -161,6 +187,7 @@ describe Vcloud::Launcher::Launch do
       catalog: parameters.catalog,
       vapp_template: parameters.vapp_template,
       storage_profile: parameters.storage_profile,
+      existing_independent_disk_1: parameters.existing_independent_disk_1,
       network_1: parameters.network_1,
       network_2: parameters.network_2,
       network_1_ip: parameters.network_1_ip,
