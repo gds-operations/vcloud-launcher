@@ -11,7 +11,7 @@ module Vcloud
           "dont-power-on"     => false,
           "continue-on-error" => false,
           "quiet"             => false,
-          "script-to-run"     => false,
+          "post-launch-cmd"   => false,
           "verbose"           => false,
         }
 
@@ -69,8 +69,8 @@ Example configuration files can be found in:
             @options["quiet"] = true
           end
 
-          opts.on("-s SCRIPT", "--script SCRIPT", "Excutable SCRIPT to run when a VM is successfully provisioned") do |script|
-            @options["script-to-run"] = script
+          opts.on("-p COMMAND", "--post-launch-cmd COMMAND", "Executable to run when a VM is successfully provisioned") do |command|
+            @options["post-launch-cmd"] = command
           end
 
           opts.on("-v", "--verbose", "Verbose output") do
