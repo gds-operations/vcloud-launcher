@@ -38,12 +38,12 @@ module Vcloud
       private
 
       def run_script(vapp_definition, script)
-        script_path = File.expand_path("#{script}")
+        script_path = File.expand_path(script)
         if File.exist?(script_path)
           begin
             Vcloud::Core.logger.info("Running #{script_path} for #{vapp_definition[:name]}")
             ENV['VAPP_DEFINITION'] = vapp_definition.to_s
-            exit_status = system("#{script_path}")
+            exit_status = system(script_path)
             exit_message = $?
             if exit_status == false
               # The command has returned a non-zero exit code
