@@ -46,16 +46,21 @@ module Vcloud
             exit_status = system("#{script_path}")
             exit_message = $?
             if exit_status == false
+              # The command has returned a non-zero exit code
               Vcloud::Core.logger.error("Failed to run #{script_path} for #{vapp_definition[:name]} exited with a non-zero response: #{exit_message}")
             elsif exit_status == nil
+              # The call to system() has returned no exit code
               Vcloud::Core.logger.error("Failed to run #{script_path} for #{vapp_definition[:name]} could not be run: #{exit_message}")
             else
+              # The command has returned a zero exit code SUCCESS!
               Vcloud::Core.logger.debug("Ran #{script_path} with VAPP_DEFINITION=#{vapp_definition}")
             end
           rescue
+            # Catch various errors including no permissions or unable to execute script
             Vcloud::Core.logger.error("Failed to run #{script_path} for #{vapp_definition[:name]}")
           end
         else
+          # Catch specific case of a script that does not exist
           Vcloud::Core.logger.error("#{script_path} does not exist")
         end
       end
