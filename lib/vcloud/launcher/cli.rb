@@ -70,7 +70,11 @@ Example configuration files can be found in:
           end
 
           opts.on("-p COMMAND", "--post-launch-cmd COMMAND", "Executable to run when a VM is successfully provisioned") do |command|
-            @options["post-launch-cmd"] = command
+            if command.split().length() != 1
+              exit_error_usage("COMMAND only accepts an executable name, not a command with arguments")
+            else
+              @options["post-launch-cmd"] = command
+            end
           end
 
           opts.on("-v", "--verbose", "Verbose output") do

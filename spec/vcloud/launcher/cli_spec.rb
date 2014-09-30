@@ -149,6 +149,22 @@ describe Vcloud::Launcher::Cli do
       it_behaves_like "a good CLI command"
     end
 
+    context "when asked to run an invalid command on launch" do
+      let(:args) { [ config_file, "--post-launch-cmd", "GIRAFFE LION" ] }
+      let(:cli_options) {
+        {
+          "dont-power-on"     => false,
+          "continue-on-error" => false,
+          "quiet"             => false,
+          "post-launch-cmd"   => 'GIRAFFE LION',
+          "verbose"           => false,
+        }
+      }
+      it "exits with a non-zero status" do
+        expect(subject.exitstatus).not_to eq(0)
+      end
+    end
+
     context "when asked to display version" do
       let(:args) { %w{--version} }
 
