@@ -2,8 +2,8 @@ module Vcloud
   module Launcher
     class IndependentDiskOrchestrator
 
-      def initialize(vm_obj)
-        @vm = vm_obj
+      def initialize(vm)
+        @vm = vm
       end
 
       def attach(independent_disks_config)
