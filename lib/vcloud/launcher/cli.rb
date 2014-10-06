@@ -11,6 +11,7 @@ module Vcloud
           "dont-power-on"     => false,
           "continue-on-error" => false,
           "quiet"             => false,
+          "post-launch-cmd"   => false,
           "verbose"           => false,
         }
 
@@ -68,6 +69,14 @@ Example configuration files can be found in:
             @options["quiet"] = true
           end
 
+          opts.on("-p COMMAND", "--post-launch-cmd COMMAND", "Executable to run when a VM is successfully provisioned") do |command|
+            if command.split().length() != 1
+              exit_error_usage("COMMAND only accepts an executable name, not a command with arguments")
+            else
+              @options["post-launch-cmd"] = command
+            end
+          end
+
           opts.on("-v", "--verbose", "Verbose output") do
             @options["verbose"] = true
           end
@@ -86,7 +95,7 @@ Example configuration files can be found in:
         @usage_text = opt_parser.to_s
         begin
           opt_parser.parse!(args)
-        rescue OptionParser::InvalidOption => e
+        rescue OptionParser::InvalidOption, OptionParser::MissingArgument => e
           exit_error_usage(e)
         end
 

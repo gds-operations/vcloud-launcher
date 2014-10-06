@@ -51,6 +51,7 @@ describe Vcloud::Launcher::Cli do
           "dont-power-on"     => false,
           "continue-on-error" => false,
           "quiet"             => false,
+          "post-launch-cmd"   => false,
           "verbose"           => false,
         }
       }
@@ -65,6 +66,7 @@ describe Vcloud::Launcher::Cli do
           "dont-power-on"     => true,
           "continue-on-error" => false,
           "quiet"             => false,
+          "post-launch-cmd"   => false,
           "verbose"           => false,
         }
       }
@@ -79,6 +81,7 @@ describe Vcloud::Launcher::Cli do
           "dont-power-on"     => false,
           "continue-on-error" => true,
           "quiet"             => false,
+          "post-launch-cmd"   => false,
           "verbose"           => false,
         }
       }
@@ -93,6 +96,7 @@ describe Vcloud::Launcher::Cli do
           "dont-power-on"     => false,
           "continue-on-error" => false,
           "quiet"             => true,
+          "post-launch-cmd"   => false,
           "verbose"           => false,
         }
       }
@@ -107,6 +111,7 @@ describe Vcloud::Launcher::Cli do
           "dont-power-on"     => false,
           "continue-on-error" => false,
           "quiet"             => false,
+          "post-launch-cmd"   => false,
           "verbose"           => true,
         }
       }
@@ -121,11 +126,43 @@ describe Vcloud::Launcher::Cli do
           "dont-power-on"     => false,
           "continue-on-error" => true,
           "quiet"             => false,
+          "post-launch-cmd"   => false,
           "verbose"           => true,
         }
       }
 
       it_behaves_like "a good CLI command"
+    end
+
+    context "when asked to run a command on launch" do
+      let(:args) { [ config_file, "--post-launch-cmd", "GIRAFFE" ] }
+      let(:cli_options) {
+        {
+          "dont-power-on"     => false,
+          "continue-on-error" => false,
+          "quiet"             => false,
+          "post-launch-cmd"   => 'GIRAFFE',
+          "verbose"           => false,
+        }
+      }
+
+      it_behaves_like "a good CLI command"
+    end
+
+    context "specifying a command with arguments to run on launch" do
+      let(:args) { [ config_file, "--post-launch-cmd", "GIRAFFE LION" ] }
+      let(:cli_options) {
+        {
+          "dont-power-on"     => false,
+          "continue-on-error" => false,
+          "quiet"             => false,
+          "post-launch-cmd"   => 'GIRAFFE LION',
+          "verbose"           => false,
+        }
+      }
+      it "exits with a error code, because this is not supported" do
+        expect(subject.exitstatus).not_to eq(0)
+      end
     end
 
     context "when asked to display version" do
