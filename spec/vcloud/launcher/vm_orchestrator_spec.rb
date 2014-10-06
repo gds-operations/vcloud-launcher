@@ -12,10 +12,6 @@ describe Vcloud::Launcher::VmOrchestrator do
   let(:vapp) {
     double(:vapp, :name => 'web-app1')
   }
-  let(:mock_disk_orchestrator) {
-    double(:mock_disk_orchestrator)
-  }
-
   subject {
     Vcloud::Launcher::VmOrchestrator.new(vcloud_vm, vapp)
   }
@@ -32,10 +28,6 @@ describe Vcloud::Launcher::VmOrchestrator do
         :extra_disks => [
             {:name => 'Hard disk 2', :size => '1024'},
             {:name => 'Hard disk 3', :size => '2048'},
-        ],
-        :independent_disks => [
-            {:name => 'test-independent-disk-1' },
-            {:name => 'test-independent-disk-2' },
         ],
         :network_connections => [
             {:name => "network1", :ip_address => "198.12.1.21"},
@@ -55,9 +47,6 @@ describe Vcloud::Launcher::VmOrchestrator do
     expect(vm).to receive(:update_memory_size_in_mb).with(4096)
     expect(vm).to receive(:add_extra_disks).with(vm_config[:extra_disks])
     expect(vm).to receive(:update_metadata).with(vm_config[:metadata])
-    expect(Vcloud::Launcher::IndependentDiskOrchestrator).
-      to receive(:new).with(vm).and_return(mock_disk_orchestrator)
-    expect(mock_disk_orchestrator).to receive(:attach).with(vm_config[:independent_disks])
 
     allow(vm).to receive(:configure_guest_customization_section).with('')
 

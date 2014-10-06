@@ -7,7 +7,6 @@ require 'vcloud/launcher/schema/launcher_vapps'
 
 require 'vcloud/launcher/launch'
 require 'vcloud/launcher/preamble'
-require 'vcloud/launcher/independent_disk_orchestrator'
 require 'vcloud/launcher/vm_orchestrator'
 require 'vcloud/launcher/vapp_orchestrator'
 
