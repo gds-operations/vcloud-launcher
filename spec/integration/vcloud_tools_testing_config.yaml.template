@@ -7,7 +7,6 @@ default:
   network_1_ip:
   network_2:
   network_2_ip:
-  existing_independent_disk_1:
   storage_profile:
   default_storage_profile_name:
   default_storage_profile_href:
