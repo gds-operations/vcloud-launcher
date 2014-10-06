@@ -1,3 +1,17 @@
+## 0.5.0 (2014-10-06)
+
+Features:
+
+  - Independent Disks can now be attached to VMs, by specifying an
+    `attached_disks` list-of-disk-hashes in the vm config section.
+  - Adds IndependentDiskOrchestrator class for management of Independent
+    Disks.
+
+Maintenance:
+
+  - Upgrade dependency on vCloud Core to 0.12.0 to bring in support for
+    Independent Disks
+
 ## 0.4.0 (2014-09-11)
 
   - Upgrade dependency on vCloud Core to 0.11.0 which prevents plaintext
