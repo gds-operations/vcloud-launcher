@@ -17,6 +17,9 @@ module Vcloud
         end
         @vm.add_extra_disks(vm_config[:extra_disks])
         @vm.update_metadata(vm_config[:metadata])
+        if vm_config.key?(:independent_disks)
+          Vcloud::Launcher::IndependentDiskOrchestrator.new(@vm).attach(vm_config.fetch(:independent_disks))
+        end
 
         preamble = vm_config[:bootstrap] ? generate_preamble(vm_config) : ''
 
