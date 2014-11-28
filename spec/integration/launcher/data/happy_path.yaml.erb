@@ -20,6 +20,8 @@ vapps:
         name: Hard disk 2
       - size: '2048'
         name: Hard disk 3
+      independent_disks:
+      - name: <%= existing_independent_disk_1 %>
       network_connections:
       - name: <%= network_1 %>
         ip_address: <%= network_1_ip %>
