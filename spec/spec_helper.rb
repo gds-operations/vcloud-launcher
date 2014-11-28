@@ -22,6 +22,7 @@ if ENV['COVERAGE']
 end
 
 require 'erb_helper'
+require 'support/integration_helper'
 require 'vcloud/launcher'
 
 RSpec.configure do |config|
