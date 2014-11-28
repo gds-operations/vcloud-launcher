@@ -81,6 +81,11 @@ describe Vcloud::Launcher::Launch do
   context "happy path" do
     before(:all) do
       @test_data = define_test_data
+      @test_case_independent_disks = IntegrationHelper.create_test_case_independent_disks(
+        1, @test_data[:vdc_name], '100MB')
+      @test_independent_disk = @test_case_independent_disks.first
+      @test_data[:independent_disk_name] = @test_independent_disk.name
+
       @config_yaml = ErbHelper.convert_erb_template_to_yaml(@test_data, File.join(File.dirname(__FILE__), 'data/happy_path.yaml.erb'))
       @api_interface = Vcloud::Core::ApiInterface.new
       Vcloud::Launcher::Launch.new(@config_yaml, { "dont-power-on" => true }).run
@@ -176,6 +181,7 @@ describe Vcloud::Launcher::Launch do
       unless ENV['VCLOUD_TOOLS_RSPEC_NO_DELETE_VAPP']
         File.delete @config_yaml
         expect(@api_interface.delete_vapp(@vapp_id)).to eq(true)
+        IntegrationHelper.delete_independent_disks(@test_case_independent_disks)
       end
     end
 
@@ -219,7 +225,6 @@ describe Vcloud::Launcher::Launch do
       "vdc_1_name",
       "catalog",
       "vapp_template",
-      "existing_independent_disk_1",
       "storage_profile",
       "network_1",
       "network_2",
@@ -234,7 +239,6 @@ describe Vcloud::Launcher::Launch do
       catalog: parameters.catalog,
       vapp_template: parameters.vapp_template,
       storage_profile: parameters.storage_profile,
-      existing_independent_disk_1: parameters.existing_independent_disk_1,
       network_1: parameters.network_1,
       network_2: parameters.network_2,
       network_1_ip: parameters.network_1_ip,
