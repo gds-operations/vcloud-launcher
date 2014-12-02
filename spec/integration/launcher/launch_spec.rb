@@ -180,11 +180,23 @@ describe Vcloud::Launcher::Launch do
     after(:all) do
       unless ENV['VCLOUD_TOOLS_RSPEC_NO_DELETE_VAPP']
         File.delete @config_yaml
-        expect(@api_interface.delete_vapp(@vapp_id)).to eq(true)
+        @api_interface.delete_vapp(@vapp_id)
+        wait_for_disks_to_detach
         IntegrationHelper.delete_independent_disks(@test_case_independent_disks)
       end
     end
 
+  end
+
+  def wait_for_disks_to_detach
+    # There is an annoying delay after a vapp is deleted before any attached
+    # independent disks are registered as detached in vCD. The
+    # disk#attached_vms call lies during this period too, so cannot be used to
+    # ascertain that the disk is completely detached.
+    #
+    # As a result, just wait for a sufficiently long time for vCD to get its
+    # act together.
+    sleep(20)
   end
 
   def extract_memory(vm)
