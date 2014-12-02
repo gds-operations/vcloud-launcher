@@ -17,8 +17,6 @@ provisions the vApps and VMs contained within.
 - Source vApp Template must contain a single VM. This is VMware's recommended
 'simple' method of vApp creation. Complex multi-VM vApps are not supported.
 - Org vDC Networks must be precreated.
-- IP addresses are assigned manually (recommended) or via DHCP. VM IP pools are
-not supported.
 - vCloud has some interesting ideas about the size of potential 'guest
 customisation scripts' (aka preambles). You may need to use an external minify
 tool to reduce the size, or speak to your provider to up the limit. 2048 bytes
