@@ -1,3 +1,10 @@
+## UNRELEASED
+
+Documentation:
+
+  - Documentation corrected to reflect that IP pools are supported.
+    Thanks to @rickard-von-essen.
+
 ## 0.5.0 (2014-10-14)
 
 Features:
