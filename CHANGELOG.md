@@ -1,3 +1,14 @@
+## 0.6.0 (2014-12-03)
+
+Features:
+
+  - Update vCloud Core to 0.16.0 for `vcloud-logout` utility.
+
+Documentation:
+
+  - Documentation corrected to reflect that IP pools are supported.
+    Thanks to @rickard-von-essen.
+
 ## 0.5.0 (2014-10-14)
 
 Features:

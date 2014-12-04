@@ -29,5 +29,6 @@ rm -rf vcloud-tools-testing-config
 # Never log token to STDOUT.
 set +x
 eval $(printenv API_PASSWORD | bundle exec vcloud-login)
+trap "bundle exec vcloud-logout" EXIT
 
 bundle exec rake integration:all
