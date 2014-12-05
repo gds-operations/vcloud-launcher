@@ -40,6 +40,17 @@ module Vcloud
               },
             },
           },
+          independent_disks: {
+            type: 'array',
+            required: false,
+            allowed_empty: true,
+            each_element_is: {
+              type: 'hash',
+              internals: {
+                name: { type: 'string', required: true },
+              },
+            },
+          },
           bootstrap:   {
             type: 'hash',
             required: false,

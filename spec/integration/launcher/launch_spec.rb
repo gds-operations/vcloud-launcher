@@ -81,6 +81,11 @@ describe Vcloud::Launcher::Launch do
   context "happy path" do
     before(:all) do
       @test_data = define_test_data
+      @test_case_independent_disks = IntegrationHelper.create_test_case_independent_disks(
+        1, @test_data[:vdc_name], '100MB')
+      @test_independent_disk = @test_case_independent_disks.first
+      @test_data[:independent_disk_name] = @test_independent_disk.name
+
       @config_yaml = ErbHelper.convert_erb_template_to_yaml(@test_data, File.join(File.dirname(__FILE__), 'data/happy_path.yaml.erb'))
       @api_interface = Vcloud::Core::ApiInterface.new
       Vcloud::Launcher::Launch.new(@config_yaml, { "dont-power-on" => true }).run
@@ -125,10 +130,18 @@ describe Vcloud::Launcher::Launch do
         expect(@vm_metadata[:is_string]).to eq('Hello World')
       end
 
-      it "should attach extra hard disks to vm" do
-        disks = extract_disks(@vm)
+      it "should attach extra local hard disks to vm" do
+        disks = extract_local_disks(@vm)
         expect(disks.count).to eq(3)
         [{:name => 'Hard disk 2', :size => '1024'}, {:name => 'Hard disk 3', :size => '2048'}].each do |new_disk|
+          expect(disks).to include(new_disk)
+        end
+      end
+
+      it "should attach extra independent disks to vm" do
+        disks = extract_independent_disks(@vm)
+        expect(disks.count).to eq(1)
+        [{:name => 'Hard disk 4'}].each do |new_disk|
           expect(disks).to include(new_disk)
         end
       end
@@ -167,10 +180,23 @@ describe Vcloud::Launcher::Launch do
     after(:all) do
       unless ENV['VCLOUD_TOOLS_RSPEC_NO_DELETE_VAPP']
         File.delete @config_yaml
-        expect(@api_interface.delete_vapp(@vapp_id)).to eq(true)
+        @api_interface.delete_vapp(@vapp_id)
+        wait_for_disks_to_detach
+        IntegrationHelper.delete_independent_disks(@test_case_independent_disks)
       end
     end
 
+  end
+
+  def wait_for_disks_to_detach
+    # There is an annoying delay after a vapp is deleted before any attached
+    # independent disks are registered as detached in vCD. The
+    # disk#attached_vms call lies during this period too, so cannot be used to
+    # ascertain that the disk is completely detached.
+    #
+    # As a result, just wait for a sufficiently long time for vCD to get its
+    # act together.
+    sleep(20)
   end
 
   def extract_memory(vm)
@@ -181,9 +207,26 @@ describe Vcloud::Launcher::Launch do
     vm[:'ovf:VirtualHardwareSection'][:'ovf:Item'].detect { |i| i[:'rasd:ResourceType'] == '3' }[:'rasd:VirtualQuantity']
   end
 
-  def extract_disks(vm)
+  def extract_local_disks(vm)
     vm[:'ovf:VirtualHardwareSection'][:'ovf:Item'].collect { |d|
-      {:name => d[:"rasd:ElementName"], :size => (d[:"rasd:HostResource"][:ns12_capacity] || d[:"rasd:HostResource"][:vcloud_capacity])} if d[:'rasd:ResourceType'] == '17'
+      if d[:'rasd:ResourceType'] == '17' && ! d[:'rasd:HostResource'].key?(:vcloud_disk)
+        {
+          :name => d[:"rasd:ElementName"],
+          :size => (
+            d[:"rasd:HostResource"][:ns12_capacity] || d[:"rasd:HostResource"][:vcloud_capacity]
+          )
+        }
+      end
+    }.compact
+  end
+
+  def extract_independent_disks(vm)
+    vm[:'ovf:VirtualHardwareSection'][:'ovf:Item'].collect { |d|
+      if d[:'rasd:ResourceType'] == '17' && d[:'rasd:HostResource'].key?(:vcloud_disk)
+        {
+          :name => d[:"rasd:ElementName"]
+        }
+      end
     }.compact
   end
 

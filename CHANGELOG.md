@@ -1,3 +1,9 @@
+## CURRENT
+
+Features:
+
+  - Supports attaching of independent disks to VMs.
+
 ## 0.6.0 (2014-12-03)
 
 Features:
