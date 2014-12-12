@@ -2,10 +2,12 @@
 set -eu
 
 function cleanup {
+  set +e
+  bundle exec vcloud-logout
   rm $FOG_RC
+  unset FOG_RC
 }
 
-# Override default of ~/.fog and delete afterwards.
 export FOG_RC=$(mktemp /tmp/vcloud_fog_rc.XXXXXXXXXX)
 trap cleanup EXIT
 
@@ -29,6 +31,5 @@ rm -rf vcloud-tools-testing-config
 # Never log token to STDOUT.
 set +x
 eval $(printenv API_PASSWORD | bundle exec vcloud-login)
-trap "bundle exec vcloud-logout" EXIT
 
 bundle exec rake integration:all
