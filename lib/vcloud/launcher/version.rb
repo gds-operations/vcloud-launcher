@@ -1,5 +1,5 @@
 module Vcloud
   module Launcher
-    VERSION = '0.7.0'
+    VERSION = '1.0.0'
   end
 end

@@ -1,3 +1,8 @@
+## 1.0.0 (2015-01-22)
+
+  - Release 1.0.0 since the public API is now stable.
+  - Bump dependencies of vCloud Core and vcloud-tools-tester to 1.0.0
+
 ## 0.7.0 (2014-12-05)
 
 Features:
