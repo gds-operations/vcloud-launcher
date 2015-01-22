@@ -3,6 +3,8 @@
 require 'vcloud/launcher'
 
 banner_text = <<EOF
+vcloud-launch [options] config_file
+
 vcloud-launch takes a configuration describing a vCloud Org,
 and tries to make it a reality.
 
@@ -12,7 +14,6 @@ EOF
 opts = Trollop::options do
   banner banner_text
 
-  opt :config_file,       "Configuration file",    required: true
   opt :power_on,          "Power on VMs",          default: true
   opt :continue_on_error, "Ignore errors",         default: false
   opt :verbose,           "Enable verbose output", default: false
@@ -27,9 +28,12 @@ if opts[:version]
   exit
 end
 
+config_file = ARGV.shift
+
+Trollop::die "You must supply a configuration file" unless config_file
+
 begin
-  # FIXME - config_file as a separate arg.
-  launcher = Vcloud::Launcher::Launch.new(opts[:config_file], opts)
+  launcher = Vcloud::Launcher::Launch.new(config_file, opts)
   launcher.run
 rescue => e
   warn e.message
