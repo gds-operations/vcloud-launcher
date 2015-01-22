@@ -27,7 +27,12 @@ if opts[:version]
   exit
 end
 
-# FIXME - config_file as a separate arg.
-launcher = Vcloud::Launcher::Launch.new(opts[:config_file], opts)
-launcher.run
+begin
+  # FIXME - config_file as a separate arg.
+  launcher = Vcloud::Launcher::Launch.new(opts[:config_file], opts)
+  launcher.run
+rescue => e
+  warn e.message
+  exit 1
+end
 
