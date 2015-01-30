@@ -87,14 +87,28 @@ Run the default suite of tests (e.g. lint, unit, features):
 
     bundle exec rake
 
-Run the integration tests (slower and requires a real environment):
+There are also integration tests. These are slower and require a real environment.
+See the [vCloud Tools website](http://gds-operations.github.io/vcloud-tools/testing/) for details of how to set up and run the integration tests.
 
-    bundle exec rake integration
+The parameters required to run the vCloud Launcher integration tests are:
 
-Run the integration tests minus some that are very slow:
+````
+default: # This is the fog credential that refers to your testing environment, e.g. `test_credential`
+  vdc_1_name: # The name of a VDC
+  vdc_2_name: # The name of another VDC - you need two in your organisation to run these tests
+  catalog: # A catalog
+  vapp_template: # A vApp Template within that catalog
+  network_1: # The name of the primary network
+  network_1_ip: # The IP address of the primary network
+  network_2: # The name of a secondary network
+  network_2_ip: # The IP address of the secondary network
+  storage_profile: # The name of a storage profile (not the default)
+  default_storage_profile_name: # The name of the default storage profile
+  default_storage_profile_href: # The href of the default storage profile
+  vdc_1_storage_profile_href: # The href of `storage_profile` in `vdc_1`
+  vdc_2_storage_profile_href: # The href of `storage_profile` in `vdc_2`
+````
+
+There is an additional rake task on vCloud Launcher that runs the integration tests minus some that are very slow:
 
     bundle exec rake integration:quick
-
-You need access to a suitable vCloud Director organization to run the
-integration tests. See the [integration tests README](/spec/integration/README.md) for
-further details.
