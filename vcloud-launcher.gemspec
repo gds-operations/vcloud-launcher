@@ -21,6 +21,8 @@ Gem::Specification.new do |s|
   s.required_ruby_version = '>= 1.9.3'
 
   s.add_runtime_dependency 'vcloud-core', '~> 1.0.0'
+  s.add_runtime_dependency 'trollop' , '>= 2.0'
+
   s.add_development_dependency 'gem_publisher', '1.2.0'
   s.add_development_dependency 'pry'
   s.add_development_dependency 'rake'

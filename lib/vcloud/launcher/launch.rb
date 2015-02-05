@@ -5,11 +5,11 @@ module Vcloud
       class MissingPreambleError < RuntimeError ; end
       class MissingConfigurationError < RuntimeError ; end
 
-      attr_reader :config, :cli_options
+      attr_reader :config, :options
 
-      def initialize(config_file, cli_options = {})
+      def initialize(config_file, options = {})
         config_loader = ::Vcloud::Core::ConfigLoader.new
-        @cli_options = cli_options
+        @options = options
 
         set_logging_level
         @config = config_loader.load_config(config_file, Vcloud::Launcher::Schema::LAUNCHER_VAPPS)
@@ -22,14 +22,16 @@ module Vcloud
           Vcloud::Core.logger.info("Provisioning vApp #{vapp_config[:name]}.")
           begin
             vapp = ::Vcloud::Launcher::VappOrchestrator.provision(vapp_config)
-            vapp.power_on unless cli_options["dont-power-on"]
-            if cli_options["post-launch-cmd"]
-              run_command(vapp_config, cli_options["post-launch-cmd"])
+
+            vapp.power_on if options[:power_on]
+            if options["post-launch-cmd"]
+              run_command(vapp_config, options["post-launch-cmd"])
             end
+
             Vcloud::Core.logger.info("Provisioned vApp #{vapp_config[:name]} successfully.")
           rescue RuntimeError => e
             Vcloud::Core.logger.error("Failure: Could not provision vApp: #{e.message}")
-            break unless cli_options["continue-on-error"]
+            break unless options[:continue_on_error]
           end
 
         end
@@ -66,9 +68,9 @@ module Vcloud
       end
 
       def set_logging_level
-        if cli_options[:verbose]
+        if options[:verbose]
           Vcloud::Core.logger.level = Logger::DEBUG
-        elsif cli_options[:quiet]
+        elsif options[:quiet]
           Vcloud::Core.logger.level = Logger::ERROR
         else
           Vcloud::Core.logger.level = Logger::INFO
