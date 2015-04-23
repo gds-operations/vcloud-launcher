@@ -13,6 +13,7 @@ module Vcloud
           "quiet"             => false,
           "post-launch-cmd"   => false,
           "verbose"           => false,
+          "test-syntax"       => false,
         }
 
         parse(argv_array)
@@ -21,7 +22,9 @@ module Vcloud
       def run
         begin
           launch = Vcloud::Launcher::Launch.new(@config_file, @options)
-          launch.run
+          unless @options['test-syntax']
+            launch.run
+          end
         rescue => error_msg
           $stderr.puts(error_msg)
           exit 1
@@ -79,6 +82,10 @@ Example configuration files can be found in:
 
           opts.on("-v", "--verbose", "Verbose output") do
             @options["verbose"] = true
+          end
+
+          opts.on("-t", "--test-syntax", "Test syntax of yaml files") do
+            @options["test-syntax"] = true
           end
 
           opts.on("-h", "--help", "Print usage and exit") do

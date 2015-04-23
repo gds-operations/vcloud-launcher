@@ -4,11 +4,11 @@ class CommandRun
   attr_accessor :stdout, :stderr, :exitstatus
 
   def initialize(args)
-    out = StringIO.new
-    err = StringIO.new
+    # out = StringIO.new
+    # err = StringIO.new
 
-    $stdout = out
-    $stderr = err
+    # $stdout = out
+    # $stderr = err
 
     begin
       Vcloud::Launcher::Cli.new(args).run
@@ -18,11 +18,17 @@ class CommandRun
       @exitstatus = e.status
     end
 
-    @stdout = out.string.strip
-    @stderr = err.string.strip
+    # @stdout = out.string.strip
+    # @stderr = err.string.strip
 
-    $stdout = STDOUT
-    $stderr = STDERR
+    # $stdout = STDOUT
+    # puts '>>>>>>>>>>>>>>>>'
+    # puts out.read
+    # puts '>>>>>>>>>>>>>>>>'
+    # $stderr = STDERR
+    # puts '>>>>>>>>>>>>>>>>'
+    # puts err.read
+    # puts '>>>>>>>>>>>>>>>>'
   end
 end
 
@@ -53,6 +59,7 @@ describe Vcloud::Launcher::Cli do
           "quiet"             => false,
           "post-launch-cmd"   => false,
           "verbose"           => false,
+          "test-syntax"       => false,
         }
       }
 
@@ -68,6 +75,7 @@ describe Vcloud::Launcher::Cli do
           "quiet"             => false,
           "post-launch-cmd"   => false,
           "verbose"           => false,
+          "test-syntax"       => false,
         }
       }
 
@@ -83,6 +91,7 @@ describe Vcloud::Launcher::Cli do
           "quiet"             => false,
           "post-launch-cmd"   => false,
           "verbose"           => false,
+          "test-syntax"       => false,
         }
       }
 
@@ -98,6 +107,7 @@ describe Vcloud::Launcher::Cli do
           "quiet"             => true,
           "post-launch-cmd"   => false,
           "verbose"           => false,
+          "test-syntax"       => false,
         }
       }
 
@@ -113,6 +123,7 @@ describe Vcloud::Launcher::Cli do
           "quiet"             => false,
           "post-launch-cmd"   => false,
           "verbose"           => true,
+          "test-syntax"       => false,
         }
       }
 
@@ -128,6 +139,7 @@ describe Vcloud::Launcher::Cli do
           "quiet"             => false,
           "post-launch-cmd"   => false,
           "verbose"           => true,
+          "test-syntax"       => false,
         }
       }
 
@@ -143,6 +155,7 @@ describe Vcloud::Launcher::Cli do
           "quiet"             => false,
           "post-launch-cmd"   => 'GIRAFFE',
           "verbose"           => false,
+          "test-syntax"       => false,
         }
       }
 
@@ -158,6 +171,7 @@ describe Vcloud::Launcher::Cli do
           "quiet"             => false,
           "post-launch-cmd"   => 'GIRAFFE LION',
           "verbose"           => false,
+          "test-syntax"       => false,
         }
       }
       it "exits with a error code, because this is not supported" do
@@ -189,6 +203,52 @@ describe Vcloud::Launcher::Cli do
         expect(subject.stderr).to match(/\AUsage: \S+ \[options\] config_file\n/)
         expect(subject.exitstatus).to eq(0)
       end
+    end
+
+    context "when asked to test syntax" do
+      let(:args) { [ config_file, "--test-syntax"] }
+
+      let(:cli_options) {
+        {
+          "dont-power-on"     => false,
+          "continue-on-error" => false,
+          "quiet"             => false,
+          "post-launch-cmd"   => 'GIRAFFE LION',
+          "verbose"           => false,
+          "test-syntax"       => true,
+        }
+      }
+      context "and config file is valid" do
+        let(:mock_launch) { double(:launch, :run => true) }
+
+        # subject { Vcloud::Launcher::Cli.new([ config_file ]) }
+
+        it "does not call Launch" do
+          allow( Vcloud::Launcher::Launch).to receive(:new).and_return(mock_launch)
+          expect(mock_launch).not_to receive(:run)
+        end
+
+        it "prints exits normally" do
+          allow( Vcloud::Launcher::Launch).to receive(:new).and_return(mock_launch)
+          expect(subject.exitstatus).to eq(0)
+        end
+      end
+      context "and config file is not valid" do
+        let(:mock_launch) { double(:launch, :run => true) }
+
+        # subject { Vcloud::Launcher::Cli.new([ config_file ]) }
+
+        it "does not call Launch" do
+          allow( Vcloud::Launcher::Launch).to receive(:new).and_return(mock_launch)
+          expect(mock_launch).not_to receive(:run)
+        end
+
+        it "prints exits abnormally" do
+          allow( Vcloud::Launcher::Launch).to receive(:new).and_raise(Vcloud::Launcher::Launch::MissingConfigurationError)
+          expect(subject.exitstatus).to eq(1)
+        end
+      end
+
     end
   end
 
