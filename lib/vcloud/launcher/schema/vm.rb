@@ -16,6 +16,7 @@ module Vcloud
                 name: { type: 'string', required: true },
                 ip_address: { type: 'ip_address', required: false },
                 allocation_mode: { type: 'string', required: false },
+                mac_address: { type: 'string', required: false },
               },
             },
           },
