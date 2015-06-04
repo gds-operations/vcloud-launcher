@@ -23,7 +23,7 @@ module Vcloud
 
         preamble = vm_config[:bootstrap] ? generate_preamble(vm_config) : ''
 
-        @vm.configure_guest_customization_section(preamble) unless preamble.empty?
+        @vm.configure_guest_customization_section(preamble) if (!preamble.nil? && !preamble.empty?)
       end
 
       private
