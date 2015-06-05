@@ -29,6 +29,10 @@ module Vcloud
               memory: { type: 'string_or_number', required: false },
             },
           },
+          cdrom: {
+            type: 'string',
+            required: false 
+          },
           extra_disks: {
             type: 'array',
             required: false,
