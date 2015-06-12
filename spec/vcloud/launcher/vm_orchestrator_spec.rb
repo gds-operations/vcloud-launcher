@@ -136,8 +136,8 @@ describe Vcloud::Launcher::VmOrchestrator do
         subject.customize(vm_config_without_bootstrap)
       end
 
-      it "uses an empty string as the host preamble" do
-        expect(vm).to receive(:configure_guest_customization_section).with('')
+      it "skips customization if nothing to customize" do
+        expect(vm).not_to receive(:configure_guest_customization_section)
         subject.customize(vm_config_without_bootstrap)
       end
     end
