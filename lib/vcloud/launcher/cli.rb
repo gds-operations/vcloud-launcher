@@ -8,6 +8,7 @@ module Vcloud
         @config_file = nil
         @usage_text = nil
         @options = {
+          "vapp-name"         => false,
           "dont-power-on"     => false,
           "continue-on-error" => false,
           "quiet"             => false,
@@ -56,6 +57,10 @@ Example configuration files can be found in:
 
           opts.separator ""
           opts.separator "Options:"
+
+          opts.on('-n VAPP_NAME', '--vapp-name VAPP_NAME', 'Name of a single vApp to launch') do |vapp_name|
+            @options['vapp-name'] = vapp_name
+          end
 
           opts.on("-x", "--dont-power-on", "Do not power on vApps (default is to power on)") do
             @options["dont-power-on"] = true
