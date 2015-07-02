@@ -1,3 +1,5 @@
+require 'ostruct'
+
 module Vcloud
   module Launcher
     class Preamble
