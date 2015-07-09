@@ -1,3 +1,10 @@
+## 1.1.0 (2015-07-09)
+
+  - Add optional MAC address to the schema for a VM
+  - Only run guest customization when there is something to customise
+  - Fix bug where OpenStruct must be explicity required
+  - Bump dependency on vcloud-core from 1.0.0 to 1.1.0
+
 ## 1.0.0 (2015-01-22)
 
   - Release 1.0.0 since the public API is now stable.
