@@ -14,6 +14,8 @@ module Vcloud
         set_logging_level
         @config = config_loader.load_config(config_file, Vcloud::Launcher::Schema::LAUNCHER_VAPPS)
 
+        ignore_unspecified_machines
+
         validate_config
       end
 
@@ -72,6 +74,14 @@ module Vcloud
           Vcloud::Core.logger.level = Logger::ERROR
         else
           Vcloud::Core.logger.level = Logger::INFO
+        end
+      end
+
+      def ignore_unspecified_machines
+        if @cli_options["vapp-name"]
+          @config[:vapps].delete_if do |vapp|
+            vapp[:name] != @cli_options["vapp-name"]
+          end
         end
       end
 

@@ -48,6 +48,7 @@ describe Vcloud::Launcher::Cli do
       let(:args) { [ config_file ] }
       let(:cli_options) {
         {
+          "vapp-name"      => false,
           "dont-power-on"     => false,
           "continue-on-error" => false,
           "quiet"             => false,
@@ -63,6 +64,7 @@ describe Vcloud::Launcher::Cli do
       let(:args) { [ config_file, "--dont-power-on" ] }
       let(:cli_options) {
         {
+          "vapp-name"      => false,
           "dont-power-on"     => true,
           "continue-on-error" => false,
           "quiet"             => false,
@@ -78,6 +80,7 @@ describe Vcloud::Launcher::Cli do
       let(:args) { [ config_file, "--continue-on-error" ] }
       let(:cli_options) {
         {
+          "vapp-name"      => false,
           "dont-power-on"     => false,
           "continue-on-error" => true,
           "quiet"             => false,
@@ -93,6 +96,7 @@ describe Vcloud::Launcher::Cli do
       let(:args) { [ config_file, "--quiet" ] }
       let(:cli_options) {
         {
+          "vapp-name"      => false,
           "dont-power-on"     => false,
           "continue-on-error" => false,
           "quiet"             => true,
@@ -108,6 +112,7 @@ describe Vcloud::Launcher::Cli do
       let(:args) { [ config_file, "--verbose" ] }
       let(:cli_options) {
         {
+          "vapp-name"      => false,
           "dont-power-on"     => false,
           "continue-on-error" => false,
           "quiet"             => false,
@@ -123,6 +128,7 @@ describe Vcloud::Launcher::Cli do
       let(:args) { [ config_file, "--continue-on-error", "--verbose" ] }
       let(:cli_options) {
         {
+          "vapp-name"      => false,
           "dont-power-on"     => false,
           "continue-on-error" => true,
           "quiet"             => false,
@@ -138,6 +144,7 @@ describe Vcloud::Launcher::Cli do
       let(:args) { [ config_file, "--post-launch-cmd", "GIRAFFE" ] }
       let(:cli_options) {
         {
+          "vapp-name"      => false,
           "dont-power-on"     => false,
           "continue-on-error" => false,
           "quiet"             => false,
@@ -153,6 +160,7 @@ describe Vcloud::Launcher::Cli do
       let(:args) { [ config_file, "--post-launch-cmd", "GIRAFFE LION" ] }
       let(:cli_options) {
         {
+          "vapp-name"      => false,
           "dont-power-on"     => false,
           "continue-on-error" => false,
           "quiet"             => false,

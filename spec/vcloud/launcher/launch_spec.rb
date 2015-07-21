@@ -51,6 +51,11 @@ describe Vcloud::Launcher::Launch do
         subject.new(config_file)
       end
 
+      it 'does not process non-matching machines if a single one is specified' do
+        subject.any_instance.should_receive(:ignore_unspecified_machines)
+        subject.new(config_file)
+      end
+
       it 'validates the configuration' do
         subject.any_instance.should_receive(:validate_config)
         subject.new(config_file)
@@ -137,6 +142,30 @@ describe Vcloud::Launcher::Launch do
         subject
       end
     end
+  end
+
+  describe '#ignore_unspecified_machines' do
+    subject { Vcloud::Launcher::Launch }
+
+    describe 'when the vApp name option is not specified' do
+      let(:cli_options) { {} }
+
+      it 'processes all machines' do
+        launch = subject.new(config_file, cli_options)
+        expect(launch.config[:vapps].length).to eq(3)
+      end
+    end
+
+    describe 'when a vApp name is specified as an option' do
+      let(:cli_options) { {"vapp-name" => "successful app 1"} }
+
+      it 'only processes the specified vApp' do
+        launch = subject.new(config_file, cli_options)
+        expect(launch.config[:vapps].length).to eq(1)
+        expect(launch.config[:vapps][0][:name]).to eq('successful app 1')
+      end
+    end
+
   end
 
   describe "configuration validation" do
