@@ -1,3 +1,7 @@
+## 1.2.0 (2015-08-28)
+
+  - Add a `--vapp-name` option to launch a single machine
+
 ## 1.1.0 (2015-07-09)
 
   - Add optional MAC address to the schema for a VM
