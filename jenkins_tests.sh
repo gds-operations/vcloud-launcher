@@ -18,6 +18,8 @@ ${FOG_CREDENTIAL}:
   vcloud_director_password: ''
 EOF
 
+source ./rbenv_version.sh
+
 git clean -ffdx
 
 bundle install --path "${HOME}/bundles/${JOB_NAME}"
