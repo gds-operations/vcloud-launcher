@@ -1,3 +1,7 @@
+## 1.2.1 (2015-10-16)
+
+  - Upgrade vcloud-core dependency to at least 1.2.0.
+
 ## 1.2.0 (2015-08-28)
 
   - Add a `--vapp-name` option to launch a single machine
