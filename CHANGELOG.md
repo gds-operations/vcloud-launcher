@@ -1,3 +1,7 @@
+## Unreleased
+
+  - Remove support for Ruby 1.9.3, which is now end-of-life.
+
 ## 1.2.0 (2015-08-28)
 
   - Add a `--vapp-name` option to launch a single machine
