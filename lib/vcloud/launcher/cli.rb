@@ -14,6 +14,7 @@ module Vcloud
           "quiet"             => false,
           "post-launch-cmd"   => false,
           "verbose"           => false,
+          "dry-run"           => false,
         }
 
         parse(argv_array)
@@ -94,6 +95,10 @@ Example configuration files can be found in:
           opts.on("--version", "Display version and exit") do
             puts Vcloud::Launcher::VERSION
             exit
+          end
+
+          opts.on("--dry-run", "Don't apply configuration changes") do
+            @options["dry-run"] = true
           end
         end
 

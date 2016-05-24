@@ -23,17 +23,20 @@ module Vcloud
         @config[:vapps].each do |vapp_config|
           Vcloud::Core.logger.info("Provisioning vApp #{vapp_config[:name]}.")
           begin
-            vapp = ::Vcloud::Launcher::VappOrchestrator.provision(vapp_config)
-            vapp.power_on unless cli_options["dont-power-on"]
-            if cli_options["post-launch-cmd"]
-              run_command(vapp_config, cli_options["post-launch-cmd"])
+            if cli_options["dry-run"]
+              vapp = ::Vcloud::Launcher::VappOrchestrator.provision(vapp_config, true)
+            else
+              vapp = ::Vcloud::Launcher::VappOrchestrator.provision(vapp_config)
+              vapp.power_on unless cli_options["dont-power-on"]
+              if cli_options["post-launch-cmd"]
+                run_command(vapp_config, cli_options["post-launch-cmd"])
+              end
             end
-            Vcloud::Core.logger.info("Provisioned vApp #{vapp_config[:name]} successfully.")
+          Vcloud::Core.logger.info("Provisioned vApp #{vapp_config[:name]} successfully.")
           rescue RuntimeError => e
             Vcloud::Core.logger.error("Failure: Could not provision vApp: #{e.message}")
             break unless cli_options["continue-on-error"]
           end
-
         end
       end
 

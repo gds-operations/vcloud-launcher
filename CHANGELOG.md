@@ -1,3 +1,8 @@
+## 2.0.1 (2016-03-24)
+
+  - Add dry-run option.
+  - Update dependencies for vCloud Core and vCloud Tools Tester
+
 ## 2.0.0 (2015-10-20)
 
   - Remove support for Ruby 1.9.3, which is now end-of-life.

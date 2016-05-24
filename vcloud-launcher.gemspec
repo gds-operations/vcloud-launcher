@@ -20,7 +20,7 @@ Gem::Specification.new do |s|
 
   s.required_ruby_version = '>= 2.0.0'
 
-  s.add_runtime_dependency 'vcloud-core', '~> 1.1'
+  s.add_runtime_dependency 'vcloud-core', '~> 2.0'
   s.add_development_dependency 'gem_publisher', '1.2.0'
   s.add_development_dependency 'pry'
   s.add_development_dependency 'rake'
@@ -29,5 +29,5 @@ Gem::Specification.new do |s|
   # Pin SimpleCov to < 0.8.x until this issue is resolved:
   # https://github.com/colszowka/simplecov/issues/281
   s.add_development_dependency 'simplecov', '~> 0.7.1'
-  s.add_development_dependency 'vcloud-tools-tester', '~> 1.0.0'
+  s.add_development_dependency 'vcloud-tools-tester', '~> 2.0.0'
 end

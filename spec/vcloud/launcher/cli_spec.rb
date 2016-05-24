@@ -54,6 +54,7 @@ describe Vcloud::Launcher::Cli do
           "quiet"             => false,
           "post-launch-cmd"   => false,
           "verbose"           => false,
+          "dry-run"           => false,
         }
       }
 
@@ -70,6 +71,7 @@ describe Vcloud::Launcher::Cli do
           "quiet"             => false,
           "post-launch-cmd"   => false,
           "verbose"           => false,
+          "dry-run"           => false,
         }
       }
 
@@ -86,6 +88,7 @@ describe Vcloud::Launcher::Cli do
           "quiet"             => false,
           "post-launch-cmd"   => false,
           "verbose"           => false,
+          "dry-run"           => false,
         }
       }
 
@@ -102,6 +105,7 @@ describe Vcloud::Launcher::Cli do
           "quiet"             => true,
           "post-launch-cmd"   => false,
           "verbose"           => false,
+          "dry-run"           => false,
         }
       }
 
@@ -118,6 +122,7 @@ describe Vcloud::Launcher::Cli do
           "quiet"             => false,
           "post-launch-cmd"   => false,
           "verbose"           => true,
+          "dry-run"           => false,
         }
       }
 
@@ -134,6 +139,24 @@ describe Vcloud::Launcher::Cli do
           "quiet"             => false,
           "post-launch-cmd"   => false,
           "verbose"           => true,
+          "dry-run"           => false,
+        }
+      }
+
+      it_behaves_like "a good CLI command"
+    end
+
+    context "when asked to do a dry-run" do
+      let(:args) { [ config_file, "--dry-run" ] }
+      let(:cli_options) {
+        {
+          "vapp-name"      => false,
+          "dont-power-on"     => false,
+          "continue-on-error" => false,
+          "quiet"             => false,
+          "post-launch-cmd"   => false,
+          "verbose"           => false,
+          "dry-run"           => true,
         }
       }
 
@@ -150,6 +173,7 @@ describe Vcloud::Launcher::Cli do
           "quiet"             => false,
           "post-launch-cmd"   => 'GIRAFFE',
           "verbose"           => false,
+          "dry-run"           => false,
         }
       }
 
@@ -166,6 +190,7 @@ describe Vcloud::Launcher::Cli do
           "quiet"             => false,
           "post-launch-cmd"   => 'GIRAFFE LION',
           "verbose"           => false,
+          "dry-run"           => false,
         }
       }
       it "exits with a error code, because this is not supported" do
