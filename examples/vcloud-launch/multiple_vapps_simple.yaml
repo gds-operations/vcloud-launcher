@@ -18,7 +18,7 @@ vapps:
       cpu: '2'
     network_connections:
     - name: Default
-      ip_address: 192.0.2.11
+      ip_address: 192.168.2.11
 
 - name: vapp-example-2
   vdc_name: "Our VDC1"
@@ -30,7 +30,7 @@ vapps:
       cpu: '2'
     network_connections:
     - name: Default
-      ip_address: 192.0.2.12
+      ip_address: 192.168.2.12
 
 - name: vapp-example-3
   vdc_name: "Our VDC1"
@@ -42,4 +42,4 @@ vapps:
       cpu: '2'
     network_connections:
     - name: Default
-      ip_address: 192.0.2.13
+      ip_address: 192.168.2.13
