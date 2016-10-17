@@ -55,15 +55,15 @@ vapps:
         <<: *BASE_VM_VARS
         role: frontend
     network_connections:
-    - { name: *APP_NETWORK,  ip_address: 192.0.2.11 }
-    - { name: *MGMT_NETWORK, ip_address: 198.51.100.11 }
+    - { name: *APP_NETWORK,  ip_address: 192.168.2.11 }
+    - { name: *MGMT_NETWORK, ip_address: 192.168.100.11 }
 - <<: *frontend_vapp
   name: frontend-example-2
   vm:
     <<: *frontend_vm
     network_connections:
-    - { name: *APP_NETWORK,  ip_address: 192.0.2.12 }
-    - { name: *MGMT_NETWORK, ip_address: 198.51.100.12 }
+    - { name: *APP_NETWORK,  ip_address: 192.168.2.12 }
+    - { name: *MGMT_NETWORK, ip_address: 192.168.100.12 }
 
 - &backend_vapp
   <<: *BASE_VAPP
@@ -76,12 +76,12 @@ vapps:
         <<: *BASE_VM_VARS
         role: backend
     network_connections:
-    - { name: *APP_NETWORK,  ip_address: 192.0.2.51 }
-    - { name: *MGMT_NETWORK, ip_address: 198.51.100.51 }
+    - { name: *APP_NETWORK,  ip_address: 192.168.2.51 }
+    - { name: *MGMT_NETWORK, ip_address: 192.168.100.51 }
 - <<: *backend_vapp
   name: backend-example-2
   vm:
     <<: *backend_vm
     network_connections:
-    - { name: *APP_NETWORK,  ip_address: 192.0.2.52 }
-    - { name: *MGMT_NETWORK, ip_address: 198.51.100.52 }
+    - { name: *APP_NETWORK,  ip_address: 192.168.2.52 }
+    - { name: *MGMT_NETWORK, ip_address: 192.168.100.52 }

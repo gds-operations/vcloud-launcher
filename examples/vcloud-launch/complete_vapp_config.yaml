@@ -9,7 +9,7 @@
 #  * its memory reconfigured to 4096MB
 #  * its cpu count reconfigured to be 2.
 #  * The Primary NIC will be moved to FrontendNetwork, and given a manual ip
-#    of 192.0.2.10
+#    of 192.168.2.10
 #  * A Secondary NIC will be created on BackendNetwork and given an IP address
 #    via DHCP (the result of not supplying an ip_address parameter)
 #  * a bootstrap 'guest customization script' is provided, which will be
@@ -37,7 +37,7 @@ vapps:
         cpu: 2
       network_connections:
       - name: 'FrontendNetwork'
-        ip_address: '192.0.2.10'
+        ip_address: '192.168.2.10'
       - name: 'BackendNetwork'
         allocation_mode: 'pool'
       extra_disks:
