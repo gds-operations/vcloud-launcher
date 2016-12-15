@@ -15,6 +15,7 @@ module Vcloud
           @vm.update_cpu_count(vm_config[:hardware_config][:cpu])
           @vm.update_memory_size_in_mb(vm_config[:hardware_config][:memory])
         end
+        @vm.insert_cdrom(vm_config[:cdrom])
         @vm.add_extra_disks(vm_config[:extra_disks])
         @vm.update_metadata(vm_config[:metadata])
         if vm_config.key?(:independent_disks)
