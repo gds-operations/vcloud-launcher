@@ -24,7 +24,9 @@ module Vcloud
           Vcloud::Core.logger.info("Provisioning vApp #{vapp_config[:name]}.")
           begin
             if cli_options["dry-run"]
+              # rubocop:disable Style/UselessAssignment
               vapp = ::Vcloud::Launcher::VappOrchestrator.provision(vapp_config, true)
+              # rubocop:enable Style/UselessAssignment
             else
               vapp = ::Vcloud::Launcher::VappOrchestrator.provision(vapp_config)
               vapp.power_on unless cli_options["dont-power-on"]
