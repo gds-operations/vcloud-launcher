@@ -88,7 +88,7 @@ describe Vcloud::Launcher::IndependentDiskOrchestrator do
       expect(mock_vm).to receive(:attach_independent_disks).
         with([mock_disk_1, mock_disk_2]).
         and_return(true)
-      expect(subject.attach(independent_disk_config)).to be_true
+      expect(subject.attach(independent_disk_config)).to be true
     end
   end
 

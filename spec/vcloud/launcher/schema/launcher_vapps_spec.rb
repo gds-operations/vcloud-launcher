@@ -23,7 +23,7 @@ describe Vcloud::Launcher::Schema::LAUNCHER_VAPPS do
 
     it "validates successfully" do
       validation = Vcloud::Core::ConfigValidator.new(:base, config, schema)
-      expect(validation.valid?).to be_true
+      expect(validation.valid?).to be true
     end
 
   end
@@ -47,7 +47,7 @@ describe Vcloud::Launcher::Schema::LAUNCHER_VAPPS do
 
     it "does not validate successfully" do
       validation = Vcloud::Core::ConfigValidator.new(:base, config, schema)
-      expect(validation.valid?).to be_false
+      expect(validation.valid?).to be false
       expect(validation.errors).to eq(['independent_disks is not an array'])
     end
 
@@ -72,7 +72,7 @@ describe Vcloud::Launcher::Schema::LAUNCHER_VAPPS do
 
     it "does not validate successfully" do
       validation = Vcloud::Core::ConfigValidator.new(:base, config, schema)
-      expect(validation.valid?).to be_false
+      expect(validation.valid?).to be false
       expect(validation.errors).to eq(
         ['independent_disks: is not a hash', 'independent_disks: is not a hash']
       )
@@ -99,7 +99,7 @@ describe Vcloud::Launcher::Schema::LAUNCHER_VAPPS do
 
     it "does not validate successfully" do
       validation = Vcloud::Core::ConfigValidator.new(:base, config, schema)
-      expect(validation.valid?).to be_false
+      expect(validation.valid?).to be false
       expect(validation.errors).to eq([
         "independent_disks: parameter 'nametypo' is invalid",
         "independent_disks: missing 'name' parameter"
