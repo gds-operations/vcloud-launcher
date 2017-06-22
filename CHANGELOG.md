@@ -1,3 +1,10 @@
+## 2.1.0 (2017-06-22)
+
+  - Remove support for older versions of Ruby than 2.2.2
+  - Add support for Ruby 2.3.0 and 2.4.0
+  - Update dependency for vCloud Core and vCloud Tools Tester
+  - Various bug fixes
+
 ## 2.0.1 (2016-03-24)
 
   - Add dry-run option.
