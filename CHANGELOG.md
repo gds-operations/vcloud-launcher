@@ -1,3 +1,9 @@
+## 0.7.1 (2017-07-14)
+
+Maintenance
+
+  - Backport fog fix to support 'queued' status from vCloud API
+
 ## 0.7.0 (2014-12-05)
 
 Features:
