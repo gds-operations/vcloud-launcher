@@ -7,7 +7,7 @@ node {
 
   try {
     stage("Checkout") {
-      govuk.checkoutFromGitHubWithSSH(repoName)
+      govuk.checkoutFromGitHubWithSSH(repoName, "gds-operations")
     }
 
     stage("Clean up workspace") {
